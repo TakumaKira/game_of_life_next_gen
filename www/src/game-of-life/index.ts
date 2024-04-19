@@ -1,14 +1,15 @@
+/// <reference types="./index.d.ts" />
 import wasm from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
-export default function run(canvas) {
+export default function run(canvas: HTMLCanvasElement): void {
   wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {
     bg.__wbg_set_wasm(wasm)
     main(bg.Universe, bg.Cell, wasm.memory, canvas)
   })
 }
 
-function main(Universe, Cell, memory, canvas) {
+function main(Universe: typeof bg.Universe, Cell: typeof bg.Cell, memory: WebAssembly.Memory, canvas: HTMLCanvasElement) {
   const CELL_SIZE = 5; // px
   const GRID_COLOR = "#CCCCCC";
   const DEAD_COLOR = "#FFFFFF";
@@ -25,6 +26,9 @@ function main(Universe, Cell, memory, canvas) {
   canvas.width = (CELL_SIZE + 1) * width + 1;
 
   const ctx = canvas.getContext('2d');
+  if (ctx === null) {
+    throw new Error("canvas 2d context not found")
+  }
 
   const fps = new class {
     fps: HTMLDivElement;
