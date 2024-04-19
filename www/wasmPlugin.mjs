@@ -13,14 +13,22 @@ const wasmPlugin = {
         // Sub modules are not resolved by default, so we need to resolve them manually
         const absPath = path.resolve(args.resolveDir, args.path)
         if (!fs.existsSync(absPath)) {
-          const pathInWWWWDir = absPath.replace(process.cwd(), '')
-          const isLocalPath = pathInWWWWDir.startsWith('/src')
+          const pathInWWWDir = absPath.replace(process.cwd(), '')
+          const isLocalPath = pathInWWWDir.startsWith('/src')
           if (isLocalPath) {
-            const pathAsModule = process.cwd() + '/node_modules' + pathInWWWWDir.replace('/src', '')
-            if (fs.existsSync(pathAsModule))
-            return {
-              path: pathAsModule,
-              namespace: 'wasm-binary',
+            let pathsInWWWDir = pathInWWWDir.split('/')
+            pathsInWWWDir.shift()
+            pathsInWWWDir.shift()
+            while (pathsInWWWDir.length) {
+              const pathAsModule = process.cwd() + '/node_modules/' + pathsInWWWDir.join('/')
+              if (fs.existsSync(pathAsModule)) {
+                return {
+                  path: pathAsModule,
+                  namespace: 'wasm-binary',
+                }
+              } else {
+                pathsInWWWDir.shift()
+              }
             }
           }
         }
