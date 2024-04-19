@@ -6,6 +6,7 @@ import drawGrid from './drawGrid';
 import drawCells from "./drawCells";
 import { isPaused, pause, play } from "./animController";
 import FPS from "./FPS";
+import { CELL_SIZE } from "./constants";
 
 export default function run(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string): void {
   wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {
@@ -15,24 +16,19 @@ export default function run(canvas: HTMLCanvasElement, playPauseButtonId: string
 }
 
 function main(Universe: typeof bg.Universe, Cell: typeof bg.Cell, memory: WebAssembly.Memory, canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string) {
-  const CELL_SIZE = 5; // px
-  const GRID_COLOR = "#CCCCCC";
-  const DEAD_COLOR = "#FFFFFF";
-  const ALIVE_COLOR = "#000000";
-
   const { universe, width, height } = getUniverse(Universe);
 
-  setCanvasDimensions(canvas, CELL_SIZE, width, height);
+  setCanvasDimensions(canvas, width, height);
 
   const { ctx, fpsElement, playPauseButton } = getElements(canvas, playPauseButtonId, fpsElementId);
 
   const fps = new FPS(fpsElement);
 
   let animationId: null | number = null;
-  playPauseButton.addEventListener("click", event => animationId = onClickPlayPauseButton(event, playPauseButton, fps, ctx, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR, CELL_SIZE, Cell, universe, memory, width, height, animationId));
-  canvas.addEventListener("click", event => onClickCanvas(event, canvas, CELL_SIZE, width, height, ctx, Cell, universe, memory, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR));
+  playPauseButton.addEventListener("click", event => animationId = onClickPlayPauseButton(event, playPauseButton, fps, ctx, Cell, universe, memory, width, height, animationId));
+  canvas.addEventListener("click", event => onClickCanvas(event, canvas, width, height, ctx, Cell, universe, memory));
 
-  play(playPauseButton, fps, ctx, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR, CELL_SIZE, Cell, universe, memory, width, height);
+  play(playPauseButton, fps, ctx, Cell, universe, memory, width, height);
 }
 
 /**
@@ -49,9 +45,9 @@ function getUniverse(Universe: typeof bg.Universe): { universe: bg.Universe, wid
  * Give the canvas room for all of our cells and a 1px border
  * around each of them.
  */
-function setCanvasDimensions(canvas: HTMLCanvasElement, cellSize: number, width: number, height: number): void {
-  canvas.height = (cellSize + 1) * height + 1;
-  canvas.width = (cellSize + 1) * width + 1;
+function setCanvasDimensions(canvas: HTMLCanvasElement, width: number, height: number): void {
+  canvas.height = (CELL_SIZE + 1) * height + 1;
+  canvas.width = (CELL_SIZE + 1) * width + 1;
 }
 
 function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string) {
@@ -73,15 +69,15 @@ function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsEl
   return { ctx, fpsElement, playPauseButton }
 }
 
-function onClickPlayPauseButton(event: MouseEvent, playPauseButton: HTMLButtonElement, fps: FPS, ctx: CanvasRenderingContext2D, gridColor: string, aliveColor: string, deadColor: string, cellSize: number, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, animationId: null | number): number | null {
+function onClickPlayPauseButton(event: MouseEvent, playPauseButton: HTMLButtonElement, fps: FPS, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, animationId: null | number): number | null {
   if (isPaused(animationId)) {
-    return play(playPauseButton, fps, ctx, gridColor, aliveColor, deadColor, cellSize, Cell, universe, memory, width, height);
+    return play(playPauseButton, fps, context, Cell, universe, memory, width, height);
   } else {
     return pause(playPauseButton, animationId);
   }
 }
 
-function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, cellSize: number, width: number, height: number, ctx: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, gridColor: string, aliveColor: string, deadColor: string): void {
+function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, width: number, height: number, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory): void {
   const boundingRect = canvas.getBoundingClientRect();
 
   const scaleX = canvas.width / boundingRect.width;
@@ -90,11 +86,11 @@ function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, cellSize: n
   const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
   const canvasTop = (event.clientY - boundingRect.top) * scaleY;
 
-  const row = Math.min(Math.floor(canvasTop / (cellSize + 1)), height - 1);
-  const col = Math.min(Math.floor(canvasLeft / (cellSize + 1)), width - 1);
+  const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+  const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
   universe.toggle_cell(row, col);
 
-  drawCells(universe, memory, width, height, ctx, aliveColor, deadColor, cellSize, Cell);
-  drawGrid(ctx, gridColor, width, height, cellSize);
+  drawCells(universe, memory, width, height, context, Cell);
+  drawGrid(context, width, height);
 }

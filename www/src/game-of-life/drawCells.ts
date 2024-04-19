@@ -1,14 +1,15 @@
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import getIndex from "./getIndex";
+import { ALIVE_COLOR, CELL_SIZE, DEAD_COLOR } from "./constants";
 
-export default function drawCells(universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, context: CanvasRenderingContext2D, aliveColor: string, deadColor: string, cellSize: number, Cell: typeof bg.Cell) {
+export default function drawCells(universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, context: CanvasRenderingContext2D, Cell: typeof bg.Cell) {
   const cellsPtr = universe.cells();
   const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
 
   context.beginPath();
 
   // Alive cells.
-  context.fillStyle = aliveColor;
+  context.fillStyle = ALIVE_COLOR;
   for (let row = 0; row < height; row++) {
     for (let col = 0; col < width; col++) {
       const idx = getIndex(row, col, width);
@@ -17,16 +18,16 @@ export default function drawCells(universe: bg.Universe, memory: WebAssembly.Mem
       }
 
       context.fillRect(
-        col * (cellSize + 1) + 1,
-        row * (cellSize + 1) + 1,
-        cellSize,
-        cellSize
+        col * (CELL_SIZE + 1) + 1,
+        row * (CELL_SIZE + 1) + 1,
+        CELL_SIZE,
+        CELL_SIZE
       );
     }
   }
 
   // Dead cells.
-  context.fillStyle = deadColor;
+  context.fillStyle = DEAD_COLOR;
   for (let row = 0; row < height; row++) {
     for (let col = 0; col < width; col++) {
       const idx = getIndex(row, col, width);
@@ -35,10 +36,10 @@ export default function drawCells(universe: bg.Universe, memory: WebAssembly.Mem
       }
 
       context.fillRect(
-        col * (cellSize + 1) + 1,
-        row * (cellSize + 1) + 1,
-        cellSize,
-        cellSize
+        col * (CELL_SIZE + 1) + 1,
+        row * (CELL_SIZE + 1) + 1,
+        CELL_SIZE,
+        CELL_SIZE
       );
     }
   }
