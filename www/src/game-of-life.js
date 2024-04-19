@@ -1,5 +1,5 @@
-import wasm from "../node_modules/wasm-game-of-life/wasm_game_of_life_bg.wasm";
-import * as bg from "../node_modules/wasm-game-of-life/wasm_game_of_life_bg.js"
+import wasm from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
+import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 export default function run(canvas) {
   wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {

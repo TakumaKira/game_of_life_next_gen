@@ -10,6 +10,20 @@ const wasmPlugin = {
       // binary itself. Put the path in the "wasm-binary" namespace
       // to tell our binary load callback to load the binary file.
       if (args.namespace === 'wasm-stub') {
+        // Sub modules are not resolved by default, so we need to resolve them manually
+        const absPath = path.resolve(args.resolveDir, args.path)
+        if (!fs.existsSync(absPath)) {
+          const pathInWWWWDir = absPath.replace(process.cwd(), '')
+          const isLocalPath = pathInWWWWDir.startsWith('/src')
+          if (isLocalPath) {
+            const pathAsModule = process.cwd() + '/node_modules' + pathInWWWWDir.replace('/src', '')
+            if (fs.existsSync(pathAsModule))
+            return {
+              path: pathAsModule,
+              namespace: 'wasm-binary',
+            }
+          }
+        }
         return {
           path: args.path,
           namespace: 'wasm-binary',
