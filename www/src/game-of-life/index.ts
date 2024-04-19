@@ -7,8 +7,6 @@ import drawCells from "./drawCells";
 import { isPaused, pause, play } from "./animController";
 import FPS from "./FPS";
 
-let animationId: null | number = null;
-
 export default function run(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string): void {
   wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {
     bg.__wbg_set_wasm(wasm)
@@ -30,7 +28,8 @@ function main(Universe: typeof bg.Universe, Cell: typeof bg.Cell, memory: WebAss
 
   const fps = new FPS(fpsElement);
 
-  playPauseButton.addEventListener("click", event => onClickPlayPauseButton(event, playPauseButton, fps, ctx, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR, CELL_SIZE, Cell, universe, memory, width, height));
+  let animationId: null | number = null;
+  playPauseButton.addEventListener("click", event => animationId = onClickPlayPauseButton(event, playPauseButton, fps, ctx, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR, CELL_SIZE, Cell, universe, memory, width, height, animationId));
   canvas.addEventListener("click", event => onClickCanvas(event, canvas, CELL_SIZE, width, height, ctx, Cell, universe, memory, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR));
 
   play(playPauseButton, fps, ctx, GRID_COLOR, ALIVE_COLOR, DEAD_COLOR, CELL_SIZE, Cell, universe, memory, width, height);
@@ -74,11 +73,11 @@ function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsEl
   return { ctx, fpsElement, playPauseButton }
 }
 
-function onClickPlayPauseButton(event: MouseEvent, playPauseButton: HTMLButtonElement, fps: FPS, ctx: CanvasRenderingContext2D, gridColor: string, aliveColor: string, deadColor: string, cellSize: number, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number): void {
+function onClickPlayPauseButton(event: MouseEvent, playPauseButton: HTMLButtonElement, fps: FPS, ctx: CanvasRenderingContext2D, gridColor: string, aliveColor: string, deadColor: string, cellSize: number, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, animationId: null | number): number | null {
   if (isPaused(animationId)) {
-    animationId = play(playPauseButton, fps, ctx, gridColor, aliveColor, deadColor, cellSize, Cell, universe, memory, width, height);
+    return play(playPauseButton, fps, ctx, gridColor, aliveColor, deadColor, cellSize, Cell, universe, memory, width, height);
   } else {
-    animationId = pause(playPauseButton, animationId);
+    return pause(playPauseButton, animationId);
   }
 }
 
