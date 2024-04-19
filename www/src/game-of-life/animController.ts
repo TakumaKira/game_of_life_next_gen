@@ -1,34 +1,34 @@
-import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import drawCells from "./drawCells";
 import drawGrid from "./drawGrid";
 import FPS from "./FPS";
 
-function renderLoop(fps: FPS, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number): number {
-  fps.render();
+export function play(playPauseButton: HTMLButtonElement, fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, updateAnimId: (id: number | null) => void): void {
+  playPauseButton.textContent = "⏸";
+  renderLoop(fps, universe, memory, context, width, height, updateAnimId);
+};
 
-  drawGrid(context, width, height);
-  drawCells(universe, memory, width, height, context, Cell);
-
-  for (let i = 0; i < 9; i++) {
-    universe.tick();
+export function pause(playPauseButton: HTMLButtonElement, animationId: number | null, updateAnimId: (id: number | null) => void): void {
+  playPauseButton.textContent = "▶";
+  if (animationId !== null) {
+    cancelAnimationFrame(animationId);
   }
-
-  return requestAnimationFrame(() => renderLoop(fps, context, Cell, universe, memory, width, height));
+  updateAnimId(null);
 };
 
 export function isPaused(animationId: number | null): boolean {
   return animationId === null;
 };
 
-export function play(playPauseButton: HTMLButtonElement, fps: FPS, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number): number {
-  playPauseButton.textContent = "⏸";
-  return renderLoop(fps, context, Cell, universe, memory, width, height);
-};
+function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, updateAnimId: (id: number | null) => void): void {
+  fps.render();
 
-export function pause(playPauseButton: HTMLButtonElement, animationId: number | null): null {
-  playPauseButton.textContent = "▶";
-  if (animationId !== null) {
-    cancelAnimationFrame(animationId);
+  drawGrid(context, width, height);
+  drawCells(universe, memory, context, width, height);
+
+  for (let i = 0; i < 9; i++) {
+    universe.tick();
   }
-  return null;
+
+  updateAnimId(requestAnimationFrame(() => renderLoop(fps, universe, memory, context, width, height, updateAnimId)));
 };

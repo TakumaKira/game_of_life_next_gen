@@ -1,6 +1,7 @@
 /// <reference types="./index.d.ts" />
 import wasm from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 import drawGrid from './drawGrid';
 import drawCells from "./drawCells";
@@ -11,31 +12,32 @@ import { CELL_SIZE } from "./constants";
 export default function run(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string): void {
   wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {
     bg.__wbg_set_wasm(wasm)
-    main(bg.Universe, bg.Cell, wasm.memory, canvas, playPauseButtonId, fpsElementId)
+    main(canvas, wasm.memory, playPauseButtonId, fpsElementId)
   })
 }
 
-function main(Universe: typeof bg.Universe, Cell: typeof bg.Cell, memory: WebAssembly.Memory, canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string) {
-  const { universe, width, height } = getUniverse(Universe);
+function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButtonId: string, fpsElementId: string) {
+  const { universe, width, height } = getUniverse();
 
   setCanvasDimensions(canvas, width, height);
 
-  const { ctx, fpsElement, playPauseButton } = getElements(canvas, playPauseButtonId, fpsElementId);
+  const { context, playPauseButton, fpsElement } = getElements(canvas, playPauseButtonId, fpsElementId);
 
   const fps = new FPS(fpsElement);
 
   let animationId: null | number = null;
-  playPauseButton.addEventListener("click", event => animationId = onClickPlayPauseButton(event, playPauseButton, fps, ctx, Cell, universe, memory, width, height, animationId));
-  canvas.addEventListener("click", event => onClickCanvas(event, canvas, width, height, ctx, Cell, universe, memory));
+  const updateAnimId = (id: number | null) => animationId = id;
+  playPauseButton.addEventListener("click", () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, animationId, updateAnimId));
+  canvas.addEventListener("click", event => onClickCanvas(event, canvas, universe, memory, context, width, height));
 
-  play(playPauseButton, fps, ctx, Cell, universe, memory, width, height);
+  play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
 }
 
 /**
  * Construct the universe, and get its width and height.
  */
-function getUniverse(Universe: typeof bg.Universe): { universe: bg.Universe, width: number, height: number } {
-  const universe = Universe.new();
+function getUniverse(): { universe: Universe, width: number, height: number } {
+  const universe = bg.Universe.new();
   const width = universe.width();
   const height = universe.height();
   return { universe, width, height }
@@ -51,14 +53,9 @@ function setCanvasDimensions(canvas: HTMLCanvasElement, width: number, height: n
 }
 
 function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string) {
-  const ctx = canvas.getContext('2d');
-  if (ctx === null) {
+  const context = canvas.getContext('2d');
+  if (context === null) {
     throw new Error("canvas 2d context not found")
-  }
-
-  const fpsElement = document.getElementById(fpsElementId)
-  if (fpsElement === null || !(fpsElement instanceof HTMLDivElement)) {
-    throw new Error("div element with id fps not found")
   }
 
   const playPauseButton = document.getElementById(playPauseButtonId);
@@ -66,18 +63,23 @@ function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsEl
     throw new Error("button element with id play-pause not found")
   }
 
-  return { ctx, fpsElement, playPauseButton }
+  const fpsElement = document.getElementById(fpsElementId)
+  if (fpsElement === null || !(fpsElement instanceof HTMLDivElement)) {
+    throw new Error("div element with id fps not found")
+  }
+
+  return { context, playPauseButton, fpsElement }
 }
 
-function onClickPlayPauseButton(event: MouseEvent, playPauseButton: HTMLButtonElement, fps: FPS, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, animationId: null | number): number | null {
+function onClickPlayPauseButton(playPauseButton: HTMLButtonElement, fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, animationId: null | number, updateAnimId: (id: number | null) => void): void {
   if (isPaused(animationId)) {
-    return play(playPauseButton, fps, context, Cell, universe, memory, width, height);
+    play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
   } else {
-    return pause(playPauseButton, animationId);
+    pause(playPauseButton, animationId, updateAnimId);
   }
 }
 
-function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, width: number, height: number, context: CanvasRenderingContext2D, Cell: typeof bg.Cell, universe: bg.Universe, memory: WebAssembly.Memory): void {
+function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number): void {
   const boundingRect = canvas.getBoundingClientRect();
 
   const scaleX = canvas.width / boundingRect.width;
@@ -91,6 +93,6 @@ function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, width: numb
 
   universe.toggle_cell(row, col);
 
-  drawCells(universe, memory, width, height, context, Cell);
+  drawCells(universe, memory, context, width, height);
   drawGrid(context, width, height);
 }

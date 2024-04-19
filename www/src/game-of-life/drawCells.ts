@@ -1,8 +1,9 @@
-import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
+import { Cell } from "wasm-game-of-life/wasm_game_of_life_bg.js"
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import getIndex from "./getIndex";
 import { ALIVE_COLOR, CELL_SIZE, DEAD_COLOR } from "./constants";
 
-export default function drawCells(universe: bg.Universe, memory: WebAssembly.Memory, width: number, height: number, context: CanvasRenderingContext2D, Cell: typeof bg.Cell) {
+export default function drawCells(universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number) {
   const cellsPtr = universe.cells();
   const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
 
