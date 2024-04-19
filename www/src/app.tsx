@@ -1,7 +1,7 @@
 import React from 'react';
 import run from './game-of-life'
 
-const bodyStyle = {
+const bodyStyle: React.HTMLAttributes<HTMLDivElement>['style'] = {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -12,7 +12,7 @@ const bodyStyle = {
   justifyContent: 'center',
   alignItems: 'center',
 };
-const fpsStyles = {
+const fpsStyles: React.HTMLAttributes<HTMLDivElement>['style'] = {
   whiteSpace: 'pre',
   fontFamily: 'monospace',
 }
