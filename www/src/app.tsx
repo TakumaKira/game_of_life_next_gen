@@ -12,6 +12,10 @@ const bodyStyle: React.HTMLAttributes<HTMLDivElement>['style'] = {
   justifyContent: 'center',
   alignItems: 'center',
 };
+const buttonStyles: React.HTMLAttributes<HTMLButtonElement>['style'] = {
+  width: 33,
+  height: 28,
+}
 const fpsStyles: React.HTMLAttributes<HTMLDivElement>['style'] = {
   whiteSpace: 'pre',
   fontFamily: 'monospace',
@@ -27,7 +31,7 @@ export default function App() {
   }, [])
   return (
     <div style={bodyStyle}>
-      <button id={PLAY_PAUSE_BUTTON}></button>
+      <button id={PLAY_PAUSE_BUTTON} style={buttonStyles}></button>
       <div id={FPS_ELEMENT_ID} style={fpsStyles}></div>
       <canvas ref={canvasRef}></canvas>
     </div>
