@@ -17,15 +17,18 @@ const fpsStyles: React.HTMLAttributes<HTMLDivElement>['style'] = {
   fontFamily: 'monospace',
 }
 
+const PLAY_PAUSE_BUTTON = 'play-pause'
+const FPS_ELEMENT_ID = 'fps'
+
 export default function App() {
   const canvasRef = React.useRef()
   React.useEffect(() => {
-    run(canvasRef.current)
+    run(canvasRef.current, PLAY_PAUSE_BUTTON, FPS_ELEMENT_ID)
   }, [])
   return (
     <div style={bodyStyle}>
-      <button id="play-pause"></button>
-      <div id="fps" style={fpsStyles}></div>
+      <button id={PLAY_PAUSE_BUTTON}></button>
+      <div id={FPS_ELEMENT_ID} style={fpsStyles}></div>
       <canvas ref={canvasRef}></canvas>
     </div>
   );
