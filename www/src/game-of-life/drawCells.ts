@@ -46,7 +46,6 @@ export default function drawCells(universe: Universe, memory: WebAssembly.Memory
       if (cellsState[idx] !== CellState.Dead) {
         continue;
       }
-
       context.fillRect(
         col * (CELL_SIZE + 1) + 1,
         row * (CELL_SIZE + 1) + 1,

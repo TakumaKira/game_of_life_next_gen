@@ -1,39 +1,22 @@
-# create-wasm-app
-> an npm init project for generating a project that consumes rust-generated wasm via webpack
+# ESBuild-React template
 
-## Usage
+This is a lightweight template to develop React app using [pnpm](https://pnpm.io) and [esbuild](https://esbuild.github.io).
 
-```
-npm init wasm-app
-```
+## Purpose
 
-## What's Included
+This project is designed to be used as a template to build a React app lightning-fast.
 
-- `.gitignore`: ignores `node_modules`
-- `LICENSE-APACHE` and `LICENSE-MIT`: most Rust projects are licensed this way, so these are included for you
-- `README.md`: the file you are reading now!
-- `index.html`: a bare bones html document that includes the webpack bundle
-- `index.js`: example js file with a comment showing how to import and use a wasm pkg
-- `package.json` and `package-lock.json`: 
-  - pulls in devDependencies for using webpack:
-      - [`webpack`](https://www.npmjs.com/package/webpack)
-      - [`webpack-cli`](https://www.npmjs.com/package/webpack-cli)
-      - [`webpack-dev-server`](https://www.npmjs.com/package/webpack-dev-server)
-  - defines a `start` script to run `webpack-dev-server`
-- `webpack.config.js`: configuration file for bundling your js with webpack
+## Prerequisites
 
-## License
+You can use any other package manager like npm, yarn,...etc. But I chose pnpm for this project(That's why you can find `pnpm-lock.yaml` in the root directory).
+If you are willing to follow, please [install pnpm](https://pnpm.io/installation) first.
 
-Licensed under either of
+## Features
 
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+- You can run a development server with `pnpm dev`
+- You can build a compiled version inside `/public/bundle` directory, which is shared with the development server with `pnpm build`.
+- The commands above should be ultra-fast!🚀
 
-at your option.
+## How to Use
 
-### Contribution
-
-Unless you explicitly state otherwise, any contribution intentionally
-submitted for inclusion in the work by you, as defined in the Apache-2.0
-license, shall be dual licensed as above, without any additional terms or
-conditions.
+1. Just run `pnpm dev` or `pnpm build`. You'll see ;)
