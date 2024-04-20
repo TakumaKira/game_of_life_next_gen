@@ -1,4 +1,3 @@
-/// <reference types="./index.d.ts" />
 import wasm from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
