@@ -6,13 +6,13 @@ declare module 'wasm-game-of-life/wasm_game_of_life_bg.wasm' {
 }
 
 declare module 'wasm-game-of-life/wasm_game_of_life_bg.js' {
-  import { Universe, Cell } from "wasm-game-of-life"
+  import { Universe, CellState } from "wasm-game-of-life"
 
   function __wbg_set_wasm(wasm: WASMModule): void
 
   export {
     __wbg_set_wasm,
     Universe,
-    Cell,
+    CellState,
   }
 }

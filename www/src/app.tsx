@@ -23,20 +23,22 @@ const fpsStyles: React.CSSProperties = {
 
 export default function App() {
   const playPauseButtonRef = React.useRef<HTMLButtonElement>(null)
+  const nextFrameButtonRef = React.useRef<HTMLButtonElement>(null)
   const fpsRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const [runnerPromise, setRunnerPromise] = React.useState<Promise<{ destroy: () => void }> | null>(null)
   const destroy = React.useCallback(() => { runnerPromise?.then(({ destroy }) => destroy()) }, [runnerPromise])
   React.useEffect(() => {
-    if (!canvasRef.current || !playPauseButtonRef.current || !fpsRef.current) {
+    if (!canvasRef.current || !playPauseButtonRef.current || !nextFrameButtonRef.current || !fpsRef.current) {
       return
     }
-    setRunnerPromise(run(canvasRef.current, playPauseButtonRef.current, fpsRef.current))
+    setRunnerPromise(run(canvasRef.current, playPauseButtonRef.current, nextFrameButtonRef.current, fpsRef.current))
     return destroy
   }, [])
   return (
     <div style={bodyStyle}>
       <button ref={playPauseButtonRef} style={buttonStyles}></button>
+      <button ref={nextFrameButtonRef}>Next Frame</button>
       <div ref={fpsRef} style={fpsStyles}></div>
       <canvas ref={canvasRef}></canvas>
       <button onClick={destroy}>Destroy</button>
