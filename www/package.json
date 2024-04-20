@@ -11,6 +11,7 @@
   "author": "Takuma Kira",
   "license": "ISC",
   "devDependencies": {
+    "@types/react": "^18.2.79",
     "esbuild": "0.20.2"
   },
   "dependencies": {
