@@ -21,22 +21,25 @@ const fpsStyles: React.CSSProperties = {
   fontFamily: 'monospace',
 }
 
-const PLAY_PAUSE_BUTTON_ID = 'play-pause'
-const FPS_ELEMENT_ID = 'fps'
-
 export default function App() {
+  const playPauseButtonRef = React.useRef<HTMLButtonElement>(null)
+  const fpsRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const [runnerPromise, setRunnerPromise] = React.useState<Promise<{ destroy: () => void }> | null>(null)
+  const destroy = React.useCallback(() => { runnerPromise?.then(({ destroy }) => destroy()) }, [runnerPromise])
   React.useEffect(() => {
-    if (!canvasRef.current) {
+    if (!canvasRef.current || !playPauseButtonRef.current || !fpsRef.current) {
       return
     }
-    run(canvasRef.current, PLAY_PAUSE_BUTTON_ID, FPS_ELEMENT_ID)
+    setRunnerPromise(run(canvasRef.current, playPauseButtonRef.current, fpsRef.current))
+    return destroy
   }, [])
   return (
     <div style={bodyStyle}>
-      <button id={PLAY_PAUSE_BUTTON_ID} style={buttonStyles}></button>
-      <div id={FPS_ELEMENT_ID} style={fpsStyles}></div>
+      <button ref={playPauseButtonRef} style={buttonStyles}></button>
+      <div ref={fpsRef} style={fpsStyles}></div>
       <canvas ref={canvasRef}></canvas>
+      <button onClick={destroy}>Destroy</button>
     </div>
   );
 }

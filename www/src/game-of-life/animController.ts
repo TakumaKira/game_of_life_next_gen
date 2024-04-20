@@ -21,6 +21,7 @@ export function isPaused(animationId: number | null): boolean {
 };
 
 function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, updateAnimId: (id: number | null) => void): void {
+  console.log('renderLoop')
   fps.render();
 
   drawGrid(context, width, height);

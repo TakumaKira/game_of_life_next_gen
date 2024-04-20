@@ -9,28 +9,38 @@ import { isPaused, pause, play } from "./animController";
 import FPS from "./FPS";
 import { CELL_SIZE } from "./constants";
 
-export default function run(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string): void {
-  wasm({'./wasm_game_of_life_bg.js': bg}).then(wasm => {
-    bg.__wbg_set_wasm(wasm)
-    main(canvas, wasm.memory, playPauseButtonId, fpsElementId)
-  })
+export default async function run(canvas: HTMLCanvasElement, playPauseButton: HTMLButtonElement, fpsElement: HTMLDivElement): Promise<{ destroy: () => void }> {
+  const wasmModule = await wasm({'./wasm_game_of_life_bg.js': bg})
+  bg.__wbg_set_wasm(wasmModule)
+  const context = getCanvas(canvas);
+  const { onClickPlayPauseButtonFnRef, onClickCanvasFnRef } = main(canvas, wasmModule.memory, context, playPauseButton, fpsElement)
+  return { destroy: () => destroyImpl(onClickPlayPauseButtonFnRef, onClickCanvasFnRef, playPauseButton, canvas) }
 }
 
-function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButtonId: string, fpsElementId: string) {
+function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, playPauseButton: HTMLButtonElement, fpsElement: HTMLDivElement): { onClickPlayPauseButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void } {
   const { universe, width, height } = getUniverse();
 
   setCanvasDimensions(canvas, width, height);
-
-  const { context, playPauseButton, fpsElement } = getElements(canvas, playPauseButtonId, fpsElementId);
 
   const fps = new FPS(fpsElement);
 
   let animationId: null | number = null;
   const updateAnimId = (id: number | null) => animationId = id;
-  playPauseButton.addEventListener("click", () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, animationId, updateAnimId));
-  canvas.addEventListener("click", event => onClickCanvas(event, canvas, universe, memory, context, width, height));
+
+  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, animationId, updateAnimId)
+  playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
+
+  const onClickCanvasFnRef = (event: MouseEvent) => onClickCanvas(event, canvas, universe, memory, context, width, height)
+  canvas.addEventListener("click", onClickCanvasFnRef);
 
   play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
+
+  return { onClickPlayPauseButtonFnRef, onClickCanvasFnRef }
+}
+
+function destroyImpl(onClickPlayPauseButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void, playPauseButton: HTMLButtonElement, canvas: HTMLCanvasElement) {
+  playPauseButton.removeEventListener("click", onClickPlayPauseButtonFnRef)
+  canvas.removeEventListener("click", onClickCanvasFnRef)
 }
 
 /**
@@ -52,26 +62,16 @@ function setCanvasDimensions(canvas: HTMLCanvasElement, width: number, height: n
   canvas.width = (CELL_SIZE + 1) * width + 1;
 }
 
-function getElements(canvas: HTMLCanvasElement, playPauseButtonId: string, fpsElementId: string) {
+function getCanvas(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
   const context = canvas.getContext('2d');
   if (context === null) {
     throw new Error("canvas 2d context not found")
   }
-
-  const playPauseButton = document.getElementById(playPauseButtonId);
-  if (playPauseButton === null || !(playPauseButton instanceof HTMLButtonElement)) {
-    throw new Error("button element with id play-pause not found")
-  }
-
-  const fpsElement = document.getElementById(fpsElementId)
-  if (fpsElement === null || !(fpsElement instanceof HTMLDivElement)) {
-    throw new Error("div element with id fps not found")
-  }
-
-  return { context, playPauseButton, fpsElement }
+  return context
 }
 
 function onClickPlayPauseButton(playPauseButton: HTMLButtonElement, fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, animationId: null | number, updateAnimId: (id: number | null) => void): void {
+  console.log('onClickPlayPauseButton')
   if (isPaused(animationId)) {
     play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
   } else {
@@ -80,6 +80,7 @@ function onClickPlayPauseButton(playPauseButton: HTMLButtonElement, fps: FPS, un
 }
 
 function onClickCanvas(event: MouseEvent, canvas: HTMLCanvasElement, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number): void {
+  console.log('onClickCanvas')
   const boundingRect = canvas.getBoundingClientRect();
 
   const scaleX = canvas.width / boundingRect.width;
