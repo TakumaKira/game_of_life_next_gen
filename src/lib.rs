@@ -44,15 +44,16 @@ pub enum CellState {
 pub struct Cell {
     age: u8,
     is_killed: bool,
+    life_span: u8,
 }
 
 impl Cell {
-    pub fn new() -> Cell {
-        Cell { age: 0, is_killed: false }
+    pub fn new(life_span: u8) -> Cell {
+        Cell { age: 0, is_killed: false, life_span }
     }
 
     pub fn increment_age(&mut self) {
-        if self.age < 3 {
+        if self.age < self.life_span {
             self.age += 1;
         }
     }
@@ -62,7 +63,7 @@ impl Cell {
     }
 
     pub fn get_state(&self) -> CellState {
-        if self.age < 3 && self.is_killed == false {
+        if self.age < self.life_span && self.is_killed == false {
             CellState::Alive
         } else {
             CellState::Dead
@@ -75,6 +76,7 @@ pub struct Universe {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
+    life_span: u8,
 }
 
 impl Universe {
@@ -92,7 +94,7 @@ impl Universe {
     pub fn set_cells(&mut self, cells: &[(u32, u32)]) {
         for (row, col) in cells.iter().cloned() {
             let idx = self.get_index(row, col);
-            self.cells[idx] = Cell::new();
+            self.cells[idx] = Cell::new(self.life_span);
         }
     }
 
@@ -196,7 +198,7 @@ impl Universe {
                     },
                     // Rule 4: Any dead cell with exactly three live neighbours
                     // becomes a live cell, as if by reproduction.
-                    (CellState::Dead, 3) => Cell::new(),
+                    (CellState::Dead, 3) => Cell::new(self.life_span),
                     // All other cells remain in the same state.
                     (_, _) => cell,
                 };
@@ -212,19 +214,20 @@ impl Universe {
         self.cells = next;
     }
 
-    pub fn new(size: u32) -> Universe {
+    pub fn new(size: u32, life_span: u8) -> Universe {
         utils::set_panic_hook();
 
         let size = if size == 0 { 128 } else { size };
+        let life_span = if life_span == 0 { 100 } else { life_span };
         let width = size;
         let height = size;
 
         let cells = (0..width * height)
             .map(|i| {
                 if i % 2 == 0 || i % 7 == 0 {
-                    Cell::new()
+                    Cell::new(life_span)
                 } else {
-                    let mut cell = Cell::new();
+                    let mut cell = Cell::new(life_span);
                     cell.kill();
                     cell
                 }
@@ -235,6 +238,7 @@ impl Universe {
             width,
             height,
             cells,
+            life_span,
         }
     }
 
@@ -248,7 +252,7 @@ impl Universe {
     pub fn set_width(&mut self, width: u32) {
         self.width = width;
         self.cells = (0..width * self.height).map(|_i| {
-            let mut cell = Cell::new();
+            let mut cell = Cell::new(self.life_span);
             cell.kill();
             cell
         }).collect();
@@ -264,7 +268,7 @@ impl Universe {
     pub fn set_height(&mut self, height: u32) {
         self.height = height;
         self.cells = (0..self.width * height).map(|_i| {
-            let mut cell = Cell::new();
+            let mut cell = Cell::new(self.life_span);
             cell.kill();
             cell
         }).collect();
@@ -293,7 +297,7 @@ impl Universe {
         if self.cells[idx].get_state() == CellState::Alive {
             self.cells[idx].increment_age()
         } else {
-            self.cells[idx] = Cell::new();
+            self.cells[idx] = Cell::new(self.life_span);
         }
     }
 }

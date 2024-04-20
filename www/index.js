@@ -1,15 +1,18 @@
 import { Universe, CellState } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
-const CELL_SIZE = 50; // px
+const CELL_SIZE = 5; // px
+const FIELD_SIZE = 128;
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#EEEEEE";
-const ALIVE_COLOR_AGE_0 = "#FF0000";
-const ALIVE_COLOR_AGE_1 = "#FFFF00";
-const ALIVE_COLOR_AGE_2 = "#0000FF";
+const ALIVE_COLOR_BASE_1 = "#FF0000";
+const ALIVE_COLOR_BASE_2 = "#FFFF00";
+const ALIVE_COLOR_BASE_3 = "#0000FF";
+const ALIVE_COLORS = [ALIVE_COLOR_BASE_1, ALIVE_COLOR_BASE_2, ALIVE_COLOR_BASE_3];
+const LIFE_SPAN = 200;
 
 // Construct the universe, and get its width and height.
-const universe = Universe.new(16);
+const universe = Universe.new(FIELD_SIZE, LIFE_SPAN);
 const width = universe.width();
 const height = universe.height();
 
@@ -149,51 +152,28 @@ const drawCells = () => {
   ctx.beginPath();
 
   // Alive cells.
-  ctx.fillStyle = ALIVE_COLOR_AGE_0;
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      const idx = getIndex(row, col);
-      if (cellsState[idx] !== CellState.Alive || cellsAge[idx] !== 0) {
-        continue;
+  for (let rangeIndex = 0; rangeIndex < ALIVE_COLORS.length; rangeIndex++) {
+    ctx.fillStyle = ALIVE_COLORS[rangeIndex];
+    for (let row = 0; row < height; row++) {
+      for (let col = 0; col < width; col++) {
+        const idx = getIndex(row, col);
+        if (cellsState[idx] !== CellState.Alive) {
+          continue;
+        }
+        const isAgeInRange = ((age, lifeSpan, rangeIndex, rangeLength) => {
+          const rangeSpan = lifeSpan / rangeLength
+          return rangeSpan * rangeIndex <= age && age < rangeSpan * (rangeIndex + 1)
+        })(cellsAge[idx], LIFE_SPAN, rangeIndex, ALIVE_COLORS.length);
+        if (!isAgeInRange) {
+          continue;
+        }
+        ctx.fillRect(
+          col * (CELL_SIZE + 1) + 1,
+          row * (CELL_SIZE + 1) + 1,
+          CELL_SIZE,
+          CELL_SIZE
+        );
       }
-      ctx.fillRect(
-        col * (CELL_SIZE + 1) + 1,
-        row * (CELL_SIZE + 1) + 1,
-        CELL_SIZE,
-        CELL_SIZE
-      );
-    }
-  }
-
-  ctx.fillStyle = ALIVE_COLOR_AGE_1;
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      const idx = getIndex(row, col);
-      if (cellsState[idx] !== CellState.Alive || cellsAge[idx] !== 1) {
-        continue;
-      }
-      ctx.fillRect(
-        col * (CELL_SIZE + 1) + 1,
-        row * (CELL_SIZE + 1) + 1,
-        CELL_SIZE,
-        CELL_SIZE
-      );
-    }
-  }
-
-  ctx.fillStyle = ALIVE_COLOR_AGE_2;
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      const idx = getIndex(row, col);
-      if (cellsState[idx] !== CellState.Alive || cellsAge[idx] !== 2) {
-        continue;
-      }
-      ctx.fillRect(
-        col * (CELL_SIZE + 1) + 1,
-        row * (CELL_SIZE + 1) + 1,
-        CELL_SIZE,
-        CELL_SIZE
-      );
     }
   }
 
