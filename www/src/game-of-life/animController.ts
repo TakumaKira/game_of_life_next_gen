@@ -8,16 +8,17 @@ export function play(playPauseButton: HTMLButtonElement, fps: FPS, universe: Uni
   renderLoop(fps, universe, memory, context, width, height, updateAnimId);
 };
 
-export function pause(playPauseButton: HTMLButtonElement, animationId: number | null, updateAnimId: (id: number | null) => void): void {
+export function pause(playPauseButton: HTMLButtonElement, getCurrentAnimId: () => number | null, updateAnimId: (id: number | null) => void): void {
   playPauseButton.textContent = "▶";
+  const animationId = getCurrentAnimId();
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
   }
   updateAnimId(null);
 };
 
-export function isPaused(animationId: number | null): boolean {
-  return animationId === null;
+export function isPaused(getCurrentAnimId: () => number | null): boolean {
+  return getCurrentAnimId() === null;
 };
 
 function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, context: CanvasRenderingContext2D, width: number, height: number, updateAnimId: (id: number | null) => void): void {
@@ -28,7 +29,7 @@ function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, co
   drawCells(universe, memory, context, width, height);
 
   for (let i = 0; i < 9; i++) {
-    universe.tick();
+    universe.tick(false);
   }
 
   updateAnimId(requestAnimationFrame(() => renderLoop(fps, universe, memory, context, width, height, updateAnimId)));
