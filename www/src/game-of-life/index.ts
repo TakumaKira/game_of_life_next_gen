@@ -3,12 +3,11 @@ import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 import { play } from "./animController";
 import FPS from "./FPS";
-import setCanvasDimensions from "./setCanvasDimensions";
-import getCanvas from "./getCanvas";
 import getUniverse from "./getUniverse";
 import onClickPlayPauseButton from "./onClickPlayPauseButton";
 import onClickNextFrameButton from "./onClickNextFrameButton";
 import onClickCanvas from "./onClickCanvas";
+import setupBabylon from "./setupBabylon";
 
 export default async function run(canvas: HTMLCanvasElement, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement): Promise<{ destroy: () => void }> {
   const wasmModule = await wasm({'./wasm_game_of_life_bg.js': bg})
@@ -23,24 +22,22 @@ export default async function run(canvas: HTMLCanvasElement, playPauseButton: HT
 function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void } {
   const { universe, width, height } = getUniverse();
 
-  setCanvasDimensions(canvas, width, height);
+  setupBabylon(canvas, universe, memory, width, height)
 
-  const fps = new FPS(fpsElement);
+  // const fps = new FPS(fpsElement);
 
-  const context = getCanvas(canvas);
+  // const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, width, height, getCurrentAnimId, updateAnimId)
+  // playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
 
-  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, getCurrentAnimId, updateAnimId)
-  playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
+  // const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, width, height)
+  // nextFrameButton.addEventListener("click", onClickNextFrameButtonFnRef);
 
-  const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, context, width, height)
-  nextFrameButton.addEventListener("click", onClickNextFrameButtonFnRef);
+  // const onClickCanvasFnRef = (event: MouseEvent) => onClickCanvas(event, universe, memory, width, height)
+  // canvas.addEventListener("click", onClickCanvasFnRef);
 
-  const onClickCanvasFnRef = (event: MouseEvent) => onClickCanvas(event, canvas, universe, memory, context, width, height)
-  canvas.addEventListener("click", onClickCanvasFnRef);
+  // play(playPauseButton, fps, universe, memory, width, height, updateAnimId);
 
-  play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
-
-  return { onClickPlayPauseButtonFnRef, onClickNextFrameButtonFnRef, onClickCanvasFnRef }
+  return { onClickPlayPauseButtonFnRef: () => {}, onClickNextFrameButtonFnRef: () => {}, onClickCanvasFnRef: () => {} }
 }
 
 function destroyImpl(onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, canvas: HTMLCanvasElement, getCurrentAnimId: () => number | null) {
