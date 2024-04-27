@@ -1,6 +1,5 @@
 import { ArcRotateCamera, ColorCurves, DefaultRenderingPipeline, DynamicTexture, Engine, HemisphericLight, ICanvasRenderingContext, ImageProcessingConfiguration, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
-import * as GUI from '@babylonjs/gui';
-import '@babylonjs/inspector'
+import * as GUI from 'babylonjs-gui';
 
 export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void {
   const engine = new Engine(canvas, true);
@@ -82,7 +81,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
     header.height = "30px";
     header.color = "white";
     header.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-    //   panel.addControl(header);
+      panel.addControl(header);
     if (left) {
       header.left = left;
     }
@@ -102,7 +101,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
       slider.paddingLeft = left;
     }
 
-    //   panel.addControl(slider);
+      panel.addControl(slider);
   }
 
   const addColorPicker = function(text, func, initialValue, left) {
@@ -111,7 +110,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
     header.height = "30px";
     header.color = "white";
     header.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-    //   panel.addControl(header);
+      panel.addControl(header);
 
     if (left) {
       header.left = left;
@@ -129,7 +128,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
       colorPicker.left = left;
     }
 
-    //   panel.addControl(colorPicker);
+    panel.addControl(colorPicker);
   }
 
   let toneMappingEnabled = defaultPipeline.imageProcessing.toneMappingEnabled;
@@ -170,66 +169,66 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
     }
   }
 
-  //   addCheckbox("fxaa", function(value) {
-  //       defaultPipeline.fxaaEnabled = value;
-  //       rebindValues();
-  //   }, defaultPipeline.fxaaEnabled );
+    addCheckbox("fxaa", function(value) {
+        defaultPipeline.fxaaEnabled = value;
+        rebindValues();
+    }, defaultPipeline.fxaaEnabled );
 
   addCheckbox("bloom", function(value) {
     defaultPipeline.bloomEnabled = value;
     rebindValues();
   }, defaultPipeline.bloomEnabled);
 
-  //   addSlider("bloom weight", function(value) {
-  //       defaultPipeline.bloomWeight = value;
-  //   }, defaultPipeline.bloomWeight, 0, 2, "20px");
+    addSlider("bloom weight", function(value) {
+        defaultPipeline.bloomWeight = value;
+    }, defaultPipeline.bloomWeight, 0, 2, "20px");
 
-  //   addCheckbox("image processing", function(value) {
-  //       defaultPipeline.imageProcessingEnabled = value;
-  //       rebindValues();
-  //   }, defaultPipeline.imageProcessingEnabled);
+    addCheckbox("image processing", function(value) {
+        defaultPipeline.imageProcessingEnabled = value;
+        rebindValues();
+    }, defaultPipeline.imageProcessingEnabled);
 
-  //   addCheckbox("tone mapping", function(value) {
-  //       defaultPipeline.imageProcessing.toneMappingEnabled = value;
-  //       toneMappingEnabled = value;
-  //   }, toneMappingEnabled, "20px");
+    addCheckbox("tone mapping", function(value) {
+        defaultPipeline.imageProcessing.toneMappingEnabled = value;
+        toneMappingEnabled = value;
+    }, toneMappingEnabled, "20px");
 
-  //   addCheckbox("vignette", function(value) {
-  //       defaultPipeline.imageProcessing.vignetteEnabled = value;
-  //       vignetteEnabled = value;
-  //   }, vignetteEnabled, "20px");
+    addCheckbox("vignette", function(value) {
+        defaultPipeline.imageProcessing.vignetteEnabled = value;
+        vignetteEnabled = value;
+    }, vignetteEnabled, "20px");
 
-  //   addCheckbox("vignette multiply", function(value) {
-  //       const blendMode = value ? ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY : ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE;
-  //       defaultPipeline.imageProcessing.vignetteBlendMode = blendMode;
-  //       vignetteBlendMode = blendMode;
-  //   }, vignetteBlendMode === ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY, "40px");
+    addCheckbox("vignette multiply", function(value) {
+        const blendMode = value ? ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY : ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE;
+        defaultPipeline.imageProcessing.vignetteBlendMode = blendMode;
+        vignetteBlendMode = blendMode;
+    }, vignetteBlendMode === ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY, "40px");
 
-  //   addColorPicker("vignette color", function(value) {
-  //       defaultPipeline.imageProcessing.vignetteColor = value;
-  //       vignetteColor = value;
-  //   }, vignetteColor, "40px");
+    addColorPicker("vignette color", function(value) {
+        defaultPipeline.imageProcessing.vignetteColor = value;
+        vignetteColor = value;
+    }, vignetteColor, "40px");
 
-  //   addSlider("vignette weight", function(value) {
-  //       defaultPipeline.imageProcessing.vignetteWeight = value;
-  //       vignetteWeight = value;
-  //   }, vignetteWeight, 0, 10, "40px");
+    addSlider("vignette weight", function(value) {
+        defaultPipeline.imageProcessing.vignetteWeight = value;
+        vignetteWeight = value;
+    }, vignetteWeight, 0, 10, "40px");
 
-  //   addCheckbox("color curves", function(value) {
-  //       defaultPipeline.imageProcessing.colorCurvesEnabled = value;
-  //       colorCurvesEnabled = value;
-  //   }, colorCurvesEnabled, "20px");
+    addCheckbox("color curves", function(value) {
+        defaultPipeline.imageProcessing.colorCurvesEnabled = value;
+        colorCurvesEnabled = value;
+    }, colorCurvesEnabled, "20px");
 
-  //   addSlider("camera contrast", function(value) {
-  //       defaultPipeline.imageProcessing.contrast = value;
-  //       contrast = value;
-  //   }, contrast, 0, 4, "20px");
+    addSlider("camera contrast", function(value) {
+        defaultPipeline.imageProcessing.contrast = value;
+        contrast = value;
+    }, contrast, 0, 4, "20px");
 
-  //   addSlider("camera exposure", function(value) {
-  //       defaultPipeline.imageProcessing.exposure = value;
-  //       exposure = value;
-  //       console.log(value);
-  //   }, exposure, 0, 4, "20px");
+    addSlider("camera exposure", function(value) {
+        defaultPipeline.imageProcessing.exposure = value;
+        exposure = value;
+        console.log(value);
+    }, exposure, 0, 4, "20px");
 
   scene.activeCameras = [camera, bgCamera];
 
