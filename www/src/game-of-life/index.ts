@@ -4,7 +4,7 @@ import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import { play } from "./animController";
 import FPS from "./FPS";
 import setCanvasDimensions from "./setCanvasDimensions";
-import getCanvas from "./getCanvas";
+import getContext from "./getContext";
 import getUniverse from "./getUniverse";
 import onClickPlayPauseButton from "./onClickPlayPauseButton";
 import onClickNextFrameButton from "./onClickNextFrameButton";
@@ -27,7 +27,7 @@ function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseBu
 
   const fps = new FPS(fpsElement);
 
-  const context = getCanvas(canvas);
+  const context = getContext(canvas);
 
   const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, getCurrentAnimId, updateAnimId)
   playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
