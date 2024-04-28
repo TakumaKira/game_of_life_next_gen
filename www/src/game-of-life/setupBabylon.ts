@@ -1,7 +1,7 @@
-import { ArcRotateCamera, ColorCurves, DefaultRenderingPipeline, DynamicTexture, Engine, HemisphericLight, ImageProcessingConfiguration, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
+import { ArcRotateCamera, Color3, Color4, ColorCurves, DefaultRenderingPipeline, DynamicTexture, Engine, HemisphericLight, ImageProcessingConfiguration, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
 import * as GUI from 'babylonjs-gui'
-import type { Color3, Color4, ICanvasRenderingContext } from 'babylonjs'
-import { DEFAULT_EFFCTS, TEXTURE_RESOLUTION } from './constants';
+import type { ICanvasRenderingContext } from 'babylonjs'
+import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR, SHOW_EFFECT_CONTROLS, TEXTURE_RESOLUTION } from './constants';
 
 export type OnTextureHoverPosition = { x: number, z: number } | null
 export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPosition) => void
@@ -10,6 +10,7 @@ export type TextContextUpdateFn = (textureContext: ICanvasRenderingContext) => v
 export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): (textContextUpdateFn: TextContextUpdateFn) => void {
   const engine = new Engine(canvas, true);
   const scene = new Scene(engine);
+  scene.clearColor = SCENE_BACKGROUND_COLOR;
 
   const camera = new ArcRotateCamera("Camera", -Math.PI/2, Math.PI / 3, 25, Vector3.Zero(), scene);
   camera.attachControl(canvas, true);
@@ -29,6 +30,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
 
   const materialGround = new StandardMaterial("Mat", scene);
   materialGround.diffuseTexture = textureGround;
+  materialGround.specularColor = new Color3(0.075, 0.075, 0.075);
   ground.material = materialGround;
 
   //Draw on canvas
@@ -38,16 +40,19 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   }
 
   const defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [camera]);
-  defaultPipeline.bloomEnabled = DEFAULT_EFFCTS.BLOOM_ENABLED;
-  defaultPipeline.fxaaEnabled = DEFAULT_EFFCTS.FXAA_ENABLED;
-  defaultPipeline.bloomWeight = DEFAULT_EFFCTS.BLOOM_WEIGHT;
-  defaultPipeline.imageProcessingEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.ENABLED;
-  defaultPipeline.imageProcessing.toneMappingEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.TONE_MAPPING_ENABLED;
-  defaultPipeline.imageProcessing.vignetteEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.VIGNETTE_ENABLED;
-  defaultPipeline.imageProcessing.vignetteWeight = DEFAULT_EFFCTS.IMAGE_PROCESSING.VIGNETTE_WEIGHT;
-  defaultPipeline.imageProcessing.colorCurvesEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.COLOR_CURVES_ENABLED;
-  defaultPipeline.imageProcessing.contrast = DEFAULT_EFFCTS.IMAGE_PROCESSING.CONTRAST;
-  defaultPipeline.imageProcessing.exposure = DEFAULT_EFFCTS.IMAGE_PROCESSING.EXPOSURE;
+  defaultPipeline.bloomEnabled = EFFCT_DEFAULTS.BLOOM_ENABLED;
+  defaultPipeline.fxaaEnabled = EFFCT_DEFAULTS.FXAA_ENABLED;
+  defaultPipeline.bloomWeight = EFFCT_DEFAULTS.BLOOM_WEIGHT;
+  defaultPipeline.imageProcessingEnabled = EFFCT_DEFAULTS.IMAGE_PROCESSING.ENABLED;
+  if (defaultPipeline.imageProcessing) {
+    defaultPipeline.imageProcessing.toneMappingEnabled = EFFCT_DEFAULTS.IMAGE_PROCESSING.TONE_MAPPING_ENABLED;
+    defaultPipeline.imageProcessing.vignetteEnabled = EFFCT_DEFAULTS.IMAGE_PROCESSING.VIGNETTE_ENABLED;
+    defaultPipeline.imageProcessing.vignetteWeight = EFFCT_DEFAULTS.IMAGE_PROCESSING.VIGNETTE_WEIGHT;
+    defaultPipeline.imageProcessing.vignetteColor = EFFCT_DEFAULTS.IMAGE_PROCESSING.VIGNETTE_COLOR;
+    defaultPipeline.imageProcessing.colorCurvesEnabled = EFFCT_DEFAULTS.IMAGE_PROCESSING.COLOR_CURVES_ENABLED;
+    defaultPipeline.imageProcessing.contrast = EFFCT_DEFAULTS.IMAGE_PROCESSING.CONTRAST;
+    defaultPipeline.imageProcessing.exposure = EFFCT_DEFAULTS.IMAGE_PROCESSING.EXPOSURE;
+  }
   // defaultPipeline.cameraFov = camera.fov;
 
   // GUI
@@ -67,16 +72,18 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   panel.paddingRight = "20px";
   panel.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
   panel.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-  advancedTexture.addControl(panel);
+  if (SHOW_EFFECT_CONTROLS) {
+    advancedTexture.addControl(panel);
+  }
 
-  let toneMappingEnabled = defaultPipeline.imageProcessing.toneMappingEnabled;
-  let vignetteEnabled = defaultPipeline.imageProcessing.vignetteEnabled;
-  let vignetteColor = defaultPipeline.imageProcessing.vignetteColor;
-  let vignetteWeight = defaultPipeline.imageProcessing.vignetteWeight;
-  let vignetteBlendMode = defaultPipeline.imageProcessing.vignetteBlendMode;
-  let colorCurvesEnabled = defaultPipeline.imageProcessing.colorCurvesEnabled;
-  let contrast = defaultPipeline.imageProcessing.contrast;
-  let exposure = defaultPipeline.imageProcessing.exposure;
+  let toneMappingEnabled = defaultPipeline.imageProcessing?.toneMappingEnabled;
+  let vignetteEnabled = defaultPipeline.imageProcessing?.vignetteEnabled;
+  let vignetteColor = defaultPipeline.imageProcessing?.vignetteColor;
+  let vignetteWeight = defaultPipeline.imageProcessing?.vignetteWeight;
+  let vignetteBlendMode = defaultPipeline.imageProcessing?.vignetteBlendMode;
+  let colorCurvesEnabled = defaultPipeline.imageProcessing?.colorCurvesEnabled;
+  let contrast = defaultPipeline.imageProcessing?.contrast;
+  let exposure = defaultPipeline.imageProcessing?.exposure;
 
   const curve = new ColorCurves();
   curve.globalHue = 200;
@@ -91,7 +98,9 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   curve.shadowsDensity = 80;
   curve.shadowsSaturation = 40;
 
-  defaultPipeline.imageProcessing.colorCurves = curve;
+  if (defaultPipeline.imageProcessing) {
+    defaultPipeline.imageProcessing.colorCurves = curve;
+  }
 
   const rebindValues = function() {
     if (defaultPipeline.imageProcessing) {
@@ -118,53 +127,69 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   }, defaultPipeline.bloomEnabled);
 
   addSlider(panel, "bloom weight", function(value: number) {
-      defaultPipeline.bloomWeight = value;
+    defaultPipeline.bloomWeight = value;
   }, defaultPipeline.bloomWeight, 0, 2, "20px");
 
   addCheckbox(panel, "image processing", function(value: boolean) {
-      defaultPipeline.imageProcessingEnabled = value;
-      rebindValues();
+    defaultPipeline.imageProcessingEnabled = value;
+    rebindValues();
   }, defaultPipeline.imageProcessingEnabled);
 
   addCheckbox(panel, "tone mapping", function(value: boolean) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.toneMappingEnabled = value;
-      toneMappingEnabled = value;
+    }
+    toneMappingEnabled = value;
   }, toneMappingEnabled, "20px");
 
   addCheckbox(panel, "vignette", function(value: boolean) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.vignetteEnabled = value;
-      vignetteEnabled = value;
+    }
+    vignetteEnabled = value;
   }, vignetteEnabled, "20px");
 
   addCheckbox(panel, "vignette multiply", function(value: boolean) {
-      const blendMode = value ? ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY : ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE;
+    const blendMode = value ? ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY : ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE;
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.vignetteBlendMode = blendMode;
-      vignetteBlendMode = blendMode;
+    }
+    vignetteBlendMode = blendMode;
   }, vignetteBlendMode === ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY, "40px");
 
   addColorPicker(panel, "vignette color", function(value: Color4) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.vignetteColor = value;
-      vignetteColor = value;
+    }
+    vignetteColor = value;
   }, vignetteColor, "40px");
 
   addSlider(panel, "vignette weight", function(value: number) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.vignetteWeight = value;
-      vignetteWeight = value;
+    }
+    vignetteWeight = value;
   }, vignetteWeight, 0, 10, "40px");
 
   addCheckbox(panel, "color curves", function(value: boolean) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.colorCurvesEnabled = value;
-      colorCurvesEnabled = value;
+    }
+    colorCurvesEnabled = value;
   }, colorCurvesEnabled, "20px");
 
   addSlider(panel, "camera contrast", function(value: number) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.contrast = value;
-      contrast = value;
+    }
+    contrast = value;
   }, contrast, 0, 4, "20px");
 
   addSlider(panel, "camera exposure", function(value: number) {
+    if (defaultPipeline.imageProcessing) {
       defaultPipeline.imageProcessing.exposure = value;
-      exposure = value;
+    }
+    exposure = value;
   }, exposure, 0, 4, "20px");
 
   scene.activeCameras = [camera, bgCamera];
