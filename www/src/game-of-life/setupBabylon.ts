@@ -2,9 +2,11 @@ import { ArcRotateCamera, DynamicTexture, Engine, HemisphericLight, MeshBuilder,
 import type { ICanvasRenderingContext } from 'babylonjs'
 import { TEXTURE_RESOLUTION } from './constants';
 
+export type OnTextureHoverPosition = { x: number, z: number } | null
+export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPosition) => void
 export type TextContextUpdateFn = (textureContext: ICanvasRenderingContext) => void
 
-export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: (point: { x: number, z: number } | null) => void): (textContextUpdateFn: TextContextUpdateFn) => void {
+export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): (textContextUpdateFn: TextContextUpdateFn) => void {
   const engine = new Engine(canvas, true);
   const scene = new Scene(engine);
 
@@ -38,7 +40,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
     const result = scene.pick(scene.pointerX, scene.pointerY, (mesh) => {
       return mesh.isPickable && mesh.isVisible && mesh.isReady()
     }, false, camera)
-    if (result.hit) {
+    if (result.hit && result.pickedPoint) {
       const { _x: x, _z: z } = result.pickedPoint
       onHoverTextureContext({ x, z })
     } else {
