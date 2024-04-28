@@ -1,7 +1,7 @@
-import { ICanvasRenderingContext } from "babylonjs";
 import { CELL_SIZE, GRID_COLOR } from "./constants";
+import type { TextContextUpdateFn } from "./setupBabylon";
 
-export default function drawGrid(updateTextureContext: (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void, width: number, height: number): void {
+export default function drawGrid(updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number): void {
   updateTextureContext(context => {
     context.beginPath();
     context.strokeStyle = GRID_COLOR;

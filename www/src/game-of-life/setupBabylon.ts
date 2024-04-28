@@ -1,7 +1,10 @@
-import { ArcRotateCamera, DynamicTexture, Engine, HemisphericLight, ICanvasRenderingContext, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
+import { ArcRotateCamera, DynamicTexture, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
+import type { ICanvasRenderingContext } from 'babylonjs'
 import { TEXTURE_RESOLUTION } from './constants';
 
-export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: (point: { x: number, z: number } | null) => void): (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void {
+export type TextContextUpdateFn = (textureContext: ICanvasRenderingContext) => void
+
+export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: (point: { x: number, z: number } | null) => void): (textContextUpdateFn: TextContextUpdateFn) => void {
   const engine = new Engine(canvas, true);
   const scene = new Scene(engine);
 

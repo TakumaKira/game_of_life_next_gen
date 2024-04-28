@@ -2,9 +2,9 @@ import { CellState } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import getIndex from "./getIndex";
 import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR, LIFE_SPAN } from "./constants";
-import { ICanvasRenderingContext } from "babylonjs";
+import type { TextContextUpdateFn } from "./setupBabylon";
 
-export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void, width: number, height: number) {
+export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number) {
   const cellsStatePtr = universe.cells_state();
   const cellsState = new Uint8Array(memory.buffer, cellsStatePtr, width * height);
 

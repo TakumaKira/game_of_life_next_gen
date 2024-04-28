@@ -2,9 +2,9 @@ import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import drawCells from "./drawCells";
 import drawGrid from "./drawGrid";
 import FPS from "./FPS";
-import { ICanvasRenderingContext } from "babylonjs";
+import type { TextContextUpdateFn } from "./setupBabylon";
 
-export function play(playPauseButton: HTMLButtonElement, fps: FPS, universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void, width: number, height: number, updateAnimId: (id: number | null) => void): void {
+export function play(playPauseButton: HTMLButtonElement, fps: FPS, universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, updateAnimId: (id: number | null) => void): void {
   playPauseButton.textContent = "⏸";
   renderLoop(fps, universe, memory, updateTextureContext, width, height, updateAnimId);
 };
@@ -22,8 +22,7 @@ export function isPaused(getCurrentAnimId: () => number | null): boolean {
   return getCurrentAnimId() === null;
 };
 
-function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void, width: number, height: number, updateAnimId: (id: number | null) => void): void {
-  console.log('renderLoop')
+function renderLoop(fps: FPS, universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, updateAnimId: (id: number | null) => void): void {
   fps.render();
 
   drawGrid(updateTextureContext, width, height);
