@@ -3,12 +3,12 @@ import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 import { play } from "./animController";
 import FPS from "./FPS";
-import setCanvasDimensions from "./setCanvasDimensions";
-import getContext from "./getContext";
 import getUniverse from "./getUniverse";
 import onClickPlayPauseButton from "./onClickPlayPauseButton";
 import onClickNextFrameButton from "./onClickNextFrameButton";
 import onClickCanvas from "./onClickCanvas";
+import setupBabylon from "./setupBabylon";
+import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "./setupBabylon";
 
 export default async function run(canvas: HTMLCanvasElement, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement): Promise<{ destroy: () => void }> {
   const wasmModule = await wasm({'./wasm_game_of_life_bg.js': bg})
@@ -20,30 +20,33 @@ export default async function run(canvas: HTMLCanvasElement, playPauseButton: HT
   return { destroy: () => destroyImpl(onClickPlayPauseButtonFnRef, onClickNextFrameButtonFnRef, onClickCanvasFnRef, playPauseButton, nextFrameButton, canvas, getCurrentAnimId) }
 }
 
-function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void } {
+function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: () => void } {
   const { universe, width, height } = getUniverse();
 
-  setCanvasDimensions(canvas, width, height);
+  let onTextureHoverPosition: OnTextureHoverPosition = null
+  const onHoverTextureContext: OnHoverTextureContextFn = hoverPos => {
+    onTextureHoverPosition = hoverPos
+  }
+
+  const updateTextureContext = setupBabylon(canvas, onHoverTextureContext);
 
   const fps = new FPS(fpsElement);
 
-  const context = getContext(canvas);
-
-  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, context, width, height, getCurrentAnimId, updateAnimId)
+  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, updateTextureContext, width, height, getCurrentAnimId, updateAnimId)
   playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
 
-  const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, context, width, height)
+  const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height)
   nextFrameButton.addEventListener("click", onClickNextFrameButtonFnRef);
 
-  const onClickCanvasFnRef = (event: MouseEvent) => onClickCanvas(event, canvas, universe, memory, context, width, height)
+  const onClickCanvasFnRef = () => onClickCanvas(universe, memory, updateTextureContext, width, height, onTextureHoverPosition)
   canvas.addEventListener("click", onClickCanvasFnRef);
 
-  play(playPauseButton, fps, universe, memory, context, width, height, updateAnimId);
+  play(playPauseButton, fps, universe, memory, updateTextureContext, width, height, updateAnimId);
 
   return { onClickPlayPauseButtonFnRef, onClickNextFrameButtonFnRef, onClickCanvasFnRef }
 }
 
-function destroyImpl(onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: (event: MouseEvent) => void, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, canvas: HTMLCanvasElement, getCurrentAnimId: () => number | null) {
+function destroyImpl(onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: () => void, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, canvas: HTMLCanvasElement, getCurrentAnimId: () => number | null) {
   playPauseButton.removeEventListener("click", onClickPlayPauseButtonFnRef)
   nextFrameButton.removeEventListener("click", onClickNextFrameButtonFnRef)
   canvas.removeEventListener("click", onClickCanvasFnRef)
