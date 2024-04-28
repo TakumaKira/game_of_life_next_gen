@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  babylonjs:
+    specifier: 7.4.0
+    version: 7.4.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -19,6 +22,9 @@ devDependencies:
   '@types/react':
     specifier: ^18.2.79
     version: 18.2.79
+  '@types/react-dom':
+    specifier: ^18.3.0
+    version: 18.3.0
   esbuild:
     specifier: 0.20.2
     version: 0.20.2
@@ -236,12 +242,23 @@ packages:
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
     dev: true
 
+  /@types/react-dom@18.3.0:
+    resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+    dependencies:
+      '@types/react': 18.2.79
+    dev: true
+
   /@types/react@18.2.79:
     resolution: {integrity: sha512-RwGAGXPl9kSXwdNTafkOEuFrTBD5SA2B3iEB96xi8+xu5ddUa/cpvyVCSNn+asgLCTHkb5ZxN8gbuibYJi4s1w==}
     dependencies:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
     dev: true
+
+  /babylonjs@7.4.0:
+    resolution: {integrity: sha512-w9oNKOp52NGjL57W61O18MZlRi0zhZPJbI/XVr4/y2t2Ed9MaVqYHLDLDKfjOOur9xxZ//y3IWtlOSYinhMpgQ==}
+    requiresBuild: true
+    dev: false
 
   /csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}

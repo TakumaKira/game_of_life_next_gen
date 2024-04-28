@@ -1,7 +1,7 @@
 import React from 'react';
 import run from './game-of-life'
 
-const bodyStyle: React.CSSProperties = {
+const containerStyles: React.CSSProperties = {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -11,14 +11,21 @@ const bodyStyle: React.CSSProperties = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  backgroundColor: '#222222',
 };
-const buttonStyles: React.CSSProperties = {
+const playStopButtonStyles: React.CSSProperties = {
   width: 33,
   height: 28,
 }
-const fpsStyles: React.CSSProperties = {
+const fpsDisplayStyles: React.CSSProperties = {
   whiteSpace: 'pre',
   fontFamily: 'monospace',
+  color: '#cccccc',
+}
+const canvasStyles: React.CSSProperties = {
+  width: '100%',
+  height: 'calc(100% - 200px)',
+  outline: 'none',
 }
 
 export default function App() {
@@ -36,11 +43,11 @@ export default function App() {
     return destroy
   }, [])
   return (
-    <div style={bodyStyle}>
-      <button ref={playPauseButtonRef} style={buttonStyles}></button>
+    <div style={containerStyles}>
+      <button ref={playPauseButtonRef} style={playStopButtonStyles}></button>
       <button ref={nextFrameButtonRef}>Next Frame</button>
-      <div ref={fpsRef} style={fpsStyles}></div>
-      <canvas ref={canvasRef}></canvas>
+      <div ref={fpsRef} style={fpsDisplayStyles}></div>
+      <canvas ref={canvasRef} style={canvasStyles}></canvas>
       <button onClick={destroy}>Destroy</button>
     </div>
   );
