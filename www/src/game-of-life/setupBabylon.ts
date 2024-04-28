@@ -1,4 +1,5 @@
 import { ArcRotateCamera, DynamicTexture, Engine, HemisphericLight, ICanvasRenderingContext, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
+import { TEXTURE_RESOLUTION } from './constants';
 
 export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: (point: { x: number, z: number } | null) => void): (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void {
   const engine = new Engine(canvas, true);
@@ -11,12 +12,12 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   light.intensity = 0.7;
 
   const groundWidth = 20;
-  const groundHeight = 20;
+  const groundHeight = groundWidth;
 
   const ground = MeshBuilder.CreateGround("ground1", {width: groundWidth, height: groundHeight, subdivisions: 1}, scene);
 
   //Create dynamic texture
-  const textureResolution = 512;
+  const textureResolution = TEXTURE_RESOLUTION;
   const textureGround = new DynamicTexture("dynamic texture", textureResolution, scene);
   const textureContext = textureGround.getContext();
 
