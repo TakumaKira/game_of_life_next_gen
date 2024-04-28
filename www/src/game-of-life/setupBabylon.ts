@@ -1,6 +1,6 @@
 import { ArcRotateCamera, DynamicTexture, Engine, HemisphericLight, ICanvasRenderingContext, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
 
-export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void {
+export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: (point: { x: number, z: number } | null) => void): (textContextUpdateFn: (textureContext: ICanvasRenderingContext) => void) => void {
   const engine = new Engine(canvas, true);
   const scene = new Scene(engine);
 
@@ -13,7 +13,7 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
   const groundWidth = 20;
   const groundHeight = 20;
 
-  const ground = MeshBuilder.CreateGround("ground1", {width: groundWidth, height: groundHeight, subdivisions: 25}, scene);
+  const ground = MeshBuilder.CreateGround("ground1", {width: groundWidth, height: groundHeight, subdivisions: 1}, scene);
 
   //Create dynamic texture
   const textureResolution = 512;
@@ -29,6 +29,18 @@ export default function setupBabylon(canvas: HTMLCanvasElement): (textContextUpd
     textContextUpdateFn(textureContext)
     textureGround.update();
   }
+
+  scene.onBeforeRenderObservable.add(() => {
+    const result = scene.pick(scene.pointerX, scene.pointerY, (mesh) => {
+      return mesh.isPickable && mesh.isVisible && mesh.isReady()
+    }, false, camera)
+    if (result.hit) {
+      const { _x: x, _z: z } = result.pickedPoint
+      onHoverTextureContext({ x, z })
+    } else {
+      onHoverTextureContext(null)
+    }
+  })
 
   engine.runRenderLoop(function () {
     scene.render();
