@@ -1,7 +1,7 @@
 import { ArcRotateCamera, ColorCurves, DefaultRenderingPipeline, DynamicTexture, Engine, HemisphericLight, ImageProcessingConfiguration, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
 import * as GUI from 'babylonjs-gui'
 import type { Color3, Color4, ICanvasRenderingContext } from 'babylonjs'
-import { TEXTURE_RESOLUTION } from './constants';
+import { DEFAULT_EFFCTS, TEXTURE_RESOLUTION } from './constants';
 
 export type OnTextureHoverPosition = { x: number, z: number } | null
 export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPosition) => void
@@ -38,9 +38,16 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
   }
 
   const defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [camera]);
-  defaultPipeline.bloomEnabled = false;
-  defaultPipeline.fxaaEnabled = false;
-  defaultPipeline.bloomWeight = 0.5;
+  defaultPipeline.bloomEnabled = DEFAULT_EFFCTS.BLOOM_ENABLED;
+  defaultPipeline.fxaaEnabled = DEFAULT_EFFCTS.FXAA_ENABLED;
+  defaultPipeline.bloomWeight = DEFAULT_EFFCTS.BLOOM_WEIGHT;
+  defaultPipeline.imageProcessingEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.ENABLED;
+  defaultPipeline.imageProcessing.toneMappingEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.TONE_MAPPING_ENABLED;
+  defaultPipeline.imageProcessing.vignetteEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.VIGNETTE_ENABLED;
+  defaultPipeline.imageProcessing.vignetteWeight = DEFAULT_EFFCTS.IMAGE_PROCESSING.VIGNETTE_WEIGHT;
+  defaultPipeline.imageProcessing.colorCurvesEnabled = DEFAULT_EFFCTS.IMAGE_PROCESSING.COLOR_CURVES_ENABLED;
+  defaultPipeline.imageProcessing.contrast = DEFAULT_EFFCTS.IMAGE_PROCESSING.CONTRAST;
+  defaultPipeline.imageProcessing.exposure = DEFAULT_EFFCTS.IMAGE_PROCESSING.EXPOSURE;
   // defaultPipeline.cameraFov = camera.fov;
 
   // GUI
@@ -196,6 +203,7 @@ function addCheckbox(panel: GUI.StackPanel, text: string, func: (value: boolean)
 
   const header = GUI.Control.AddHeader(checkbox, text, "180px", { isHorizontal: true, controlFirst: true });
   header.height = "30px";
+  header.color = "white";
   header.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 
   if (left) {
@@ -224,6 +232,7 @@ function addSlider(panel: GUI.StackPanel, text: string, func: (value: number) =>
   slider.color = "green";
   slider.background = "white";
   slider.onValueChangedObservable.add(function(value) {
+    console.log(text, value)
     func(value);
   });
 
