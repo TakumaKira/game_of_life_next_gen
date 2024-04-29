@@ -52,7 +52,7 @@ impl Cell {
     }
 
     pub fn increment_age(&mut self, life_span: u8) {
-        if self.age < life_span {
+        if self.get_state(life_span) == CellState::Alive {
             self.age += 1;
         }
     }
