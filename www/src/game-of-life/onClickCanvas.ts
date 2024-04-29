@@ -4,7 +4,7 @@ import drawCells from "./drawCells";
 import drawGrid from "./drawGrid";
 import type { OnTextureHoverPosition, TextContextUpdateFn } from "./setupBabylon";
 
-export default function onClickCanvas(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, onTextureHoverPosition: OnTextureHoverPosition): void {
+export default function onClickCanvas(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, onTextureHoverPosition: OnTextureHoverPosition): void {
   if (!onTextureHoverPosition) {
     return
   }
@@ -14,6 +14,6 @@ export default function onClickCanvas(universe: Universe, memory: WebAssembly.Me
 
   universe.toggle_cell(row, col);
 
-  drawCells(universe, memory, updateTextureContext, width, height);
+  drawCells(universe, memory, updateTextureContext, width, height, lifeSpan);
   drawGrid(updateTextureContext, width, height);
 }
