@@ -43,12 +43,12 @@ pub enum CellState {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Cell {
     age: u8,
-    is_killed: bool,
+    is_dead: bool,
 }
 
 impl Cell {
     pub fn new() -> Cell {
-        Cell { age: 0, is_killed: false }
+        Cell { age: 0, is_dead: false }
     }
 
     pub fn increment_age(&mut self, life_span: u8) {
@@ -58,11 +58,11 @@ impl Cell {
     }
 
     pub fn kill(&mut self) {
-        self.is_killed = true
+        self.is_dead = true
     }
 
     pub fn get_state(&self, life_span: u8) -> CellState {
-        if self.age < life_span && self.is_killed == false {
+        if self.age < life_span && self.is_dead == false {
             CellState::Alive
         } else {
             CellState::Dead
