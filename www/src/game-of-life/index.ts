@@ -32,7 +32,7 @@ function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseBu
 
   const fps = new FPS(fpsElement);
 
-  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, updateTextureContext, width, height, getCurrentAnimId, updateAnimId)
+  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, updateTextureContext, width, height, lifeSpan, getCurrentAnimId, updateAnimId)
   playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
 
   const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height, lifeSpan)
