@@ -1,4 +1,5 @@
 //! Test suite for the Web and headless browsers.
+// These tests will run with the following command: `wasm-pack test --firefox --headless`
 
 #![cfg(target_arch = "wasm32")]
 
@@ -50,5 +51,5 @@ pub fn test_tick() {
 
     //// Call `tick` and then see if the cells in the `Universe`s are the same.
     input_universe.tick(false);
-    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state()).collect::<Vec<CellState>>(), &expected_universe.get_cells().iter().map(|cell| cell.get_state()).collect::<Vec<CellState>>());
+    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_life_span())).collect::<Vec<CellState>>(), &expected_universe.get_cells().iter().map(|cell| cell.get_state(expected_universe.get_life_span())).collect::<Vec<CellState>>());
 }
