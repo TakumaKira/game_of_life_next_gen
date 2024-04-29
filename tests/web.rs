@@ -1,4 +1,5 @@
 //! Test suite for the Web and headless browsers.
+// These tests will run with the following command: `wasm-pack test --firefox --headless`
 
 #![cfg(target_arch = "wasm32")]
 
@@ -6,7 +7,13 @@ extern crate wasm_bindgen_test;
 use wasm_bindgen_test::*;
 
 extern crate wasm_game_of_life;
-use wasm_game_of_life::Universe;
+use wasm_game_of_life::*;
+
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        web_sys::console::log_1(&format!( $( $t )* ).into());
+    }
+}
 
 wasm_bindgen_test_configure!(run_in_browser);
 
@@ -17,21 +24,48 @@ fn pass() {
 
 #[cfg(test)]
 pub fn input_spaceship() -> Universe {
-    let mut universe = Universe::new();
+    let mut universe = Universe::new(6, 2);
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(1,2), (2,3), (3,1), (3,2), (3,3)]);
     universe
 }
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Dead    Alive-0 Dead    Dead    Dead
+// Dead    Dead    Dead    Alive-0 Dead    Dead
+// Dead    Alive-0 Alive-0 Alive-0 Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
 
 #[cfg(test)]
-pub fn expected_spaceship() -> Universe {
-    let mut universe = Universe::new();
+pub fn expected_spaceship_after_first_tick() -> Universe {
+    let mut universe = Universe::new(6, 2);
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(2,1), (2,3), (3,2), (3,3), (4,2)]);
     universe
 }
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Alive-0 Dead    Alive-1 Dead    Dead
+// Dead    Dead    Alive-1 Alive-1 Dead    Dead
+// Dead    Dead    Alive-0 Dead    Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
+
+#[cfg(test)]
+pub fn expected_spaceship_after_second_tick() -> Universe {
+    let mut universe = Universe::new(6, 2);
+    universe.set_width(6);
+    universe.set_height(6);
+    universe.set_cells(&[(3,1), (4,2), (4,3)]);
+    universe
+}
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
+// Dead    Alive-0 Dead    Dead    Dead    Dead
+// Dead    Dead    Alive-1 Alive-0 Dead    Dead
+// Dead    Dead    Dead    Dead    Dead    Dead
 
 #[wasm_bindgen_test]
 pub fn test_tick() {
@@ -40,9 +74,14 @@ pub fn test_tick() {
 
     // This is what our spaceship should look like
     // after one tick in our universe.
-    let expected_universe = expected_spaceship();
-
+    let expected_universe_after_first_tick = expected_spaceship_after_first_tick();
+    
     //// Call `tick` and then see if the cells in the `Universe`s are the same.
-    input_universe.tick();
-    assert_eq!(&input_universe.get_cells(), &expected_universe.get_cells());
+    input_universe.tick(false);
+    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_life_span())).collect::<Vec<CellState>>(), &expected_universe_after_first_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_first_tick.get_life_span())).collect::<Vec<CellState>>());
+
+    let expected_universe_after_second_tick = expected_spaceship_after_second_tick();
+
+    input_universe.tick(false);
+    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_life_span())).collect::<Vec<CellState>>(), &expected_universe_after_second_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_second_tick.get_life_span())).collect::<Vec<CellState>>());
 }

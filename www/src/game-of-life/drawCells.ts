@@ -1,10 +1,10 @@
 import { CellState } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import getIndex from "./getIndex";
-import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR, LIFE_SPAN } from "./constants";
+import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR } from "./constants";
 import type { TextContextUpdateFn } from "./setupBabylon";
 
-export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number) {
+export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number) {
   const cellsStatePtr = universe.cells_state();
   const cellsState = new Uint8Array(memory.buffer, cellsStatePtr, width * height);
 
@@ -26,7 +26,7 @@ export default function drawCells(universe: Universe, memory: WebAssembly.Memory
           const isAgeInRange = ((age, lifeSpan, rangeIndex, rangeLength) => {
             const rangeSpan = lifeSpan / rangeLength
             return rangeSpan * rangeIndex <= age && age < rangeSpan * (rangeIndex + 1)
-          })(cellsAge[idx], LIFE_SPAN, rangeIndex, ALIVE_COLORS.length);
+          })(cellsAge[idx], lifeSpan, rangeIndex, ALIVE_COLORS.length);
           if (!isAgeInRange) {
             continue;
           }

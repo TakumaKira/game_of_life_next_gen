@@ -21,7 +21,7 @@ export default async function run(canvas: HTMLCanvasElement, playPauseButton: HT
 }
 
 function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onClickPlayPauseButtonFnRef: () => void, onClickNextFrameButtonFnRef: () => void, onClickCanvasFnRef: () => void } {
-  const { universe, width, height } = getUniverse();
+  const { universe, width, height, lifeSpan } = getUniverse();
 
   let onTextureHoverPosition: OnTextureHoverPosition = null
   const onHoverTextureContext: OnHoverTextureContextFn = hoverPos => {
@@ -32,16 +32,16 @@ function main(canvas: HTMLCanvasElement, memory: WebAssembly.Memory, playPauseBu
 
   const fps = new FPS(fpsElement);
 
-  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, updateTextureContext, width, height, getCurrentAnimId, updateAnimId)
+  const onClickPlayPauseButtonFnRef = () => onClickPlayPauseButton(playPauseButton, fps, universe, memory, updateTextureContext, width, height, lifeSpan, getCurrentAnimId, updateAnimId)
   playPauseButton.addEventListener("click", onClickPlayPauseButtonFnRef);
 
-  const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height)
+  const onClickNextFrameButtonFnRef = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height, lifeSpan)
   nextFrameButton.addEventListener("click", onClickNextFrameButtonFnRef);
 
-  const onClickCanvasFnRef = () => onClickCanvas(universe, memory, updateTextureContext, width, height, onTextureHoverPosition)
+  const onClickCanvasFnRef = () => onClickCanvas(universe, memory, updateTextureContext, width, height, lifeSpan, onTextureHoverPosition)
   canvas.addEventListener("click", onClickCanvasFnRef);
 
-  play(playPauseButton, fps, universe, memory, updateTextureContext, width, height, updateAnimId);
+  play(playPauseButton, fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
 
   return { onClickPlayPauseButtonFnRef, onClickNextFrameButtonFnRef, onClickCanvasFnRef }
 }
