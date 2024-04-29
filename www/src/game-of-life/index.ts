@@ -1,4 +1,4 @@
-import wasm from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
+import buildWasmModule from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 import { play } from "./animController";
@@ -11,7 +11,7 @@ import setupBabylon from "./setupBabylon";
 import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "./setupBabylon";
 
 export default async function run(canvas: HTMLCanvasElement, playPauseButton: HTMLButtonElement, nextFrameButton: HTMLButtonElement, fpsElement: HTMLDivElement): Promise<{ destroy: () => void }> {
-  const wasmModule = await wasm({'./wasm_game_of_life_bg.js': bg})
+  const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
   bg.__wbg_set_wasm(wasmModule)
   let animationId: null | number = null
   const updateAnimId = (id: number | null) => animationId = id
