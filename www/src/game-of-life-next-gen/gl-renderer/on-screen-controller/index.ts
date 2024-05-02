@@ -1,1 +1,1 @@
-export { default as setupGUI } from './setupGUI'
+export { setupGUI } from './setupGUI'
