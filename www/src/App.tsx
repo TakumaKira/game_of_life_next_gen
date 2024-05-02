@@ -1,5 +1,5 @@
 import React from 'react';
-import setup from '@/game-of-life-next-gen'
+import { setup } from '@/game-of-life-next-gen'
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
