@@ -1,5 +1,5 @@
 import * as GUI from 'babylonjs-gui'
-import type { DefaultRenderingPipeline } from 'babylonjs'
+import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
 import { ImageProcessingConfiguration } from 'babylonjs'
 import type { Values } from '../types';
 import addCheckbox from './addCheckbox';
@@ -7,7 +7,12 @@ import addSlider from './addSlider';
 import addColorPicker from './addColorPicker';
 import rebindValues from './rebindValues';
 
-export default function addControls(panel: GUI.StackPanel, defaultPipeline: DefaultRenderingPipeline, values: Values) {
+export default function addControls(panel: GUI.StackPanel, defaultPipeline: DefaultRenderingPipeline, values: Values, scene: Scene) {
+  addColorPicker(panel, "background color", value => {
+    scene.clearColor = value;
+    values.backgroundColor = value;
+  }, values.backgroundColor);
+
   addCheckbox(panel, "fxaa", value => {
     defaultPipeline.fxaaEnabled = value;
     rebindValues(defaultPipeline, values);

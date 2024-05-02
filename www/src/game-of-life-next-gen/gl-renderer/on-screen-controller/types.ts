@@ -10,4 +10,5 @@ export type Values = {
   contrast?: number,
   exposure?: number,
   curve: Nullable<ColorCurves>,
+  backgroundColor?: Color4,
 }

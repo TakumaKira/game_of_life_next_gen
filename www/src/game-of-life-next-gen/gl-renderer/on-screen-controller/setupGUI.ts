@@ -1,7 +1,7 @@
 import * as GUI from 'babylonjs-gui'
 import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
 import { ArcRotateCamera, ColorCurves, Vector3 } from 'babylonjs'
-import { SHOW_EFFECT_CONTROLS } from '@/game-of-life-next-gen/constants';
+import { SHOW_ON_SCREEN_CONTROLS } from '@/game-of-life-next-gen/constants';
 import type { Values } from './types';
 import { addControls } from './addControls';
 
@@ -24,7 +24,7 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
   panel.paddingRight = "20px";
   panel.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
   panel.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-  if (SHOW_EFFECT_CONTROLS) {
+  if (SHOW_ON_SCREEN_CONTROLS) {
     advancedTexture.addControl(panel);
   }
 
@@ -55,9 +55,10 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
     contrast: defaultPipeline.imageProcessing?.contrast,
     exposure: defaultPipeline.imageProcessing?.exposure,
     curve: defaultPipeline.imageProcessing.colorCurves,
+    backgroundColor: scene.clearColor,
   }
 
-  addControls(panel, defaultPipeline, values)
+  addControls(panel, defaultPipeline, values, scene)
 
   return { bgCamera }
 }

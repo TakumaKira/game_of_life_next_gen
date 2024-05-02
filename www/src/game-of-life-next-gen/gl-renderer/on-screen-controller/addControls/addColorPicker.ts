@@ -1,7 +1,7 @@
 import * as GUI from 'babylonjs-gui'
 import type { Color3, Color4 } from 'babylonjs'
 
-export default function addColorPicker(panel: GUI.StackPanel, text: string, onChangeValue: (value: Color4) => void, initialValue: Color4 | undefined, left: string) {
+export default function addColorPicker(panel: GUI.StackPanel, text: string, onChangeValue: (value: Color4) => void, initialValue: Color4 | undefined, left?: string) {
   const header = new GUI.TextBlock();
   header.text = text;
   header.height = "30px";
