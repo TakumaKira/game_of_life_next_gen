@@ -1,5 +1,5 @@
 import React from 'react';
-import run from '@/game-of-life'
+import setup from '@/game-of-life'
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -35,7 +35,7 @@ export default function App() {
   const [nextFrame, setNextFrame] = React.useState<() => void>()
   const [destroy, setDestroy] = React.useState<() => void>()
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
-  const onTogglePlayingState = (isPlaying: boolean) => {
+  const updatePlayingState = (isPlaying: boolean) => {
     setIsPlaying(isPlaying)
   }
   const [fpsData, setFpsData] = React.useState<{ fps: number, mean: number, min: number, max: number }>()
@@ -56,7 +56,7 @@ max of last 100 = ${Math.round(fpsData.max)}
     if (!canvasRef.current) {
       return
     }
-    run(canvasRef.current, onTogglePlayingState, updateFpsData)
+    setup(canvasRef.current, updatePlayingState, updateFpsData)
       .then(({ play, pause, nextFrame, destroy }) => {
         setPlay(() => play)
         setPause(() => pause)
