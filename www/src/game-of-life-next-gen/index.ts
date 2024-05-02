@@ -1,8 +1,8 @@
 import buildWasmModule from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
-import onDestory from "@/game-of-life/onDestory";
-import setupImpl from "@/game-of-life/setupImpl";
+import onDestory from "@/game-of-life-next-gen/onDestory";
+import setupImpl from "@/game-of-life-next-gen/setupImpl";
 
 export default async function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
   const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})

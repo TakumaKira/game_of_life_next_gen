@@ -1,5 +1,5 @@
-import { CELL_SIZE, GRID_COLOR } from "@/game-of-life/constants";
-import type { TextContextUpdateFn } from "@/game-of-life/setupBabylon";
+import { CELL_SIZE, GRID_COLOR } from "@/game-of-life-next-gen/constants";
+import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 
 export default function drawGrid(updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number): void {
   updateTextureContext(context => {
