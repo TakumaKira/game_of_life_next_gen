@@ -1,8 +1,8 @@
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
-import { FIELD_SIZE } from "./constants";
-import drawCells from "./drawCells";
-import drawGrid from "./drawGrid";
-import type { OnTextureHoverPosition, TextContextUpdateFn } from "./setupBabylon";
+import { FIELD_SIZE } from "@/game-of-life/constants";
+import drawCells from "@/game-of-life/drawCells";
+import drawGrid from "@/game-of-life/drawGrid";
+import type { OnTextureHoverPosition, TextContextUpdateFn } from "@/game-of-life/setupBabylon";
 
 export default function onClickCanvas(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, onTextureHoverPosition: OnTextureHoverPosition): void {
   if (!onTextureHoverPosition) {

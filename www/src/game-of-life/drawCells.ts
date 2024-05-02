@@ -1,8 +1,8 @@
 import { CellState } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
-import getIndex from "./getIndex";
-import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR } from "./constants";
-import type { TextContextUpdateFn } from "./setupBabylon";
+import getIndex from "@/game-of-life/getIndex";
+import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR } from "@/game-of-life/constants";
+import type { TextContextUpdateFn } from "@/game-of-life/setupBabylon";
 
 export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number) {
   const cellsStatePtr = universe.cells_state();

@@ -1,5 +1,5 @@
 import React from 'react';
-import run from './game-of-life'
+import run from '@/game-of-life'
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -29,24 +29,60 @@ const canvasStyles: React.CSSProperties = {
 }
 
 export default function App() {
-  const playPauseButtonRef = React.useRef<HTMLButtonElement>(null)
-  const nextFrameButtonRef = React.useRef<HTMLButtonElement>(null)
-  const fpsRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [runnerPromise, setRunnerPromise] = React.useState<Promise<{ destroy: () => void }> | null>(null)
-  const destroy = React.useCallback(() => { runnerPromise?.then(({ destroy }) => destroy()) }, [runnerPromise])
+  const [play, setPlay] = React.useState<() => void>()
+  const [pause, setPause] = React.useState<() => void>()
+  const [nextFrame, setNextFrame] = React.useState<() => void>()
+  const [destroy, setDestroy] = React.useState<() => void>()
+  const [isPlaying, setIsPlaying] = React.useState<boolean>()
+  const onTogglePlayingState = (isPlaying: boolean) => {
+    setIsPlaying(isPlaying)
+  }
+  const [fpsData, setFpsData] = React.useState<{ fps: number, mean: number, min: number, max: number }>()
+  const updateFpsData = (fpsData: { fps: number, mean: number, min: number, max: number }) => {
+    setFpsData(fpsData)
+  }
+  const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
+  const fpsContents = React.useMemo(() => {
+    return fpsData ? `
+Frames per Second:
+          latest = ${Math.round(fpsData.fps)}
+avg of last 100 = ${Math.round(fpsData.mean)}
+min of last 100 = ${Math.round(fpsData.min)}
+max of last 100 = ${Math.round(fpsData.max)}
+`.trim() : ''
+  }, [fpsData])
   React.useEffect(() => {
-    if (!canvasRef.current || !playPauseButtonRef.current || !nextFrameButtonRef.current || !fpsRef.current) {
+    if (!canvasRef.current) {
       return
     }
-    setRunnerPromise(run(canvasRef.current, playPauseButtonRef.current, nextFrameButtonRef.current, fpsRef.current))
+    run(canvasRef.current, onTogglePlayingState, updateFpsData)
+      .then(({ play, pause, nextFrame, destroy }) => {
+        setPlay(() => play)
+        setPause(() => pause)
+        setNextFrame(() => nextFrame)
+        setDestroy(() => destroy)
+      })
     return destroy
   }, [])
+  const onClickPlayPauseButton = () => {
+    if (isPlaying) {
+      pause?.()
+    } else {
+      play?.()
+    }
+  }
+  const onClickNextFrameButton = () => {
+    if (isPlaying) {
+      return
+    }
+    nextFrame?.()
+  }
   return (
     <div style={containerStyles}>
-      <button ref={playPauseButtonRef} style={playStopButtonStyles}></button>
-      <button ref={nextFrameButtonRef}>Next Frame</button>
-      <div ref={fpsRef} style={fpsDisplayStyles}></div>
+      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton}>{playStopButtonLabel}</button>
+      <button onClick={onClickNextFrameButton}>Next Frame</button>
+      <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
       <button onClick={destroy}>Destroy</button>
     </div>

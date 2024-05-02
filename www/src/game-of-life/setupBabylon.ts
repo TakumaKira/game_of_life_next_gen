@@ -1,13 +1,13 @@
 import { ArcRotateCamera, Color3, Color4, ColorCurves, DefaultRenderingPipeline, DynamicTexture, Engine, HemisphericLight, ImageProcessingConfiguration, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
 import * as GUI from 'babylonjs-gui'
 import type { ICanvasRenderingContext } from 'babylonjs'
-import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR, SHOW_EFFECT_CONTROLS, TEXTURE_RESOLUTION } from './constants';
+import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR, SHOW_EFFECT_CONTROLS, TEXTURE_RESOLUTION } from '@/game-of-life/constants';
 
 export type OnTextureHoverPosition = { x: number, z: number } | null
 export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPosition) => void
 export type TextContextUpdateFn = (textureContext: ICanvasRenderingContext) => void
 
-export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): (textContextUpdateFn: TextContextUpdateFn) => void {
+export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, dispose: () => void} {
   const engine = new Engine(canvas, true);
   const scene = new Scene(engine);
   scene.clearColor = SCENE_BACKGROUND_COLOR;
@@ -35,6 +35,9 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
 
   //Draw on canvas
   const updateTextureContext = (textContextUpdateFn: (_textureContext: ICanvasRenderingContext) => void) => {
+    if (engine.isDisposed) {
+      return
+    }
     textContextUpdateFn(textureContext)
     textureGround.update();
   }
@@ -213,7 +216,9 @@ export default function setupBabylon(canvas: HTMLCanvasElement, onHoverTextureCo
     engine.resize();
   });
 
-  return updateTextureContext
+  const dispose = () => engine.dispose()
+
+  return { updateTextureContext, dispose }
 }
 
 function addCheckbox(panel: GUI.StackPanel, text: string, func: (value: boolean) => void, initialValue: boolean, left?: string) {

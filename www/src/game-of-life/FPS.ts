@@ -1,10 +1,10 @@
 export default class FPS {
-  fps: HTMLDivElement;
+  updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void;
   frames: number[] = [];
   lastFrameTimeStamp = performance.now();
 
-  constructor(fps: HTMLDivElement) {
-    this.fps = fps
+  constructor(updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void) {
+    this.updateFpsData = updateFpsData
   }
 
   render() {
@@ -32,13 +32,7 @@ export default class FPS {
     }
     let mean = sum / this.frames.length;
 
-    // Render the statistics.
-    this.fps.textContent = `
-Frames per Second:
-         latest = ${Math.round(fps)}
-avg of last 100 = ${Math.round(mean)}
-min of last 100 = ${Math.round(min)}
-max of last 100 = ${Math.round(max)}
-`.trim();
+    // Update the statistics.
+    this.updateFpsData({ fps, mean, min, max });
   }
 }
