@@ -7,6 +7,7 @@ import getDefaultRenderPipeline from './getDefaultRenderPipeline';
 import getLight from './getLight';
 import getScene from './getScene';
 import setupGround from './setupGround';
+import updateHoverState from './updateHoverState';
 
 export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, dispose: () => void} {
   const engine = new Engine(canvas, true);
@@ -40,18 +41,10 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
   scene.activeCameras = [camera, bgCamera];
 
   scene.onBeforeRenderObservable.add(() => {
-    const result = scene.pick(scene.pointerX, scene.pointerY, (mesh) => {
-      return mesh.isPickable && mesh.isVisible && mesh.isReady()
-    }, false, camera)
-    if (result.hit && result.pickedPoint) {
-      const { _x: x, _z: z } = result.pickedPoint
-      onHoverTextureContext({ x, z })
-    } else {
-      onHoverTextureContext(null)
-    }
+    updateHoverState(scene, camera, onHoverTextureContext)
   })
 
-  engine.runRenderLoop(function () {
+  engine.runRenderLoop(() => {
     scene.render();
   });
 
