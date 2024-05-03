@@ -3,12 +3,16 @@ import onDestroy from '../onDestroy'; // Adjust the import path as per your proj
 describe('onDestroy function', () => {
   let onClickCanvasFnRef: jest.Mock;
   let canvas: HTMLCanvasElement;
+  let mockRemoveEventListener: jest.SpyInstance;
+  let mockCancelAnimationFrame: jest.SpyInstance;
   let getCurrentAnimId: jest.Mock;
   let dispose: jest.Mock;
 
   beforeEach(() => {
     onClickCanvasFnRef = jest.fn();
     canvas = document.createElement('canvas');
+    mockRemoveEventListener = jest.spyOn(canvas, 'removeEventListener');
+    mockCancelAnimationFrame = jest.spyOn(window, 'cancelAnimationFrame');
     getCurrentAnimId = jest.fn().mockReturnValue(123);
     dispose = jest.fn();
   });
@@ -20,10 +24,10 @@ describe('onDestroy function', () => {
   it('should remove event listener, cancel animation frame, and dispose', () => {
     const result = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
 
-    expect(onClickCanvasFnRef).toHaveBeenCalled();
-    expect(canvas.removeEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
+    expect(onClickCanvasFnRef).not.toHaveBeenCalled();
+    expect(mockRemoveEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
     expect(getCurrentAnimId).toHaveBeenCalled();
-    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(123);
+    expect(mockCancelAnimationFrame).toHaveBeenCalledWith(123);
     expect(dispose).toHaveBeenCalled();
     expect(result).toEqual({ isDestroyed: true });
   });
@@ -33,10 +37,10 @@ describe('onDestroy function', () => {
 
     const result = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
 
-    expect(onClickCanvasFnRef).toHaveBeenCalled();
-    expect(canvas.removeEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
+    expect(onClickCanvasFnRef).not.toHaveBeenCalled();
+    expect(mockRemoveEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
     expect(getCurrentAnimId).toHaveBeenCalled();
-    expect(window.cancelAnimationFrame).not.toHaveBeenCalled();
+    expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
     expect(dispose).toHaveBeenCalled();
     expect(result).toEqual({ isDestroyed: true });
   });
