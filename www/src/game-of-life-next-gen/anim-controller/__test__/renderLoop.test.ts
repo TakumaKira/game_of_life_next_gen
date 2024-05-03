@@ -48,8 +48,10 @@ describe('renderLoop', () => {
     expect(drawGrid).toHaveBeenCalledWith(updateTextureContext, width, height);
     expect(drawCells).toHaveBeenCalledWith(universe, memory, updateTextureContext, width, height, lifeSpan);
 
-    // Universe should be ticked 9 times
-    expect(universe.tick).toHaveBeenCalledTimes(9);
+    // Expect `universe.tick` to be called 9 times with `false` as the argument each time
+    for (let i = 0; i < 9; i++) {
+      expect(universe.tick).toHaveBeenNthCalledWith(i + 1, false);
+    }
 
     // updateAnimId should be called with requestAnimationFrame ID
     expect(updateAnimId).toHaveBeenCalledWith(expect.any(Number));
