@@ -8,7 +8,10 @@ const mockUpdateTextureContext = jest.fn();
 const memory = new WebAssembly.Memory({ initial: 1 });
 
 jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => ({
-  Universe: jest.fn()
+  Universe: jest.fn(() => ({
+    cells_state: jest.fn(),
+    cells_age: jest.fn()
+  }))
 }));
 
 describe('drawCells function', () => {
@@ -21,17 +24,7 @@ describe('drawCells function', () => {
     const height = 10;
     const lifeSpan = 100;
 
-    const mockUniverse: any = Universe as jest.MockedClass<typeof Universe>;
-
-    // Mock alive cells state pointer
-    const cellsStatePtr = 123; // Mock the pointer value
-    mockUniverse.mock.instances[0].cells_state.mockReturnValue(cellsStatePtr);
-
-    // Mock cells age pointer
-    const cellsAgePtr = 456; // Mock the pointer value
-    mockUniverse.mock.instances[0].cells_age.mockReturnValue(cellsAgePtr);
-
-    drawCells(mockUniverse.mock.instances[0], memory, mockUpdateTextureContext, width, height, lifeSpan);
+    drawCells(new Universe(), memory, mockUpdateTextureContext, width, height, lifeSpan);
 
     // Assert that the context was updated with the correct fillRect calls
     expect(mockUpdateTextureContext).toHaveBeenCalledTimes(1);
