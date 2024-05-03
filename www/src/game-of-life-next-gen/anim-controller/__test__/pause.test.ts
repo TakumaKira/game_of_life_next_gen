@@ -1,5 +1,8 @@
 import pause from '../pause';
 
+const mockCancelAnimationFrame = jest.fn();
+global.cancelAnimationFrame = mockCancelAnimationFrame;
+
 describe('pause function', () => {
   test('should cancel animation and set isPlaying to false when getCurrentAnimId returns a valid ID', () => {
     // Mock getCurrentAnimId to return a valid animation ID
@@ -32,7 +35,7 @@ describe('pause function', () => {
 
     pause(getCurrentAnimId, updateAnimId);
 
-    expect(cancelAnimationFrame).toHaveBeenCalledWith(animationId);
+    expect(mockCancelAnimationFrame).toHaveBeenCalledWith(animationId);
   });
 
   test('should call updateAnimId with null', () => {
