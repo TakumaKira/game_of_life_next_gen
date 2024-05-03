@@ -37,13 +37,6 @@ describe('FPS', () => {
       // Mock FPS values for easier assertion
       const mockFpsValues = [30, 40, 50, 20, 60, 70, 80, 90, 100, 110];
     
-      for (let i = 0; i < 10; i++) {
-        // Mock delta to be 1000 milliseconds for consistent FPS calculation
-        jest.spyOn(performance, 'now').mockReturnValueOnce(1000 + i * 1000);
-    
-        fps.render();
-      }
-    
       fps.frames = mockFpsValues;
     
       fps.render();
