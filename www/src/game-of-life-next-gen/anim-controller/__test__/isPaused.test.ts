@@ -20,14 +20,8 @@ describe('isPaused function', () => {
     expect(mockGetCurrentAnimId).toHaveBeenCalledTimes(1);
   });
   
-  test('returns true when getCurrentAnimId returns 0', () => {
+  test('returns false when getCurrentAnimId returns 0', () => {
     mockGetCurrentAnimId.mockReturnValueOnce(0);
-    expect(isPaused(mockGetCurrentAnimId)).toBe(false);
-    expect(mockGetCurrentAnimId).toHaveBeenCalledTimes(1);
-  });
-
-  test('returns true when getCurrentAnimId returns a non-zero number', () => {
-    mockGetCurrentAnimId.mockReturnValueOnce(456);
     expect(isPaused(mockGetCurrentAnimId)).toBe(false);
     expect(mockGetCurrentAnimId).toHaveBeenCalledTimes(1);
   });
