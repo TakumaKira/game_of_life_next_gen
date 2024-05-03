@@ -11,7 +11,7 @@ describe("play function", () => {
 
   beforeEach(() => {
     // Initialize mock variables
-    fps = jest.fn() as FPS;
+    fps = jest.fn() as unknown as FPS;
     universe = {} as Universe;
     memory = new WebAssembly.Memory({ initial: 1 });
     updateTextureContext = jest.fn();
