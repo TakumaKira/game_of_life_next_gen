@@ -1,4 +1,5 @@
-import getRowColFromTextureHoverPosition from './getRowColFromTextureHoverPosition';
+import { FIELD_SIZE, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
+import getRowColFromTextureHoverPosition from '../getRowColFromTextureHoverPosition';
 
 describe('getRowColFromTextureHoverPosition', () => {
   it('should return correct row and column for a given onTextureHoverPosition', () => {
