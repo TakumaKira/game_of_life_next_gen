@@ -1,5 +1,6 @@
 import { Color4 } from "babylonjs";
 
+const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
 const FIELD_SIZE = 128;
@@ -32,6 +33,7 @@ const EFFCT_DEFAULTS = {
 }
 
 export {
+  TEXTURE_SIZE,
   TEXTURE_RESOLUTION,
   FIELD_SIZE,
   CELL_SIZE,

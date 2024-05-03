@@ -1,6 +1,6 @@
 import { ArcRotateCamera, Color3, Engine, Vector3 } from 'babylonjs'
 import type { ICanvasRenderingContext } from 'babylonjs'
-import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_RESOLUTION } from '@/game-of-life-next-gen/constants';
+import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_RESOLUTION, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
 import type { OnHoverTextureContextFn, TextContextUpdateFn } from '../types';
 import { setupGUI } from '../on-screen-controller';
 import getDefaultRenderPipeline from './getDefaultRenderPipeline';
@@ -23,7 +23,7 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
 
   const light = getLight("light1", new Vector3(0, 1, 0), scene, 0.7)
 
-  const { textureGround, textureContext } = setupGround(scene, 20, "ground1", "dynamic texture", "Mat", TEXTURE_RESOLUTION, new Color3(0.075, 0.075, 0.075))
+  const { textureGround, textureContext } = setupGround(scene, TEXTURE_SIZE, "ground1", "dynamic texture", "Mat", TEXTURE_RESOLUTION, new Color3(0.075, 0.075, 0.075))
 
   //Draw on canvas
   const updateTextureContext = (textContextUpdateFn: (_textureContext: ICanvasRenderingContext) => void) => {
