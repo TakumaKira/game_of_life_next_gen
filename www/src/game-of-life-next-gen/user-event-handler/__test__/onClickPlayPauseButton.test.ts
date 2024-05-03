@@ -1,6 +1,7 @@
-import onClickPlayPauseButton from './onClickPlayPauseButton'; // Adjust the import path as necessary
-import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
-import { FPS } from "@/game-of-life-next-gen/game-of-life";
+import onClickPlayPauseButton from '../onClickPlayPauseButton'; // Adjust the import path as necessary
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
+import type { FPS } from "@/game-of-life-next-gen/game-of-life";
+import { isPaused, pause, play } from "@/game-of-life-next-gen/anim-controller";
 
 // Mock dependencies
 jest.mock('@/game-of-life-next-gen/anim-controller', () => ({
@@ -10,9 +11,9 @@ jest.mock('@/game-of-life-next-gen/anim-controller', () => ({
 }));
 
 // Mock FPS and Universe objects
-const fpsMock: FPS = { /* Mock FPS object properties */ };
-const universeMock: Universe = { /* Mock Universe object properties */ };
-const memoryMock: WebAssembly.Memory = { /* Mock Memory object properties */ };
+const fpsMock = { /* Mock FPS object properties */ } as FPS;
+const universeMock = { /* Mock Universe object properties */ } as Universe;
+const memoryMock = { /* Mock Memory object properties */ } as WebAssembly.Memory;
 
 describe('onClickPlayPauseButton', () => {
   afterEach(() => {
