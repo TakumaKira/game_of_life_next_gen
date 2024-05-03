@@ -21,15 +21,17 @@ describe('drawCells function', () => {
     const height = 10;
     const lifeSpan = 100;
 
+    const mockUniverse: any = Universe as jest.MockedClass<typeof Universe>;
+
     // Mock alive cells state pointer
     const cellsStatePtr = 123; // Mock the pointer value
-    Universe.mock.instances[0].cells_state.mockReturnValue(cellsStatePtr);
+    mockUniverse.mock.instances[0].cells_state.mockReturnValue(cellsStatePtr);
 
     // Mock cells age pointer
     const cellsAgePtr = 456; // Mock the pointer value
-    Universe.mock.instances[0].cells_age.mockReturnValue(cellsAgePtr);
+    mockUniverse.mock.instances[0].cells_age.mockReturnValue(cellsAgePtr);
 
-    drawCells(Universe.mock.instances[0], memory, mockUpdateTextureContext, width, height, lifeSpan);
+    drawCells(mockUniverse.mock.instances[0], memory, mockUpdateTextureContext, width, height, lifeSpan);
 
     // Assert that the context was updated with the correct fillRect calls
     expect(mockUpdateTextureContext).toHaveBeenCalledTimes(1);
