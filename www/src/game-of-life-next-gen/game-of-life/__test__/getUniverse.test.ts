@@ -2,7 +2,7 @@ import getUniverse from '../getUniverse';
 import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 import { FIELD_SIZE, LIFE_SPAN } from "@/game-of-life-next-gen/constants";
 
-jest.mock("wasm-game-of-life/wasm_game_of_life_bg", () => {
+jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => {
   const mockUniverse = {
     new: jest.fn((width, height) => ({
       width: jest.fn(() => width),
