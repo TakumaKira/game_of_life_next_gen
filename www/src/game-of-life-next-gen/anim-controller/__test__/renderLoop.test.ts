@@ -1,6 +1,6 @@
 import renderLoop from '../renderLoop'; // Import the function to test
 import { drawGrid, drawCells } from "@/game-of-life-next-gen/drawer"; // Import functions used in renderLoop
-import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"; // Import Universe type
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"; // Import Universe type
 // Import other necessary dependencies and types
 import type { FPS } from "@/game-of-life-next-gen/game-of-life";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
@@ -17,7 +17,7 @@ describe('renderLoop', () => {
   beforeEach(() => {
     // Initialize variables or mocks before each test
     fps = { render: jest.fn() } as unknown as FPS;
-    universe = new Universe();
+    universe = {} as Universe;
     memory = new WebAssembly.Memory({ initial: 10 });
     updateTextureContext = jest.fn();
     width = 10;
