@@ -1,4 +1,4 @@
-import drawGrid from './drawGrid';
+import drawGrid from '../drawGrid';
 import { CELL_SIZE, GRID_COLOR } from '@/game-of-life-next-gen/constants';
 
 // Mocking updateTextureContext function
