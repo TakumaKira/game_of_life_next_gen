@@ -1,32 +1,26 @@
 import getRowColFromTextureHoverPosition from './getRowColFromTextureHoverPosition';
 
-// Mock the OnTextureHoverPosition type
-type OnTextureHoverPositionMock = {
-  x: number;
-  z: number;
-};
-
 describe('getRowColFromTextureHoverPosition', () => {
-  it('should return correct row and column when onTextureHoverPosition is at the center of the field', () => {
-    const onTextureHoverPosition: OnTextureHoverPositionMock = { x: 0, z: 0 };
+  it('should return correct row and column for a given onTextureHoverPosition', () => {
+    const onTextureHoverPosition = { x: 0, z: 0 }; // Center position
     const result = getRowColFromTextureHoverPosition(onTextureHoverPosition);
-    expect(result.row).toBeCloseTo(25); // Adjust this value according to your implementation
-    expect(result.col).toBeCloseTo(25); // Adjust this value according to your implementation
+    expect(result.row).toEqual(Math.floor(0.5 * FIELD_SIZE));
+    expect(result.col).toEqual(Math.floor(0.5 * FIELD_SIZE));
   });
 
-  it('should return correct row and column when onTextureHoverPosition is at the top-left corner of the field', () => {
-    const onTextureHoverPosition: OnTextureHoverPositionMock = { x: -10, z: 10 };
+  it('should return correct row and column for a given onTextureHoverPosition at (x=TEXTURE_SIZE/2, z=TEXTURE_SIZE/2)', () => {
+    const onTextureHoverPosition = { x: TEXTURE_SIZE / 2, z: TEXTURE_SIZE / 2 }; // Center position
     const result = getRowColFromTextureHoverPosition(onTextureHoverPosition);
-    expect(result.row).toBe(0);
-    expect(result.col).toBe(0);
+    expect(result.row).toEqual(Math.floor((TEXTURE_SIZE / 2 / TEXTURE_SIZE) * FIELD_SIZE));
+    expect(result.col).toEqual(Math.floor((TEXTURE_SIZE / 2 / TEXTURE_SIZE) * FIELD_SIZE));
   });
 
-  it('should return correct row and column when onTextureHoverPosition is at the bottom-right corner of the field', () => {
-    const onTextureHoverPosition: OnTextureHoverPositionMock = { x: 10, z: -10 };
+  it('should return correct row and column for a given onTextureHoverPosition at (x=-TEXTURE_SIZE/2, z=-TEXTURE_SIZE/2)', () => {
+    const onTextureHoverPosition = { x: -TEXTURE_SIZE / 2, z: -TEXTURE_SIZE / 2 }; // Center position
     const result = getRowColFromTextureHoverPosition(onTextureHoverPosition);
-    expect(result.row).toBe(49); // Assuming FIELD_SIZE is 50
-    expect(result.col).toBe(49); // Assuming FIELD_SIZE is 50
+    expect(result.row).toEqual(Math.floor(((TEXTURE_SIZE - (TEXTURE_SIZE / 2)) / TEXTURE_SIZE) * FIELD_SIZE));
+    expect(result.col).toEqual(Math.floor(((TEXTURE_SIZE - (TEXTURE_SIZE / 2)) / TEXTURE_SIZE) * FIELD_SIZE));
   });
 
-  // Add more test cases as needed for edge cases and boundary conditions
+  // Add more test cases for edge cases and other scenarios as needed
 });
