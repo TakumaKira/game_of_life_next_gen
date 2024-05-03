@@ -32,11 +32,11 @@ describe('renderLoop', () => {
 
   it('should render FPS, grid, and cells properly', () => {
     // Mock requestAnimationFrame to return a number and call the callback with a time argument
-    global.requestAnimationFrame = jest.fn(callback => {
+    global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {
       // Simulate a time argument
       const time = Date.now();
       // Call the callback with the time argument
-      return callback(time);
+      return window.setTimeout(callback, 0, time);
     });
     
     renderLoop(fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
