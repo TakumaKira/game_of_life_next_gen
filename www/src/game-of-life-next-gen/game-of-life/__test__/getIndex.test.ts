@@ -10,7 +10,7 @@ describe('getIndex function', () => {
   });
 
   test('returns correct index when width is 1', () => {
-    expect(getIndex(2, 3, 1)).toBe(5);
+    expect(getIndex(2, 0, 1)).toBe(2);
   });
 
   test('throws error for negative row', () => {
