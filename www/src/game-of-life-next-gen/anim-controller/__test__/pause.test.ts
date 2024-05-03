@@ -26,7 +26,7 @@ describe('pause function', () => {
 
     expect(getCurrentAnimId).toHaveBeenCalled();
     expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
-    expect(updateAnimId).toHaveBeenCalledWith(null);
+    expect(updateAnimId).not.toHaveBeenCalled();
     expect(result.isPlaying).toBe(false);
   });
 
@@ -48,6 +48,6 @@ describe('pause function', () => {
     pause(getCurrentAnimId, updateAnimId);
 
     expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
-    expect(updateAnimId).toHaveBeenCalledWith(null);
+    expect(updateAnimId).not.toHaveBeenCalled();
   });
 });
