@@ -1,9 +1,12 @@
 // Import necessary dependencies and the function to test
-import onClickNextFrameButton from './onClickNextFrameButton';
+import onClickNextFrameButton from '../onClickNextFrameButton';
 import { drawGrid, drawCells } from '@/game-of-life-next-gen/drawer';
 
 // Mock dependencies
-jest.mock('@/game-of-life-next-gen/drawer');
+jest.mock('@/game-of-life-next-gen/drawer', (() => ({
+  drawGrid: jest.fn(),
+  drawCells: jest.fn()
+})));
 
 describe('onClickNextFrameButton', () => {
   // Mock the necessary objects
