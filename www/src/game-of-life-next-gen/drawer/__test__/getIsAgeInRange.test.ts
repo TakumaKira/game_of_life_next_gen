@@ -8,12 +8,12 @@ describe('getIsAgeInRange', () => {
 
   // Test case when age is at the lower bound of the specified range
   it('returns true when age is at the lower bound of the specified range', () => {
-    expect(getIsAgeInRange(20, 80, 0, 4)).toBe(true);
+    expect(getIsAgeInRange(20, 80, 1, 4)).toBe(true);
   });
 
   // Test case when age is at the upper bound of the specified range
   it('returns true when age is at the upper bound of the specified range', () => {
-    expect(getIsAgeInRange(40, 80, 1, 4)).toBe(true);
+    expect(getIsAgeInRange(39, 80, 1, 4)).toBe(true);
   });
 
   // Test case when age is outside the specified range
@@ -28,11 +28,11 @@ describe('getIsAgeInRange', () => {
 
   // Test case when range length is 1
   it('returns true when range length is 1 and age is within the specified range', () => {
-    expect(getIsAgeInRange(20, 80, 1, 1)).toBe(true);
+    expect(getIsAgeInRange(20, 80, 0, 1)).toBe(true);
   });
 
   // Test case when range length is 1 and age is outside the specified range
   it('returns false when range length is 1 and age is outside the specified range', () => {
-    expect(getIsAgeInRange(30, 80, 2, 1)).toBe(false);
+    expect(getIsAgeInRange(30, 80, 1, 1)).toBe(false);
   });
 });
