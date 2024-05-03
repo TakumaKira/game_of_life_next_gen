@@ -1,3 +1,4 @@
+import { FIELD_SIZE, LIFE_SPAN } from '@/game-of-life-next-gen/constants';
 import getUniverse from '../getUniverse';
 import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 
