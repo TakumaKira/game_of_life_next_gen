@@ -38,6 +38,15 @@ describe('pause function', () => {
     expect(mockCancelAnimationFrame).toHaveBeenCalledWith(animationId);
   });
 
+  test('should not call cancelAnimationFrame when getCurrentAnimId returns null', () => {
+    const getCurrentAnimId = jest.fn().mockReturnValue(null);
+    const updateAnimId = jest.fn();
+
+    pause(getCurrentAnimId, updateAnimId);
+
+    expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
+  });
+
   test('should call updateAnimId with null', () => {
     const getCurrentAnimId = jest.fn().mockReturnValue(null);
     const updateAnimId = jest.fn();
