@@ -12,6 +12,7 @@ describe('pause function', () => {
     const result = pause(getCurrentAnimId, updateAnimId);
 
     expect(getCurrentAnimId).toHaveBeenCalled();
+    expect(mockCancelAnimationFrame).toHaveBeenCalledWith(123);
     expect(updateAnimId).toHaveBeenCalledWith(null);
     expect(result.isPlaying).toBe(false);
   });
@@ -24,6 +25,7 @@ describe('pause function', () => {
     const result = pause(getCurrentAnimId, updateAnimId);
 
     expect(getCurrentAnimId).toHaveBeenCalled();
+    expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
     expect(updateAnimId).toHaveBeenCalledWith(null);
     expect(result.isPlaying).toBe(false);
   });
@@ -36,6 +38,7 @@ describe('pause function', () => {
     pause(getCurrentAnimId, updateAnimId);
 
     expect(mockCancelAnimationFrame).toHaveBeenCalledWith(animationId);
+    expect(updateAnimId).toHaveBeenCalledWith(null);
   });
 
   test('should not call cancelAnimationFrame when getCurrentAnimId returns null', () => {
@@ -45,14 +48,6 @@ describe('pause function', () => {
     pause(getCurrentAnimId, updateAnimId);
 
     expect(mockCancelAnimationFrame).not.toHaveBeenCalled();
-  });
-
-  test('should call updateAnimId with null', () => {
-    const getCurrentAnimId = jest.fn().mockReturnValue(null);
-    const updateAnimId = jest.fn();
-
-    pause(getCurrentAnimId, updateAnimId);
-
     expect(updateAnimId).toHaveBeenCalledWith(null);
   });
 });

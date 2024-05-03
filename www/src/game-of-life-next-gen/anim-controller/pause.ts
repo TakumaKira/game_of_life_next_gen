@@ -2,7 +2,7 @@ export default function pause(getCurrentAnimId: () => number | null, updateAnimI
   const animationId = getCurrentAnimId();
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
+    updateAnimId(null);
   }
-  updateAnimId(null);
   return { isPlaying: false };
 };
