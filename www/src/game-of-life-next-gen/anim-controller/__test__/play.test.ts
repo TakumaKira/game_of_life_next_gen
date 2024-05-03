@@ -1,11 +1,13 @@
 import play from "../play";
 import renderLoop from "../renderLoop";
+import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
+import type { FPS } from "@/game-of-life-next-gen/game-of-life";
 
 // Mocks
 jest.mock("../renderLoop", () => jest.fn());
 
 describe("play function", () => {
-  let fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId;
+  let fps: FPS, universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, updateAnimId: (id: number | null) => void;
 
   beforeEach(() => {
     // Initialize mock variables
