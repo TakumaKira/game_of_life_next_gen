@@ -1,5 +1,5 @@
 import React from 'react';
-import { setup } from '@/game-of-life-next-gen'
+import { getInterface } from '@/game-of-life-next-gen'
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -56,7 +56,7 @@ max of last 100 = ${Math.round(fpsData.max)}
     if (!canvasRef.current) {
       return
     }
-    setup(canvasRef.current, updatePlayingState, updateFpsData)
+    getInterface(canvasRef.current, updatePlayingState, updateFpsData)
       .then(({ play, pause, nextFrame, destroy }) => {
         setPlay(() => play)
         setPause(() => pause)

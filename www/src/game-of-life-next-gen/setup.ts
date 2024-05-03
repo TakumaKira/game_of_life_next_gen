@@ -1,48 +1,35 @@
-import buildWasmModule from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
-import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
-
-import onDestroy from "@/game-of-life-next-gen/onDestroy";
-import setupImpl from "@/game-of-life-next-gen/setupImpl";
+import { FPS, getUniverse } from "@/game-of-life-next-gen/game-of-life";
+import { onClickCanvas, onClickNextFrameButton, onClickPlayPauseButton } from "@/game-of-life-next-gen/user-event-handler";
+import { setupGLRenderer } from "@/game-of-life-next-gen/gl-renderer";
+import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "@/game-of-life-next-gen/gl-renderer";
 import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 
-export default async function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
-  const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
-  bg.__wbg_set_wasm(wasmModule)
-  let animationId: null | number = null
-  const destroyedState = { isDestroyed: false }
-  const updateAnimId = (id: number | null) => animationId = id
-  const getCurrentAnimId = () => animationId
-  const { onTogglePlayPause, getIsPlaying, onNextFrame, onClickCanvasFnRef, dispose } = setupImpl(canvas, updatePlayingState, updateFpsData, wasmModule.memory, getCurrentAnimId, updateAnimId)
-  const play = () => {
-    if (destroyedState.isDestroyed) {
-      return
-    }
-    if (getIsPlaying()) {
-      return
-    }
-    onTogglePlayPause()
+export default function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, memory: WebAssembly.Memory, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onTogglePlayPause: () => void, getIsPlaying: () => boolean, onNextFrame: () => void, onClickCanvasFnRef: () => void, dispose: () => void } {
+  const { universe, width, height, lifeSpan } = getUniverse();
+
+  let onTextureHoverPosition: OnTextureHoverPosition = null
+  const onHoverTextureContext: OnHoverTextureContextFn = hoverPos => {
+    onTextureHoverPosition = hoverPos
   }
-  const pause = () => {
-    if (destroyedState.isDestroyed) {
-      return
-    }
-    if (!getIsPlaying()) {
-      return
-    }
-    onTogglePlayPause()
+
+  const { updateTextureContext, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
+
+  const fps = new FPS(updateFpsData);
+
+  const playingState = { isPlaying: false };
+
+  const onTogglePlayPause = () => {
+    const result = onClickPlayPauseButton(fps, universe, memory, updateTextureContext, width, height, lifeSpan, getCurrentAnimId, updateAnimId)
+    playingState.isPlaying = result.isPlaying
+    updatePlayingState(playingState.isPlaying)
   }
-  const nextFrame = () => {
-    if (destroyedState.isDestroyed) {
-      return
-    }
-    onNextFrame()
-  }
-  const destroy = () => {
-    updatePlayingState(false)
-    destroyedState.isDestroyed = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose).isDestroyed
-  }
-  if (autoStart) {
-    play()
-  }
-  return { play, pause, nextFrame, destroy }
+
+  const onNextFrame = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height, lifeSpan)
+
+  const onClickCanvasFnRef = () => onClickCanvas(universe, memory, updateTextureContext, width, height, lifeSpan, onTextureHoverPosition)
+  canvas.addEventListener("click", onClickCanvasFnRef);
+
+  const getIsPlaying = () => playingState.isPlaying
+
+  return { onTogglePlayPause, getIsPlaying, onNextFrame, onClickCanvasFnRef, dispose }
 }
