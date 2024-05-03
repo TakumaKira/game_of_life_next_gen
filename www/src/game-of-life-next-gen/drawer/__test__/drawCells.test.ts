@@ -1,4 +1,4 @@
-import drawCells from './drawCells';
+import drawCells from '../drawCells';
 import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 
 // Mock the updateTextureContext function
