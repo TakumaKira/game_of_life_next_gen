@@ -31,19 +31,31 @@ describe('FPS', () => {
     });
 
     it('should compute the minimum, maximum, and mean FPS accurately', () => {
-      jest.spyOn(performance, 'now').mockReturnValueOnce(1000); // Mock initial timestamp
+      // Mock initial timestamp
+      jest.spyOn(performance, 'now').mockReturnValueOnce(1000);
+    
+      // Mock FPS values for easier assertion
+      const mockFpsValues = [30, 40, 50, 20, 60, 70, 80, 90, 100, 110];
+    
       for (let i = 0; i < 10; i++) {
+        // Mock delta to be 1000 milliseconds for consistent FPS calculation
+        jest.spyOn(performance, 'now').mockReturnValueOnce(1000 + i * 1000);
+    
         fps.render();
       }
-      // Mock FPS values for easier assertion
-      fps.frames = [30, 40, 50, 20, 60, 70, 80, 90, 100, 110];
-
+    
+      fps.frames = mockFpsValues;
+    
       fps.render();
+    
+      // Calculate the expected mean FPS
+      const expectedMean = mockFpsValues.reduce((acc, val) => acc + val, 0) / mockFpsValues.length;
+    
       expect(mockUpdateFpsData).toHaveBeenCalledWith({
         fps: expect.any(Number),
-        mean: 65, // (30 + 40 + 50 + 20 + 60 + 70 + 80 + 90 + 100 + 110) / 10
-        min: 20,
-        max: 110,
+        mean: expectedMean,
+        min: Math.min(...mockFpsValues),
+        max: Math.max(...mockFpsValues),
       });
     });
   });
