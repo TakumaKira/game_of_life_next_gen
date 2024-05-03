@@ -1,2 +1,2 @@
-export type { OnTextureHoverPositionFn, OnHoverTextureContextFn, TextContextUpdateFn } from './types'
+export type { OnTextureHoverPosition, OnHoverTextureContextFn, TextContextUpdateFn, NonNullable } from './types'
 export { setupGLRenderer } from './setupGLRenderer'
