@@ -1,4 +1,4 @@
-import onDestory from './onDestroy'; // Adjust the import path as per your project structure
+import onDestroy from '../onDestroy'; // Adjust the import path as per your project structure
 
 describe('onDestroy function', () => {
   let onClickCanvasFnRef: jest.Mock;
@@ -18,7 +18,7 @@ describe('onDestroy function', () => {
   });
 
   it('should remove event listener, cancel animation frame, and dispose', () => {
-    const result = onDestory(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
+    const result = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
 
     expect(onClickCanvasFnRef).toHaveBeenCalled();
     expect(canvas.removeEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
@@ -31,7 +31,7 @@ describe('onDestroy function', () => {
   it('should not cancel animation frame if current animation ID is null', () => {
     getCurrentAnimId.mockReturnValueOnce(null);
 
-    const result = onDestory(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
+    const result = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose);
 
     expect(onClickCanvasFnRef).toHaveBeenCalled();
     expect(canvas.removeEventListener).toHaveBeenCalledWith('click', onClickCanvasFnRef);
