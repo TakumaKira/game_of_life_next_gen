@@ -4,10 +4,10 @@ import { FIELD_SIZE, LIFE_SPAN } from "@/game-of-life-next-gen/constants";
 
 jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => {
   const mockUniverse = {
-    new: jest.fn((width, height) => ({
-      width: jest.fn(() => width),
-      height: jest.fn(() => height),
-      get_life_span: jest.fn(() => 42), // Mocking the life span for testing
+    new: jest.fn((size, lifeSpan) => ({
+      width: jest.fn(() => size),
+      height: jest.fn(() => size),
+      get_life_span: jest.fn(() => lifeSpan),
     })),
   };
   return { Universe: mockUniverse };
@@ -26,12 +26,12 @@ describe('getUniverse', () => {
     const { width, height } = getUniverse();
 
     expect(width).toBe(FIELD_SIZE);
-    expect(height).toBe(FIELD_SIZE); // Assuming width and height are the same
+    expect(height).toBe(FIELD_SIZE);
   });
 
   it('should return the life span of the constructed universe', () => {
     const { lifeSpan } = getUniverse();
 
-    expect(lifeSpan).toBe(42); // Assuming life span is always 42 as per the mock
+    expect(lifeSpan).toBe(LIFE_SPAN);
   });
 });
