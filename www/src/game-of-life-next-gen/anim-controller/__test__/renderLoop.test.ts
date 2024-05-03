@@ -17,7 +17,7 @@ describe('renderLoop', () => {
   beforeEach(() => {
     // Initialize variables or mocks before each test
     fps = { render: jest.fn() } as unknown as FPS;
-    universe = {} as Universe;
+    universe = { tick: jest.fn() } as unknown as Universe;
     memory = new WebAssembly.Memory({ initial: 10 });
     updateTextureContext = jest.fn();
     width = 10;
