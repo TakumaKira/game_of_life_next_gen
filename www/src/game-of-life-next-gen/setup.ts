@@ -1,7 +1,7 @@
 import buildWasmModule from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
-import onDestory from "@/game-of-life-next-gen/onDestory";
+import onDestroy from "@/game-of-life-next-gen/onDestroy";
 import setupImpl from "@/game-of-life-next-gen/setupImpl";
 import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 
@@ -39,7 +39,7 @@ export default async function setup(canvas: HTMLCanvasElement, updatePlayingStat
   }
   const destroy = () => {
     updatePlayingState(false)
-    destroyedState.isDestroyed = onDestory(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose).isDestroyed
+    destroyedState.isDestroyed = onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose).isDestroyed
   }
   if (autoStart) {
     play()
