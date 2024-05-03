@@ -3,6 +3,7 @@ import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import { getIndex } from "@/game-of-life-next-gen/game-of-life";
 import { ALIVE_COLORS, CELL_SIZE, DEAD_COLOR } from "@/game-of-life-next-gen/constants";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
+import getIsAgeInRange from "./getIsAgeInRange";
 
 export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number) {
   const cellsStatePtr = universe.cells_state();
@@ -23,10 +24,7 @@ export default function drawCells(universe: Universe, memory: WebAssembly.Memory
           if (cellsState[idx] !== CellState.Alive) {
             continue;
           }
-          const isAgeInRange = ((age, lifeSpan, rangeIndex, rangeLength) => {
-            const rangeSpan = lifeSpan / rangeLength
-            return rangeSpan * rangeIndex <= age && age < rangeSpan * (rangeIndex + 1)
-          })(cellsAge[idx], lifeSpan, rangeIndex, ALIVE_COLORS.length);
+          const isAgeInRange = getIsAgeInRange(cellsAge[idx], lifeSpan, rangeIndex, ALIVE_COLORS.length);
           if (!isAgeInRange) {
             continue;
           }
