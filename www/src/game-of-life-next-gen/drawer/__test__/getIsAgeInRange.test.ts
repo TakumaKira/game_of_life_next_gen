@@ -1,4 +1,4 @@
-import getIsAgeInRange from './getIsAgeInRange';
+import getIsAgeInRange from '../getIsAgeInRange';
 
 describe('getIsAgeInRange', () => {
   // Test case when age is within the specified range
