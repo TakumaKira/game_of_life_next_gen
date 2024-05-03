@@ -1,4 +1,4 @@
-import getUniverse from './getUniverse'; // Adjust the import path as per your project structure
+import getUniverse from '../getUniverse';
 import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg";
 
 describe('getUniverse', () => {
