@@ -1,5 +1,5 @@
 import getUniverse from '../getUniverse';
-import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg";
+import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 
 describe('getUniverse', () => {
   let mockUniverse;
