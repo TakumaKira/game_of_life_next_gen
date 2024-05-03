@@ -6,8 +6,8 @@ import { isPaused, pause, play } from "@/game-of-life-next-gen/anim-controller";
 // Mock dependencies
 jest.mock('@/game-of-life-next-gen/anim-controller', () => ({
   isPaused: jest.fn(),
-  pause: jest.fn(),
-  play: jest.fn(),
+  pause: jest.fn().mockReturnValue({ isPlaying: false }),
+  play: jest.fn().mockReturnValue({ isPlaying: true }),
 }));
 
 // Mock FPS and Universe objects
