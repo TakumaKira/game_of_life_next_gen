@@ -1,9 +1,9 @@
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 import { FIELD_SIZE } from "@/game-of-life-next-gen/constants";
 import { drawGrid, drawCells } from "@/game-of-life-next-gen/drawer";
-import type { OnTextureHoverPosition, TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
+import type { OnTextureHoverPositionFn, TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 
-export default function onClickCanvas(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, onTextureHoverPosition: OnTextureHoverPosition): void {
+export default function onClickCanvas(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, onTextureHoverPosition: OnTextureHoverPositionFn): void {
   if (!onTextureHoverPosition) {
     return
   }

@@ -1,9 +1,11 @@
+import type { UpdateFpsDataFn } from "./types";
+
 export default class FPS {
-  updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void;
+  updateFpsData: UpdateFpsDataFn;
   frames: number[] = [];
   lastFrameTimeStamp = performance.now();
 
-  constructor(updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void) {
+  constructor(updateFpsData: UpdateFpsDataFn) {
     this.updateFpsData = updateFpsData
   }
 

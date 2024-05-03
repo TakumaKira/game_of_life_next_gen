@@ -3,8 +3,9 @@ import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 import onDestory from "@/game-of-life-next-gen/onDestory";
 import setupImpl from "@/game-of-life-next-gen/setupImpl";
+import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 
-export default async function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
+export default async function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
   const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
   bg.__wbg_set_wasm(wasmModule)
   let animationId: null | number = null

@@ -1,5 +1,5 @@
 import { ICanvasRenderingContext } from "babylonjs"
 
-export type OnTextureHoverPosition = { x: number, z: number } | null
-export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPosition) => void
+export type OnTextureHoverPositionFn = { x: number, z: number } | null
+export type OnHoverTextureContextFn = (hoverPos: OnTextureHoverPositionFn) => void
 export type TextContextUpdateFn = (textureContext: ICanvasRenderingContext) => void

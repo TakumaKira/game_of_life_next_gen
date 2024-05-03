@@ -1,12 +1,13 @@
 import { FPS, getUniverse } from "@/game-of-life-next-gen/game-of-life";
 import { onClickCanvas, onClickNextFrameButton, onClickPlayPauseButton } from "@/game-of-life-next-gen/user-event-handler";
 import { setupGLRenderer } from "@/game-of-life-next-gen/gl-renderer";
-import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "@/game-of-life-next-gen/gl-renderer";
+import type { OnTextureHoverPositionFn, OnHoverTextureContextFn } from "@/game-of-life-next-gen/gl-renderer";
+import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 
-export default function setupImpl(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: (fpsData: { fps: number, mean: number, min: number, max: number }) => void, memory: WebAssembly.Memory, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onTogglePlayPause: () => void, getIsPlaying: () => boolean, onNextFrame: () => void, onClickCanvasFnRef: () => void, dispose: () => void } {
+export default function setupImpl(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, memory: WebAssembly.Memory, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onTogglePlayPause: () => void, getIsPlaying: () => boolean, onNextFrame: () => void, onClickCanvasFnRef: () => void, dispose: () => void } {
   const { universe, width, height, lifeSpan } = getUniverse();
 
-  let onTextureHoverPosition: OnTextureHoverPosition = null
+  let onTextureHoverPosition: OnTextureHoverPositionFn = null
   const onHoverTextureContext: OnHoverTextureContextFn = hoverPos => {
     onTextureHoverPosition = hoverPos
   }
