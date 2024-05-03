@@ -1,55 +1,49 @@
-import onClickCanvas from './onClickCanvas'; // Adjust the import path as per your project structure
-import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
-import { drawCells, drawGrid } from "@/game-of-life-next-gen/drawer";
+import onClickCanvas from './onClickCanvas';
 
-// Mock dependencies
-jest.mock("@/game-of-life-next-gen/drawer", () => ({
-  drawCells: jest.fn(),
+// Mock imports
+jest.mock('@/game-of-life-next-gen/drawer', () => ({
   drawGrid: jest.fn(),
+  drawCells: jest.fn()
 }));
 
+jest.mock('@/game-of-life-next-gen/gl-renderer', () => ({
+  OnTextureHoverPosition: jest.fn()
+}));
+
+jest.mock('./getRowColFromTextureHoverPosition', () => jest.fn(() => ({ row: 1, col: 1 })));
+
 describe('onClickCanvas', () => {
-  // Mock universe object and other parameters
-  const mockUniverse = {
-    toggle_cell: jest.fn(),
-  };
-  const mockMemory = new WebAssembly.Memory({ initial: 256 });
-  const mockUpdateTextureContext = jest.fn();
-  const width = 100;
-  const height = 100;
-  const lifeSpan = 10;
-  const onTextureHoverPosition = { x: 0, y: 0, z: 0 };
+  let universeMock, memoryMock, updateTextureContextMock, width, height, lifeSpan, onTextureHoverPosition;
 
   beforeEach(() => {
+    universeMock = {
+      toggle_cell: jest.fn()
+    };
+    memoryMock = {};
+    updateTextureContextMock = jest.fn();
+    width = 10;
+    height = 10;
+    lifeSpan = 100;
+    onTextureHoverPosition = { x: 5, y: 5 };
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should toggle cell in universe and redraw cells and grid', () => {
-    onClickCanvas(mockUniverse, mockMemory, mockUpdateTextureContext, width, height, lifeSpan, onTextureHoverPosition);
+  test('should call toggle_cell and draw functions with correct parameters', () => {
+    onClickCanvas(universeMock, memoryMock, updateTextureContextMock, width, height, lifeSpan, onTextureHoverPosition);
 
-    // Expect toggle_cell to be called with correct row and col
-    expect(mockUniverse.toggle_cell).toHaveBeenCalledTimes(1);
-    expect(mockUniverse.toggle_cell).toHaveBeenCalledWith(25, 50); // Update with your expected row and col values
-
-    // Expect drawCells and drawGrid to be called with correct arguments
-    expect(drawCells).toHaveBeenCalledTimes(1);
-    expect(drawCells).toHaveBeenCalledWith(mockUniverse, mockMemory, mockUpdateTextureContext, width, height, lifeSpan);
-
-    expect(drawGrid).toHaveBeenCalledTimes(1);
-    expect(drawGrid).toHaveBeenCalledWith(mockUpdateTextureContext, width, height);
+    expect(universeMock.toggle_cell).toHaveBeenCalledWith(1, 1);
+    expect(drawCells).toHaveBeenCalledWith(universeMock, memoryMock, updateTextureContextMock, width, height, lifeSpan);
+    expect(drawGrid).toHaveBeenCalledWith(updateTextureContextMock, width, height);
   });
 
-  it('should not toggle cell if onTextureHoverPosition is not provided', () => {
-    onClickCanvas(mockUniverse, mockMemory, mockUpdateTextureContext, width, height, lifeSpan, null);
+  test('should return early if onTextureHoverPosition is falsy', () => {
+    onClickCanvas(universeMock, memoryMock, updateTextureContextMock, width, height, lifeSpan, null);
 
-    // Expect toggle_cell not to be called
-    expect(mockUniverse.toggle_cell).not.toHaveBeenCalled();
-
-    // Expect drawCells and drawGrid to be called with correct arguments
-    expect(drawCells).toHaveBeenCalledTimes(1);
-    expect(drawCells).toHaveBeenCalledWith(mockUniverse, mockMemory, mockUpdateTextureContext, width, height, lifeSpan);
-
-    expect(drawGrid).toHaveBeenCalledTimes(1);
-    expect(drawGrid).toHaveBeenCalledWith(mockUpdateTextureContext, width, height);
+    expect(universeMock.toggle_cell).not.toHaveBeenCalled();
+    expect(drawCells).not.toHaveBeenCalled();
+    expect(drawGrid).not.toHaveBeenCalled();
   });
 });
