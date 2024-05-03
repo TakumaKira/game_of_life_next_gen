@@ -38,6 +38,8 @@ describe('FPS', () => {
       const mockFpsValues = [30, 40, 50, 20, 60, 70, 80, 90, 100, 110];
     
       fps.frames = mockFpsValues;
+      fps.FRAMES_LENGTH = mockFpsValues.length;
+      fps.framesUsedLength = mockFpsValues.length;
     
       fps.render();
     
