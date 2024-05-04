@@ -1,5 +1,5 @@
-import nextFrameImpl from './nextFrameImpl';
-import { DestroyedState } from './types';
+import nextFrameImpl from '../nextFrameImpl';
+import type { DestroyedState } from '../types';
 
 // Mock functions
 const onNextFrameMock = jest.fn();
