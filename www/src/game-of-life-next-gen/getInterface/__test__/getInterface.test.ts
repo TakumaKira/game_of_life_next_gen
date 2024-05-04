@@ -32,6 +32,10 @@ describe('getInterface', () => {
     updateFpsData = jest.fn();
   });
 
+  test('setup wasm correctly', async () => {
+    
+  })
+
   test('returns an object with play, pause, nextFrame, and destroy functions', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData);
     expect(gameInterface).toEqual(expect.objectContaining({
