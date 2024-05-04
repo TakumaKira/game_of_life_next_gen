@@ -35,6 +35,9 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
     if (destroyedState.isDestroyed) {
       return
     }
+    if (getIsPlaying()) {
+      pause()
+    }
     onNextFrame()
   }
   const destroy = () => {

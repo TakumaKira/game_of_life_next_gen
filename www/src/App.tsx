@@ -73,9 +73,6 @@ max of last 100 = ${Math.round(fpsData.max)}
     }
   }
   const onClickNextFrameButton = () => {
-    if (isPlaying) {
-      return
-    }
     nextFrame?.()
   }
   return (
