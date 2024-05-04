@@ -1,4 +1,4 @@
-import pauseImpl from './pauseImpl';
+import pauseImpl from '../pauseImpl';
 
 describe('pauseImpl function', () => {
   // Mocked dependencies
