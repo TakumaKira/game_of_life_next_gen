@@ -1,8 +1,8 @@
 import buildWasmModule from "wasm-game-of-life/wasm_game_of_life_bg.wasm";
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
-import onDestroy from "@/game-of-life-next-gen/onDestroy";
-import setup from "@/game-of-life-next-gen/setup";
+import onDestroy from "./onDestroy";
+import setup from "./setup";
 import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 
 export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
