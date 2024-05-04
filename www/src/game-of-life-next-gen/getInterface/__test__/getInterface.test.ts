@@ -1,8 +1,8 @@
-import type { UpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
-import getInterface from '../getInterface';
-
 // Mocking dependencies
-jest.mock('wasm-game-of-life/wasm_game_of_life_bg.wasm', () => ({ default: jest.fn() }));
+jest.mock('wasm-game-of-life/wasm_game_of_life_bg.wasm', () => ({
+  __esModule: true,
+  default: jest.fn()
+}));
 jest.mock('wasm-game-of-life/wasm_game_of_life_bg.js', () => ({ __wbg_set_wasm: jest.fn() }));
 jest.mock('../../setup', () => ({ 
   __esModule: true,
@@ -15,6 +15,13 @@ jest.mock('../../setup', () => ({
   }))
 }));
 jest.mock('../../onDestroy', () => jest.fn());
+jest.mock('../playImpl', () => ({ default: jest.fn() }))
+jest.mock('../pauseImpl', () => ({ default: jest.fn() }))
+jest.mock('../nextFrameImpl', () => ({ default: jest.fn() }))
+jest.mock('../destroyImpl', () => ({ default: jest.fn() }))
+
+import type { UpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
+import getInterface from '../getInterface';
 
 describe('getInterface', () => {
   let canvas: HTMLCanvasElement;
