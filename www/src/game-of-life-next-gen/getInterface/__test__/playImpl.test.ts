@@ -1,4 +1,4 @@
-import playImpl from "./playImpl";
+import playImpl from "../playImpl";
 
 describe("playImpl function", () => {
   // Mock functions
