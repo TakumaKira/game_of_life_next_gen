@@ -1,5 +1,5 @@
-import destroyImpl from './destroyImpl';
-import { DestroyedState } from './types';
+import destroyImpl from '../destroyImpl';
+import type { DestroyedState } from '../types';
 
 describe('destroyImpl function', () => {
   let updatePlayingState: jest.Mock<void, [boolean]>;
