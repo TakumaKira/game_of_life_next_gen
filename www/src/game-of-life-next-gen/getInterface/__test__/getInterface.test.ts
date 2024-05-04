@@ -1,24 +1,22 @@
 // Mocking dependencies
-jest.mock('wasm-game-of-life/wasm_game_of_life_bg.wasm', () => ({
-  __esModule: true,
-  default: jest.fn()
+jest.mock('wasm-game-of-life/wasm_game_of_life_bg.wasm', () =>
+  jest.fn().mockResolvedValue({ memory: {} })
+);
+jest.mock('wasm-game-of-life/wasm_game_of_life_bg.js', () => ({
+  __wbg_set_wasm: jest.fn()
 }));
-jest.mock('wasm-game-of-life/wasm_game_of_life_bg.js', () => ({ __wbg_set_wasm: jest.fn() }));
-jest.mock('../../setup', () => ({ 
-  __esModule: true,
-  default: jest.fn(() => ({
-    onTogglePlayPause: jest.fn(),
-    getIsPlaying: jest.fn(),
-    onNextFrame: jest.fn(),
-    onClickCanvasFnRef: jest.fn(),
-    dispose: jest.fn()
-  }))
+jest.mock('../../setup', () => jest.fn().mockReturnValue({
+  onTogglePlayPause: jest.fn(),
+  getIsPlaying: jest.fn(),
+  onNextFrame: jest.fn(),
+  onClickCanvasFnRef: jest.fn(),
+  dispose: jest.fn()
 }));
 jest.mock('../../onDestroy', () => jest.fn());
-jest.mock('../playImpl', () => ({ default: jest.fn() }))
-jest.mock('../pauseImpl', () => ({ default: jest.fn() }))
-jest.mock('../nextFrameImpl', () => ({ default: jest.fn() }))
-jest.mock('../destroyImpl', () => ({ default: jest.fn() }))
+jest.mock('../playImpl', () => jest.fn())
+jest.mock('../pauseImpl', () => jest.fn())
+jest.mock('../nextFrameImpl', () => jest.fn())
+jest.mock('../destroyImpl', () => jest.fn())
 
 import type { UpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
 import getInterface from '../getInterface';
