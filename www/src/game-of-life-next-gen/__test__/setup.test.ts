@@ -1,4 +1,5 @@
 // Import the function to test
+import { AnimationState } from '../anim-controller';
 import { FPS, getUniverse } from '../game-of-life';
 import { setupGLRenderer } from '../gl-renderer';
 import setup from '../setup';
@@ -19,6 +20,19 @@ jest.mock('@/game-of-life-next-gen/user-event-handler', () => ({
 jest.mock('@/game-of-life-next-gen/gl-renderer', () => ({
   setupGLRenderer: jest.fn(() => ({ updateTextureContext: jest.fn(), dispose: mockDisposeGLRenderer })),
 }));
+const mockAnimationStateConstructor = jest.fn();
+const mockRegisterOnUpdatePlayingState = jest.fn();
+const mockClear = jest.fn();
+jest.mock('../anim-controller', () => ({
+  __esModule: true,
+  AnimationState: class {
+    constructor() {
+      mockAnimationStateConstructor();
+    }
+    registerOnUpdatePlayingState = mockRegisterOnUpdatePlayingState;
+    clear = mockClear;
+  }
+}))
 
 describe('setup function', () => {
   let canvas: HTMLCanvasElement | null;
@@ -26,8 +40,7 @@ describe('setup function', () => {
   let updatePlayingState: jest.Mock | null;
   let updateFpsData: jest.Mock | null;
   let memory: WebAssembly.Memory | null;
-  let getCurrentAnimId: jest.Mock | null;
-  let updateAnimId: jest.Mock | null;
+  let animationState: AnimationState | null;
 
   beforeEach(() => {
     canvas = document.createElement('canvas');
@@ -35,8 +48,7 @@ describe('setup function', () => {
     updatePlayingState = jest.fn();
     updateFpsData = jest.fn();
     memory = new WebAssembly.Memory({ initial: 1 });
-    getCurrentAnimId = jest.fn();
-    updateAnimId = jest.fn();
+    animationState = new AnimationState();
   });
 
   afterEach(() => {
@@ -46,47 +58,46 @@ describe('setup function', () => {
     updatePlayingState = null;
     updateFpsData = null;
     memory = null;
-    getCurrentAnimId = null;
-    updateAnimId = null;
+    animationState = null;
   });
 
   test('returns correct functions and state', () => {
-    const result = setup(canvas!, updatePlayingState!, updateFpsData!, memory!, getCurrentAnimId!, updateAnimId!);
+    const result = setup(canvas!, updatePlayingState!, updateFpsData!, memory!);
 
     expect(getUniverse).toHaveBeenCalled();
     expect(setupGLRenderer).toHaveBeenCalled();
+    expect(mockAnimationStateConstructor).toHaveBeenCalled();
+    expect(mockRegisterOnUpdatePlayingState).toHaveBeenCalledWith(updatePlayingState);
     expect(FPS).toHaveBeenCalledWith(updateFpsData);
     expect(mockCanvasAddEventListener).toHaveBeenCalledWith('click', expect.any(Function));
 
     // Ensure the correct functions are returned
     expect(typeof result.onTogglePlayPause).toBe('function');
-    expect(typeof result.getIsPlaying).toBe('function');
+    expect(result.animationState instanceof AnimationState).toBe(true);
     expect(typeof result.onNextFrame).toBe('function');
     expect(typeof result.onClickCanvasFnRef).toBe('function');
-    expect(typeof result.dispose).toBe('function');
+    expect(typeof result.destroy).toBe('function');
 
+    expect(onClickPlayPauseButton).not.toHaveBeenCalled()
     // Simulate calling the toggle function
     result.onTogglePlayPause();
-
     // Ensure updatePlayingState was called with correct value
-    expect(onClickPlayPauseButton).toHaveBeenCalledWith({ updateFpsData: expect.any(Function) }, expect.any(Object), memory, expect.any(Function), 0, 0, 0, getCurrentAnimId, updateAnimId);
-    expect(updatePlayingState).toHaveBeenCalledWith(false);
+    expect(onClickPlayPauseButton).toHaveBeenCalledWith({ updateFpsData: expect.any(Function) }, expect.any(Object), memory, expect.any(Function), 0, 0, 0, animationState);
 
-    expect(result.getIsPlaying()).toBe(false);
-
+    expect(onClickNextFrameButton).not.toHaveBeenCalled()
     // Simulate calling the next frame function
     result.onNextFrame();
-
     expect(onClickNextFrameButton).toHaveBeenCalledWith(expect.any(Object), memory, expect.any(Function), 0, 0, 0);
 
+    expect(onClickCanvas).not.toHaveBeenCalled()
     // Simulate clicking on canvas
     result.onClickCanvasFnRef();
-
     expect(onClickCanvas).toHaveBeenCalledWith(expect.any(Object), memory, expect.any(Function), 0, 0, 0, null);
 
-    result.dispose();
-
+    expect(mockDisposeGLRenderer).not.toHaveBeenCalled();
+    result.destroy();
     expect(mockDisposeGLRenderer).toHaveBeenCalled();
+    expect(mockClear).toHaveBeenCalled();
 
     // You can add more assertions here if necessary
   });
