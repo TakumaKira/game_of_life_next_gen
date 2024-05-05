@@ -1,24 +1,68 @@
-import destroyImpl from '../destroyImpl';
-import type { DestroyedState } from '../types';
+import destroyImpl from "./destroyImpl";
+import { AnimationState } from "../anim-controller";
 
-describe('destroyImpl function', () => {
-  let onDestroy: jest.Mock<{ isDestroyed: boolean }, []>;
-  let destroyedState: DestroyedState;
+// Mock objects for testing
+const onClickCanvasFnRefMock = jest.fn();
+const canvasMock = document.createElement("canvas");
+const animationStateMock: AnimationState = {
+  isPlaying: false,
+  cancel: jest.fn()
+};
+const destroySetupMock = jest.fn();
+const destroyedStateMock = {
+  isDestroyed: false,
+  destroy: jest.fn()
+};
 
+describe("destroyImpl function", () => {
   beforeEach(() => {
-    onDestroy = jest.fn().mockReturnValue({ isDestroyed: true });
-    destroyedState = { isDestroyed: false };
+    jest.clearAllMocks();
   });
 
-  it('should call onDestroy', () => {
-    destroyImpl(onDestroy, destroyedState);
-
-    expect(onDestroy).toHaveBeenCalled();
+  it("should not do anything if destroyedState.isDestroyed is true", () => {
+    const destroyedStateMock = { isDestroyed: true };
+    destroyImpl(
+      onClickCanvasFnRefMock,
+      canvasMock,
+      animationStateMock,
+      destroySetupMock,
+      destroyedStateMock
+    );
+    expect(onClickCanvasFnRefMock).not.toBeCalled();
+    expect(animationStateMock.cancel).not.toBeCalled();
+    expect(destroySetupMock).not.toBeCalled();
+    expect(destroyedStateMock.destroy).not.toBeCalled();
   });
 
-  it('should update destroyedState based on onDestroy result', () => {
-    destroyImpl(onDestroy, destroyedState);
+  it("should remove click event listener and call destroySetup and destroyedState.destroy if isDestroyed is false", () => {
+    destroyImpl(
+      onClickCanvasFnRefMock,
+      canvasMock,
+      animationStateMock,
+      destroySetupMock,
+      destroyedStateMock
+    );
+    expect(canvasMock.removeEventListener).toBeCalledWith(
+      "click",
+      onClickCanvasFnRefMock
+    );
+    expect(animationStateMock.cancel).not.toBeCalled();
+    expect(destroySetupMock).toBeCalled();
+    expect(destroyedStateMock.destroy).toBeCalled();
+  });
 
-    expect(destroyedState.isDestroyed).toBe(true);
+  it("should cancel animation if animationState.isPlaying is true", () => {
+    const animationStateMockWithAnimation: AnimationState = {
+      isPlaying: true,
+      cancel: jest.fn()
+    };
+    destroyImpl(
+      onClickCanvasFnRefMock,
+      canvasMock,
+      animationStateMockWithAnimation,
+      destroySetupMock,
+      destroyedStateMock
+    );
+    expect(animationStateMockWithAnimation.cancel).toBeCalled();
   });
 });
