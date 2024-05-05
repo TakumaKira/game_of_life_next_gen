@@ -1,36 +1,32 @@
+import type { AnimationState } from '@/game-of-life-next-gen/anim-controller';
 import pauseImpl from '../pauseImpl';
 
 describe('pauseImpl function', () => {
   // Mocked dependencies
   const onTogglePlayPauseMock = jest.fn();
-  const getIsPlayingMock = jest.fn();
-  const destroyedStateMock = { isDestroyed: false };
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should call onTogglePlayPause if getIsPlaying returns true and destroyedState.isDestroyed is false', () => {
-    getIsPlayingMock.mockReturnValueOnce(true);
-
-    pauseImpl(onTogglePlayPauseMock, getIsPlayingMock, destroyedStateMock);
-
+  it('should call onTogglePlayPause if AnimationState.isPlaying returns true and destroyedState.isDestroyed is false', () => {
+    const destroyedStateMock = { isDestroyed: false };
+    const animationStateMock = { isPlaying: true };
+    pauseImpl(onTogglePlayPauseMock, animationStateMock as AnimationState, destroyedStateMock);
     expect(onTogglePlayPauseMock).toHaveBeenCalledTimes(1);
   });
 
-  it('should not call onTogglePlayPause if getIsPlaying returns false', () => {
-    getIsPlayingMock.mockReturnValueOnce(false);
-
-    pauseImpl(onTogglePlayPauseMock, getIsPlayingMock, destroyedStateMock);
-
+  it('should not call onTogglePlayPause if AnimationState.isPlaying returns false', () => {
+    const destroyedStateMock = { isDestroyed: false };
+    const animationStateMock = { isPlaying: false };
+    pauseImpl(onTogglePlayPauseMock, animationStateMock as AnimationState, destroyedStateMock);
     expect(onTogglePlayPauseMock).not.toHaveBeenCalled();
   });
 
   it('should not call onTogglePlayPause if destroyedState.isDestroyed is true', () => {
     const destroyedStateDestroyedMock = { isDestroyed: true };
-
-    pauseImpl(onTogglePlayPauseMock, getIsPlayingMock, destroyedStateDestroyedMock);
-
+    const animationStateMock = { isPlaying: true };
+    pauseImpl(onTogglePlayPauseMock, animationStateMock as AnimationState, destroyedStateDestroyedMock);
     expect(onTogglePlayPauseMock).not.toHaveBeenCalled();
   });
 
