@@ -1,5 +1,6 @@
 import type { AnimationState } from "@/game-of-life-next-gen/anim-controller";
 import playImpl from "../playImpl";
+import type DestroyedState from "../DestroyedState";
 
 describe("playImpl function", () => {
   // Mock functions
@@ -10,29 +11,35 @@ describe("playImpl function", () => {
   });
 
   it("should call onTogglePlayPause if not playing and not destroyed", () => {
-    const destroyedState = { isDestroyed: false };
-    const animationState = { isPlaying: false};
-
-    playImpl(onTogglePlayPause, animationState as AnimationState, destroyedState);
-
+    const animationStateMock = {
+      isPlaying: false
+    } as AnimationState;
+    const destroyedStateMock = {
+      isDestroyed: false,
+    } as DestroyedState;
+    playImpl(onTogglePlayPause, animationStateMock, destroyedStateMock);
     expect(onTogglePlayPause).toHaveBeenCalled();
   });
 
   it("should not call onTogglePlayPause if playing", () => {
-    const destroyedState = { isDestroyed: false };
-    const animationState = { isPlaying: true};
-
-    playImpl(onTogglePlayPause, animationState as AnimationState, destroyedState);
-
+    const animationStateMock = {
+      isPlaying: true
+    } as AnimationState;
+    const destroyedStateMock = {
+      isDestroyed: false,
+    } as DestroyedState;
+    playImpl(onTogglePlayPause, animationStateMock, destroyedStateMock);
     expect(onTogglePlayPause).not.toHaveBeenCalled();
   });
 
   it("should not call onTogglePlayPause if destroyed", () => {
-    const destroyedState = { isDestroyed: true };
-    const animationState = { isPlaying: false};
-
-    playImpl(onTogglePlayPause, animationState as AnimationState, destroyedState);
-
+    const animationStateMock = {
+      isPlaying: false
+    } as AnimationState;
+    const destroyedStateMock = {
+      isDestroyed: true,
+    } as DestroyedState;
+    playImpl(onTogglePlayPause, animationStateMock, destroyedStateMock);
     expect(onTogglePlayPause).not.toHaveBeenCalled();
   });
 });
