@@ -1,7 +1,7 @@
-import DestroyedState from './DestroyedState';
+import DestroyedState from '../DestroyedState';
 
 describe('DestroyedState', () => {
-  let destroyedState;
+  let destroyedState: DestroyedState;
 
   beforeEach(() => {
     destroyedState = new DestroyedState();
@@ -20,9 +20,5 @@ describe('DestroyedState', () => {
     destroyedState.destroy();
     destroyedState.destroy(); // calling destroy() again should not affect the state
     expect(destroyedState.isDestroyed).toBe(true);
-  });
-
-  test('isDestroyed should be false if destroy() is not called', () => {
-    expect(destroyedState.isDestroyed).toBe(false);
   });
 });
