@@ -2,6 +2,15 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import App from '../App';
 
+jest.mock('@/game-of-life-next-gen', () => ({
+  getInterface: jest.fn().mockResolvedValue({
+    play: jest.fn(),
+    pause: jest.fn(),
+    nextFrame: jest.fn(),
+    destroy: jest.fn(),
+  }),
+}));
+
 test('renders without crashing', () => {
   render(<App />);
 });
