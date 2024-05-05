@@ -1,10 +1,11 @@
-import { DestroyedState } from "./types"
+import type { AnimationState } from "../anim-controller"
+import type { DestroyedState } from "./types"
 
-export default function playImpl(onTogglePlayPause: () => void, getIsPlaying: () => boolean, destroyedState: DestroyedState) {
+export default function playImpl(onTogglePlayPause: () => void, animationState: AnimationState, destroyedState: DestroyedState) {
   if (destroyedState.isDestroyed) {
     return
   }
-  if (getIsPlaying()) {
+  if (animationState.isPlaying) {
     return
   }
   onTogglePlayPause()

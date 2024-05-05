@@ -1,5 +1,3 @@
-import isPaused from "./isPaused"
-import pause from "./pause"
-import play from "./play"
-
-export { isPaused, pause, play }
+export { default as pause } from "./pause"
+export { default as play } from "./play"
+export { default as AnimationState } from "./AnimationState"

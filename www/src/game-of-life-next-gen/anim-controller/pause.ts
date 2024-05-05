@@ -1,8 +1,5 @@
-export default function pause(getCurrentAnimId: () => number | null, updateAnimId: (id: number | null) => void): { isPlaying: boolean } {
-  const animationId = getCurrentAnimId();
-  if (animationId !== null) {
-    cancelAnimationFrame(animationId);
-    updateAnimId(null);
-  }
-  return { isPlaying: false };
+import type AnimationState from "./AnimationState";
+
+export default function pause(animationState: AnimationState): void {
+  animationState.cancel();
 };

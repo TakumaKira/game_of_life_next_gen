@@ -3,8 +3,9 @@ import { onClickCanvas, onClickNextFrameButton, onClickPlayPauseButton } from "@
 import { setupGLRenderer } from "@/game-of-life-next-gen/gl-renderer";
 import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "@/game-of-life-next-gen/gl-renderer";
 import type { UpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
+import { AnimationState } from "./anim-controller";
 
-export default function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, memory: WebAssembly.Memory, getCurrentAnimId: () => null | number, updateAnimId: (id: number | null) => void): { onTogglePlayPause: () => void, getIsPlaying: () => boolean, onNextFrame: () => void, onClickCanvasFnRef: () => void, dispose: () => void } {
+export default function setup(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, memory: WebAssembly.Memory): { onTogglePlayPause: () => void, animationState: AnimationState, onNextFrame: () => void, onClickCanvasFnRef: () => void, destroy: () => void } {
   const { universe, width, height, lifeSpan } = getUniverse();
 
   let onTextureHoverPosition: OnTextureHoverPosition = null
@@ -14,22 +15,23 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: (is
 
   const { updateTextureContext, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
 
-  const fps = new FPS(updateFpsData);
-
-  const playingState = { isPlaying: false };
-
+  const animationState = new AnimationState();
+  animationState.registerOnUpdatePlayingState(updatePlayingState);
   const onTogglePlayPause = () => {
-    const result = onClickPlayPauseButton(fps, universe, memory, updateTextureContext, width, height, lifeSpan, getCurrentAnimId, updateAnimId)
-    playingState.isPlaying = result.isPlaying
-    updatePlayingState(playingState.isPlaying)
+    onClickPlayPauseButton(fps, universe, memory, updateTextureContext, width, height, lifeSpan, animationState)
   }
+
+  const fps = new FPS(updateFpsData);
 
   const onNextFrame = () => onClickNextFrameButton(universe, memory, updateTextureContext, width, height, lifeSpan)
 
   const onClickCanvasFnRef = () => onClickCanvas(universe, memory, updateTextureContext, width, height, lifeSpan, onTextureHoverPosition)
   canvas.addEventListener("click", onClickCanvasFnRef);
 
-  const getIsPlaying = () => playingState.isPlaying
+  const destroy = () => {
+    dispose()
+    animationState.unregisterAllOfOnUpdatePlayingState()
+  }
 
-  return { onTogglePlayPause, getIsPlaying, onNextFrame, onClickCanvasFnRef, dispose }
+  return { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, destroy }
 }

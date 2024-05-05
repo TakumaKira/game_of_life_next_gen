@@ -1,9 +1,10 @@
-export default function onDestroy(onClickCanvasFnRef: () => void, canvas: HTMLCanvasElement, getCurrentAnimId: () => number | null, dispose: () => void): { isDestroyed: boolean } {
+import type { AnimationState } from "./anim-controller"
+
+export default function onDestroy(onClickCanvasFnRef: () => void, canvas: HTMLCanvasElement, animationState: AnimationState, destroy: () => void): { isDestroyed: boolean } {
   canvas.removeEventListener("click", onClickCanvasFnRef)
-  const animationId = getCurrentAnimId()
-  if (animationId) {
-    cancelAnimationFrame(animationId)
+  if (animationState.isPlaying === true) {
+    animationState.cancel()
   }
-  dispose()
+  destroy()
   return { isDestroyed: true }
 }

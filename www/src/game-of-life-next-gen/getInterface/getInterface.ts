@@ -13,15 +13,12 @@ import destroyImpl from "./destroyImpl";
 export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: (isPlaying: boolean) => void, updateFpsData: UpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
   const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
   bg.__wbg_set_wasm(wasmModule)
-  let animationId: null | number = null
-  const destroyedState: DestroyedState = { isDestroyed: false }
-  const updateAnimId = (id: number | null) => animationId = id
-  const getCurrentAnimId = () => animationId
-  const { onTogglePlayPause, getIsPlaying, onNextFrame, onClickCanvasFnRef, dispose } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, getCurrentAnimId, updateAnimId)
-  const play = () => playImpl(onTogglePlayPause, getIsPlaying, destroyedState)
-  const pause = () => pauseImpl(onTogglePlayPause, getIsPlaying, destroyedState)
-  const nextFrame = () => nextFrameImpl(onNextFrame, pause, getIsPlaying, destroyedState)
-  const destroy = () => destroyImpl(() => onDestroy(onClickCanvasFnRef, canvas, getCurrentAnimId, dispose), updatePlayingState, destroyedState)
+  const destroyedStateRef: DestroyedState = { isDestroyed: false }
+  const { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory)
+  const play = () => playImpl(onTogglePlayPause, animationState, destroyedStateRef)
+  const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedStateRef)
+  const nextFrame = () => nextFrameImpl(onNextFrame, animationState, destroyedStateRef)
+  const destroy = () => destroyImpl(() => onDestroy(onClickCanvasFnRef, canvas, animationState, destroySetup), destroyedStateRef)
   if (autoStart) {
     play()
   }
