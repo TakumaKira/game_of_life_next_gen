@@ -4,6 +4,7 @@ import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"; // Im
 // Import other necessary dependencies and types
 import type { FPS } from "@/game-of-life-next-gen/game-of-life";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
+import type AnimationState from '../AnimationState';
 
 // Mock dependencies
 jest.mock('@/game-of-life-next-gen/drawer', () => ({
@@ -39,7 +40,11 @@ describe('renderLoop', () => {
       return window.setTimeout(callback, 0, time);
     });
     
-    renderLoop(fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
+    const mockAnimationState = {
+      requestNextFrame: jest.fn()
+    } as unknown as AnimationState;
+
+    renderLoop(fps, universe, memory, updateTextureContext, width, height, lifeSpan, mockAnimationState);
 
     // FPS should be rendered
     expect(fps.render).toHaveBeenCalled();
@@ -54,7 +59,7 @@ describe('renderLoop', () => {
     }
 
     // updateAnimId should be called with requestAnimationFrame ID
-    expect(updateAnimId).toHaveBeenCalledWith(expect.any(Number));
+    expect(mockAnimationState.requestNextFrame).toHaveBeenCalledWith(expect.any(Function));
   });
 
   // Add more test cases as needed
