@@ -3,6 +3,7 @@ import renderLoop from "../renderLoop";
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 import type { FPS } from "@/game-of-life-next-gen/game-of-life";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
+import type AnimationState from "../AnimationState";
 
 // Mocks
 jest.mock("../renderLoop", () => jest.fn());
@@ -27,12 +28,8 @@ describe("play function", () => {
   });
 
   it("should call renderLoop with correct parameters", () => {
-    play(fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
-    expect(renderLoop).toHaveBeenCalledWith(fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
-  });
-
-  it("should return an object with isPlaying set to true", () => {
-    const result = play(fps, universe, memory, updateTextureContext, width, height, lifeSpan, updateAnimId);
-    expect(result).toEqual({ isPlaying: true });
+    const mockAnimationState = {} as AnimationState
+    play(fps, universe, memory, updateTextureContext, width, height, lifeSpan, mockAnimationState);
+    expect(renderLoop).toHaveBeenCalledWith(fps, universe, memory, updateTextureContext, width, height, lifeSpan, mockAnimationState);
   });
 });
