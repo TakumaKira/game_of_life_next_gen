@@ -17,7 +17,7 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
   const play = () => playImpl(onTogglePlayPause, animationState, destroyedState)
   const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedState)
   const nextFrame = () => nextFrameImpl(onNextFrame, animationState, destroyedState)
-  const destroy = () => destroyImpl(() => onClickCanvasFnRef, canvas, animationState, destroySetup, destroyedState)
+  const destroy = () => destroyImpl(onClickCanvasFnRef, canvas, animationState, destroySetup, destroyedState)
   if (autoStart) {
     play()
   }

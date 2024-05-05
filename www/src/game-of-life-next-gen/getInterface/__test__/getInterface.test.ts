@@ -20,8 +20,6 @@ jest.mock('../../setup', () => jest.fn().mockReturnValue({
   onClickCanvasFnRef: mockOnClickCanvasFnRef,
   destroy: mockDestroy
 }));
-const mockOnDestroy = jest.fn();
-jest.mock('../../onDestroy', () => mockOnDestroy);
 const mockPlayImpl = jest.fn();
 jest.mock('../playImpl', () => mockPlayImpl)
 const mockPauseImpl = jest.fn();
@@ -30,6 +28,13 @@ const mockNextFrameImpl = jest.fn();
 jest.mock('../nextFrameImpl', () => mockNextFrameImpl)
 const mockDestroyImpl = jest.fn();
 jest.mock('../destroyImpl', () => mockDestroyImpl)
+const mockDestroyedStateConstructor = jest.fn();
+class MockDestroyedState {
+  constructor() {
+    mockDestroyedStateConstructor()
+  }
+}
+jest.mock('../DestroyedState', () => MockDestroyedState)
 
 import type { UpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
 import getInterface from '../getInterface';
@@ -78,28 +83,28 @@ describe('getInterface', () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, autoStartNeedsToBeFalse);
     expect(mockPlayImpl).not.toHaveBeenCalled();
     gameInterface.play();
-    expect(mockPlayImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, { isDestroyed: false });
+    expect(mockPlayImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, new MockDestroyedState());
   });
 
   test('pause function calls pauseImpl', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData);
     expect(mockPauseImpl).not.toHaveBeenCalled();
     gameInterface.pause();
-    expect(mockPauseImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, { isDestroyed: false });
+    expect(mockPauseImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, new MockDestroyedState());
   });
 
   test('nextFrame function calls nextFrameImpl', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData);
     expect(mockNextFrameImpl).not.toHaveBeenCalled();
     gameInterface.nextFrame();
-    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockOnNextFrame, mockAnimationState, { isDestroyed: false });
+    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockOnNextFrame, mockAnimationState, new MockDestroyedState());
   });
 
   test('destroy function calls destroyImpl', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData);
     expect(mockDestroyImpl).not.toHaveBeenCalled();
     gameInterface.destroy();
-    expect(mockDestroyImpl).toHaveBeenCalledWith(expect.any(Function), { isDestroyed: false });
+    expect(mockDestroyImpl).toHaveBeenCalledWith(mockOnClickCanvasFnRef, canvas, mockAnimationState, mockDestroy, new MockDestroyedState());
   });
 
   test('play function is called automatically if autoStart is true', async () => {
