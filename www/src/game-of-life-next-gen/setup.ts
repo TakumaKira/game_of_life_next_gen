@@ -30,7 +30,7 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: (is
 
   const destroy = () => {
     dispose()
-    animationState.unregisterAllOfOnUpdatePlayingState()
+    animationState.clear()
   }
 
   return { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, destroy }

@@ -5,19 +5,19 @@ export default class AnimationState {
     return this._currentId
   }
   private set currentId(value: null | number) {
-    let shouldExecuteUpdatePlayingStateFn = false
-    if (
-      (this._currentId === null && typeof value === 'number')
-      || (typeof this._currentId === 'number' && value === null)
-    ) {
-      shouldExecuteUpdatePlayingStateFn = true
-    }
+    const shouldExecuteUpdatePlayingStateFn = this.shouldExecuteUpdatePlayingStateFn(this._currentId, value)
     this._currentId = value
     if (shouldExecuteUpdatePlayingStateFn === true) {
       this.onUpdatePlayingStateFnList.forEach((fn) => {
         fn(this.isPlaying)
       })
     }
+  }
+  private shouldExecuteUpdatePlayingStateFn(currentValue: null | number, nextValue: null | number) {
+    return (
+      (currentValue === null && typeof nextValue === 'number')
+      || (typeof currentValue === 'number' && nextValue === null)
+    )
   }
   requestNextFrame(nextJob: () => void) {
     this.currentId = requestAnimationFrame(nextJob)
@@ -35,7 +35,11 @@ export default class AnimationState {
   registerOnUpdatePlayingState(onUpdatePlayingState: (isPlaying: boolean) => void) {
     this.onUpdatePlayingStateFnList.push(onUpdatePlayingState)
   }
-  unregisterAllOfOnUpdatePlayingState() {
+  private unregisterAllOfOnUpdatePlayingState() {
     this.onUpdatePlayingStateFnList = []
+  }
+  clear() {
+    this.unregisterAllOfOnUpdatePlayingState()
+    this.cancel()
   }
 }
