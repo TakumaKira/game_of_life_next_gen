@@ -33,6 +33,9 @@ export default function GameOfLife({ getController, play, pause, nextFrame, dest
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
   const playStopButtonLabel = React.useMemo(() => {
+    if (play === null || pause === null) {
+      return ''
+    }
     return isPlaying ? '⏸' : '▶️'
   }, [isPlaying])
   const fpsContents = React.useMemo(() => {
@@ -67,13 +70,16 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onClickNextFrameButton = () => {
     nextFrame?.()
   }
+  const onClickDestroyButton = () => {
+    destroy?.()
+  }
   return (
     <div style={containerStyles}>
-      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton}>{playStopButtonLabel}</button>
-      <button onClick={onClickNextFrameButton}>Next Frame</button>
+      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>{playStopButtonLabel}</button>
+      <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>Next Frame</button>
       <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
-      <button onClick={() => destroy?.()}>Destroy</button>
+      <button onClick={onClickDestroyButton} disabled={destroy === null}>Destroy</button>
     </div>
   );
 }
