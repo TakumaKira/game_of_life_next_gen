@@ -1,9 +1,21 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom'
-import App from '../App';
+import App from './App';
+
+// Mocking getInterface and getController
+jest.mock('@/game-of-life-next-gen', () => ({
+  getInterface: jest.fn(),
+}));
+jest.mock('@/hooks', () => ({
+  getController: jest.fn(),
+}));
 
 describe('App component', () => {
+  beforeEach(() => {
+    // Reset mocks before each test
+    jest.clearAllMocks();
+  });
+
   it('renders without crashing', () => {
     render(<App />);
   });
