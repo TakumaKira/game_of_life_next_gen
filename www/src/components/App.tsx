@@ -1,5 +1,6 @@
 import React from 'react';
-import { getInterface } from '@/game-of-life-next-gen'
+import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn } from '@/game-of-life-next-gen'
+import { getController } from '@/hooks';
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -30,16 +31,12 @@ const canvasStyles: React.CSSProperties = {
 
 export default function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [play, setPlay] = React.useState<() => void>()
-  const [pause, setPause] = React.useState<() => void>()
-  const [nextFrame, setNextFrame] = React.useState<() => void>()
-  const [destroy, setDestroy] = React.useState<() => void>()
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
-  const updatePlayingState = (isPlaying: boolean) => {
+  const updatePlayingState: OnUpdatePlayingStateFn = isPlaying => {
     setIsPlaying(isPlaying)
   }
-  const [fpsData, setFpsData] = React.useState<{ fps: number, mean: number, min: number, max: number }>()
-  const updateFpsData = (fpsData: { fps: number, mean: number, min: number, max: number }) => {
+  const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
+  const updateFpsData: OnUpdateFpsDataFn = fpsData => {
     setFpsData(fpsData)
   }
   const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
@@ -52,19 +49,7 @@ min of last 100 = ${Math.round(fpsData.min)}
 max of last 100 = ${Math.round(fpsData.max)}
 `.trim() : ''
   }, [fpsData])
-  React.useEffect(() => {
-    if (!canvasRef.current) {
-      return
-    }
-    getInterface(canvasRef.current, updatePlayingState, updateFpsData)
-      .then(({ play, pause, nextFrame, destroy }) => {
-        setPlay(() => play)
-        setPause(() => pause)
-        setNextFrame(() => nextFrame)
-        setDestroy(() => destroy)
-      })
-    return destroy
-  }, [])
+  const { play, pause, nextFrame, destroy } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
       pause?.()
@@ -75,13 +60,16 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onClickNextFrameButton = () => {
     nextFrame?.()
   }
+  const onClickDestroyButton = () => {
+    destroy?.()
+  }
   return (
     <div style={containerStyles}>
-      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton}>{playStopButtonLabel}</button>
-      <button onClick={onClickNextFrameButton}>Next Frame</button>
+      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>{playStopButtonLabel}</button>
+      <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>Next Frame</button>
       <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
-      <button onClick={destroy}>Destroy</button>
+      <button onClick={onClickDestroyButton} disabled={destroy === null}>Destroy</button>
     </div>
   );
 }
