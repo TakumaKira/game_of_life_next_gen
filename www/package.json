@@ -11,6 +11,7 @@
   "author": "Takuma Kira",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^29.5.12",
