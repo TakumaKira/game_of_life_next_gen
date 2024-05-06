@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, act, waitForElementToBeRemoved } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from '../App';
+import GameOfLife from '../GameOfLife';
 import type { OnUpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
 import type { getInterface, OnUpdatePlayingStateFn } from '@/game-of-life-next-gen';
 
@@ -34,20 +34,23 @@ test('renders without crashing', async () => {
   //   argsRef = args
   //   resolveRef = resolve
   // })
-  const mockGetInterface = jest.fn().mockImplementation((...args: Parameters<typeof getInterface>) => {
-    return new Promise(resolve => {
-      // argsRef = args
-      // resolveRef = resolve
-      resolve({
-        play: mockPlay.mockImplementation(() => args[1](true)),
-        pause: mockPause.mockImplementation(() => args[1](false)),
-        nextFrame: mockNextFrame,
-        destroy: mockDestroy,
-      });
-    })
+  // const mockGetInterface = jest.fn().mockImplementation((...args: Parameters<typeof getInterface>) => {
+  //   return new Promise(resolve => {
+  //     // argsRef = args
+  //     // resolveRef = resolve
+  //     resolve({
+  //       play: mockPlay.mockImplementation(() => args[1](true)),
+  //       pause: mockPause.mockImplementation(() => args[1](false)),
+  //       nextFrame: mockNextFrame,
+  //       destroy: mockDestroy,
+  //     });
+  //   })
+  // })
+  const mockGetController = jest.fn().mockImplementation((canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn) => {
+
   })
-  render(<App handleGetInterface={mockGetInterface} />);
-  expect(mockGetInterface).toHaveBeenCalledTimes(1);
+  render(<GameOfLife getController={mockGetController} play={mockPlay} pause={mockPause} nextFrame={mockNextFrame} destroy={mockDestroy} />);
+  expect(mockGetController).toHaveBeenCalledTimes(1);
   // await act(() => {
   //   resolveRef({
   //     play: mockPlay.mockImplementation(() => argsRef?.[1]?.(true)),
