@@ -1,5 +1,6 @@
 import React from 'react';
-import type { OnUpdateFpsDataFn, OnUpdatePlayingStateFn } from '@/game-of-life-next-gen'
+import { getInterface, type OnUpdateFpsDataFn, type OnUpdatePlayingStateFn } from '@/game-of-life-next-gen'
+import getControllerHook from './getControllerHook';
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -28,16 +29,10 @@ const canvasStyles: React.CSSProperties = {
   outline: 'none',
 }
 
-export default function GameOfLife({ getController, play, pause, nextFrame, destroy }: { getController: (canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn) => void, play: (() => void) | null, pause: (() => void) | null, nextFrame: (() => void) | null, destroy: (() => void) | null}) {
+export default function GameOfLife() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
-  const playStopButtonLabel = React.useMemo(() => {
-    if (play === null || pause === null) {
-      return ''
-    }
-    return isPlaying ? '⏸' : '▶️'
-  }, [isPlaying])
   const fpsContents = React.useMemo(() => {
     return fpsData ? `
 Frames per Second:
@@ -53,13 +48,20 @@ max of last 100 = ${Math.round(fpsData.max)}
   const updateFpsData: OnUpdateFpsDataFn = fpsData => {
     setFpsData(fpsData)
   }
-  React.useEffect(() => {
-    if (!canvasRef.current) {
-      throw new Error('Canvas ref not set')
+  // React.useEffect(() => {
+  //   // if (!canvasRef.current) {
+  //   //   throw new Error('Canvas ref not set')
+  //   // }
+  //   // getController(canvasRef.current, updatePlayingState, updateFpsData)
+  //   return () => destroy?.()
+  // }, [])
+  const { play, pause, nextFrame, destroy } = getControllerHook(getInterface, canvasRef, updatePlayingState, updateFpsData)
+  const playStopButtonLabel = React.useMemo(() => {
+    if (play === null || pause === null) {
+      return ''
     }
-    getController(canvasRef.current, updatePlayingState, updateFpsData)
-    return () => destroy?.()
-  }, [])
+    return isPlaying ? '⏸' : '▶️'
+  }, [isPlaying])
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
       pause?.()
