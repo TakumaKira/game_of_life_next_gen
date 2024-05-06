@@ -6,6 +6,7 @@ export default function getController(getInterface: typeof getInterfaceType, can
   const [pause, setPause] = React.useState<(() => void) | null>(null)
   const [nextFrame, setNextFrame] = React.useState<(() => void) | null>(null)
   const [destroy, setDestroy] = React.useState<(() => void) | null>(null)
+  const destroyRef = React.useRef<(() => void) | null>(null)
   React.useEffect(() => {
     if (!canvasRef.current) {
       return
@@ -16,8 +17,9 @@ export default function getController(getInterface: typeof getInterfaceType, can
         setPause(() => pause)
         setNextFrame(() => nextFrame)
         setDestroy(() => destroy)
+        destroyRef.current = destroy
       })
-    return () => destroy?.()
-  }, [])
+    return () => destroyRef.current?.()
+  }, [canvasRef, updatePlayingState, updateFpsData])
   return { play, pause, nextFrame, destroy }
 }

@@ -1,68 +1,53 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect'; // For expect(...).toBeInTheDocument()
-import getController from './getController';
-
-jest.mock('./getInterface'); // assuming the module path is correct
+import { renderHook, act } from '@testing-library/react-hooks';
+import getController from '../getController';
+import type { OnUpdateFpsDataFn, OnUpdatePlayingStateFn, getInterface as getInterfaceType } from '@/game-of-life-next-gen';
 
 describe('getController', () => {
-  let canvasRef;
-  let updatePlayingStateFn;
-  let updateFpsDataFn;
+  let mockCanvasRef: React.RefObject<HTMLCanvasElement>;
+  let mockUpdatePlayingStateFn: OnUpdatePlayingStateFn;
+  let mockUpdateFpsDataFn: OnUpdateFpsDataFn;
 
   beforeEach(() => {
-    canvasRef = { current: document.createElement('canvas') };
-    updatePlayingStateFn = jest.fn();
-    updateFpsDataFn = jest.fn();
+    mockCanvasRef = { current: document.createElement('canvas') };
+    mockUpdatePlayingStateFn = jest.fn();
+    mockUpdateFpsDataFn = jest.fn();
   });
 
   it('should call getInterface and set state correctly', async () => {
+    const mockPlay = jest.fn();
+    const mockPause = jest.fn();
+    const mockNextFrame = jest.fn();
+    const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
-      play: jest.fn(),
-      pause: jest.fn(),
-      nextFrame: jest.fn(),
-      destroy: jest.fn(),
+      play: mockPlay,
+      pause: mockPause,
+      nextFrame: mockNextFrame,
+      destroy: mockDestroy,
     });
-
-    await act(async () => {
-      render(<TestComponent getInterface={mockGetInterface} />);
-    });
-
-    expect(mockGetInterface).toHaveBeenCalledWith(canvasRef.current, updatePlayingStateFn, updateFpsDataFn);
-    expect(document.querySelector('#play')).toBeInTheDocument();
-    expect(document.querySelector('#pause')).toBeInTheDocument();
-    expect(document.querySelector('#nextFrame')).toBeInTheDocument();
-    expect(document.querySelector('#destroy')).toBeInTheDocument();
+    const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
+    await result.waitForNextUpdate();
+    expect(mockGetInterface).toHaveBeenCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn);
+    expect(result.result.current.play).toEqual(mockPlay);
+    expect(result.result.current.pause).toEqual(mockPause);
+    expect(result.result.current.nextFrame).toEqual(mockNextFrame);
+    expect(result.result.current.destroy).toEqual(mockDestroy);
   });
 
   it('should call destroy function on unmount', async () => {
+    const mockPlay = jest.fn();
+    const mockPause = jest.fn();
+    const mockNextFrame = jest.fn();
     const mockDestroy = jest.fn();
-    jest.doMock('./getInterface', () => ({
-      __esModule: true,
-      default: jest.fn().mockResolvedValue({
-        play: jest.fn(),
-        pause: jest.fn(),
-        nextFrame: jest.fn(),
-        destroy: mockDestroy,
-      }),
-    }));
-
-    const { unmount } = render(<TestComponent getInterface={() => {}} />);
-    unmount();
-
+    const mockGetInterface = jest.fn().mockResolvedValue({
+      play: mockPlay,
+      pause: mockPause,
+      nextFrame: mockNextFrame,
+      destroy: mockDestroy,
+    });
+    const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
+    await result.waitForNextUpdate();
+    result.unmount()
     expect(mockDestroy).toHaveBeenCalled();
   });
 });
-
-function TestComponent({ getInterface }) {
-  const controller = getController(getInterface, canvasRef, updatePlayingStateFn, updateFpsDataFn);
-
-  return (
-    <>
-      <button id="play" onClick={controller.play}></button>
-      <button id="pause" onClick={controller.pause}></button>
-      <button id="nextFrame" onClick={controller.nextFrame}></button>
-      <button id="destroy" onClick={controller.destroy}></button>
-    </>
-  );
-}
