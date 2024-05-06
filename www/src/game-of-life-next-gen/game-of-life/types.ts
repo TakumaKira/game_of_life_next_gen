@@ -1,1 +1,1 @@
-export type UpdateFpsDataFn = (fpsData: { fps: number, mean: number, min: number, max: number }) => void
+export type OnUpdateFpsDataFn = (fpsData: { fps: number, mean: number, min: number, max: number }) => void

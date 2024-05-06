@@ -1,5 +1,7 @@
+import type { OnUpdatePlayingStateFn } from "./types"
+
 export default class AnimationState {
-  private onUpdatePlayingStateFnList: Array<(isPlaying: boolean) => void> = []
+  private onUpdatePlayingStateFnList: Array<OnUpdatePlayingStateFn> = []
   private _currentId: null | number = null
   private get currentId(): null | number {
     return this._currentId
@@ -32,7 +34,7 @@ export default class AnimationState {
     cancelAnimationFrame(this.currentId)
     this.currentId = null
   }
-  registerOnUpdatePlayingState(onUpdatePlayingState: (isPlaying: boolean) => void) {
+  registerOnUpdatePlayingState(onUpdatePlayingState: OnUpdatePlayingStateFn) {
     this.onUpdatePlayingStateFnList.push(onUpdatePlayingState)
   }
   private unregisterAllOfOnUpdatePlayingState() {

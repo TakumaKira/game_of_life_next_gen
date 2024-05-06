@@ -1,5 +1,5 @@
 import React from 'react';
-import { getInterface } from '@/game-of-life-next-gen'
+import type { OnUpdateFpsDataFn, getInterface } from '@/game-of-life-next-gen'
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -28,21 +28,27 @@ const canvasStyles: React.CSSProperties = {
   outline: 'none',
 }
 
-export default function App() {
+export default function App({ handleGetInterface }: { handleGetInterface: typeof getInterface}) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [play, setPlay] = React.useState<() => void>()
-  const [pause, setPause] = React.useState<() => void>()
-  const [nextFrame, setNextFrame] = React.useState<() => void>()
-  const [destroy, setDestroy] = React.useState<() => void>()
+  const playRef = React.useRef<() => void>()
+  const pauseRef = React.useRef<() => void>()
+  const nextFrameRef = React.useRef<() => void>()
+  const destroyRef = React.useRef<() => void>()
+  const [isLibraryLoaded, setIsLibraryLoaded] = React.useState<boolean>(false)
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
   const updatePlayingState = (isPlaying: boolean) => {
     setIsPlaying(isPlaying)
   }
-  const [fpsData, setFpsData] = React.useState<{ fps: number, mean: number, min: number, max: number }>()
-  const updateFpsData = (fpsData: { fps: number, mean: number, min: number, max: number }) => {
+  const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
+  const updateFpsData: OnUpdateFpsDataFn = fpsData => {
     setFpsData(fpsData)
   }
-  const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
+  const playStopButtonLabel = React.useMemo(() => {
+    if (!isLibraryLoaded) {
+      return 'Loading...'
+    }
+    return isPlaying ? '⏸' : '▶️'
+  }, [isLibraryLoaded, isPlaying])
   const fpsContents = React.useMemo(() => {
     return fpsData ? `
 Frames per Second:
@@ -54,34 +60,35 @@ max of last 100 = ${Math.round(fpsData.max)}
   }, [fpsData])
   React.useEffect(() => {
     if (!canvasRef.current) {
-      return
+      throw new Error('Canvas ref not set')
     }
-    getInterface(canvasRef.current, updatePlayingState, updateFpsData)
+    handleGetInterface(canvasRef.current, updatePlayingState, updateFpsData)
       .then(({ play, pause, nextFrame, destroy }) => {
-        setPlay(() => play)
-        setPause(() => pause)
-        setNextFrame(() => nextFrame)
-        setDestroy(() => destroy)
+        playRef.current = play
+        pauseRef.current = pause
+        nextFrameRef.current = nextFrame
+        destroyRef.current = destroy
+        setIsLibraryLoaded(true)
       })
-    return destroy
+    return destroyRef.current
   }, [])
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
-      pause?.()
+      pauseRef.current?.()
     } else {
-      play?.()
+      playRef.current?.()
     }
   }
   const onClickNextFrameButton = () => {
-    nextFrame?.()
+    nextFrameRef.current?.()
   }
   return (
     <div style={containerStyles}>
-      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton}>{playStopButtonLabel}</button>
-      <button onClick={onClickNextFrameButton}>Next Frame</button>
+      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={!isLibraryLoaded}>{playStopButtonLabel}</button>
+      <button onClick={onClickNextFrameButton} disabled={!isLibraryLoaded}>Next Frame</button>
       <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
-      <button onClick={destroy}>Destroy</button>
+      <button onClick={destroyRef.current} disabled={!isLibraryLoaded}>Destroy</button>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from '@/App';
+import { getInterface } from '@/game-of-life-next-gen'
 
 const appElement = document.getElementById('app');
 if (!appElement) {
@@ -8,4 +9,4 @@ if (!appElement) {
 }
 
 const app = createRoot(appElement);
-app.render(<App />);
+app.render(<App handleGetInterface={getInterface} />);

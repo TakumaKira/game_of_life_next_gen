@@ -36,15 +36,15 @@ class MockDestroyedState {
 }
 jest.mock('../DestroyedState', () => MockDestroyedState)
 
-import type { UpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
+import type { OnUpdateFpsDataFn } from '@/game-of-life-next-gen/game-of-life';
 import getInterface from '../getInterface';
 import buildWasmModule from 'wasm-game-of-life/wasm_game_of_life_bg.wasm';
 import * as bg from "wasm-game-of-life/wasm_game_of_life_bg.js"
 
 describe('getInterface', () => {
   let canvas: HTMLCanvasElement;
-  let updatePlayingState: (isPlaying: boolean) => void;
-  let updateFpsData: UpdateFpsDataFn;
+  let updatePlayingState: OnUpdatePlayingStateFn;
+  let updateFpsData: OnUpdateFpsDataFn;
 
   beforeEach(() => {
     canvas = document.createElement('canvas');

@@ -1,14 +1,14 @@
-import type { UpdateFpsDataFn } from "./types";
+import type { OnUpdateFpsDataFn } from "./types";
 
 export default class FPS {
-  updateFpsData: UpdateFpsDataFn;
+  updateFpsData: OnUpdateFpsDataFn;
   FRAMES_LENGTH = 100;
   frames: number[] = new Array(this.FRAMES_LENGTH).fill(null);
   framesPointer = 0;
   framesUsedLength = 0;
   lastFrameTimeStamp = performance.now();
 
-  constructor(updateFpsData: UpdateFpsDataFn) {
+  constructor(updateFpsData: OnUpdateFpsDataFn) {
     this.updateFpsData = updateFpsData
   }
 

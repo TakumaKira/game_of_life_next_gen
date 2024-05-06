@@ -1,9 +1,9 @@
 import FPS from '../FPS';
-import type { UpdateFpsDataFn } from '../types';
+import type { OnUpdateFpsDataFn } from '../types';
 
 describe('FPS', () => {
   let fps: FPS;
-  let mockUpdateFpsData: UpdateFpsDataFn;
+  let mockUpdateFpsData: OnUpdateFpsDataFn;
 
   beforeEach(() => {
     mockUpdateFpsData = jest.fn();
