@@ -20,6 +20,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
+    - name: Change directory to www
+      run: cd www
     - name: Install dependencies
       run: pnpm install
     - name: Run Tests
