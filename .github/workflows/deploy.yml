@@ -4,6 +4,9 @@ on:
     branches:
     - main
   workflow_dispatch:
+  pull_request: # Only for dubugging on the first PR.
+    branches:
+    - feature/build-CICD
 
 # Build wasm and www, then deploy to S3, using GitHub Actions.
 jobs:
@@ -17,6 +20,11 @@ jobs:
         version: 'latest'
     - name: Build wasm
       run: wasm-pack build
+    - name: Upload pkg artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pkg
+        path: pkg
   build-www:
     runs-on: ubuntu-22.04
     needs: build-wasm
@@ -31,12 +39,25 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-    - name: Change directory to www
-      run: cd www
+        cache-dependency-path: '**/pnpm-lock.yaml'
+    - name: Download pkg
+      uses: actions/download-artifact@v4
+      with:
+        name: pkg
+        path: pkg
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        cd www
+        pnpm install
     - name: Build www
-      run: pnpm build
+      run: |
+        cd www
+        pnpm build
+    - name: Upload www artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: www
+        path: www/public
   deploy:
     runs-on: ubuntu-22.04
     needs: build-www
@@ -46,15 +67,16 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: www
+        path: www/public
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-region: ${{ vars.AWS_REGION }}
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --delete --exclude '.gitkeep'
-        bucket-name: game-of-life-next-gen
+        bucket-name: ${{ vars.AWS_S3_BUCKET_NAME }}
         source-dir: www/public
