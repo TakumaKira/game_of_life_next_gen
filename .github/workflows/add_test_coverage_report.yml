@@ -57,8 +57,8 @@ jobs:
     - name: Run Tests
       run: |
         cd www
-        pnpm testgeneratecoveragereport
+        pnpm test:generate-coverage-report
     - name: Commit generated coverage report
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Add WWW test coverage report"
