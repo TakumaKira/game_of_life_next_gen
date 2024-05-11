@@ -1,0 +1,88 @@
+name: Deploy to S3
+
+# Run this on every push to the main branch or dispatching this workflow.
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+# Build wasm and www, then deploy to S3, using GitHub Actions.
+jobs:
+  build-wasm:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install wasm-pack
+      uses: jetli/wasm-pack-action@v0.4.0
+      with:
+        version: 'latest'
+    - name: Build wasm
+      run: wasm-pack build
+    - name: Upload pkg artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pkg
+        path: pkg
+  build-www:
+    runs-on: ubuntu-22.04
+    needs: build-wasm
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 9
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
+    - name: Download pkg
+      uses: actions/download-artifact@v4
+      with:
+        name: pkg
+        path: pkg
+    - name: Install dependencies
+      run: |
+        cd www
+        pnpm install
+    - name: Build www
+      run: |
+        cd www
+        pnpm build
+    - name: Upload www artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: www
+        path: www/public
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build-www
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download www
+      uses: actions/download-artifact@v4
+      with:
+        name: www
+        path: www/public
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --delete --exclude '.gitkeep'
+      env:
+        AWS_S3_BUCKET: ${{ vars.AWS_S3_BUCKET_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        SOURCE_DIR: www/public
