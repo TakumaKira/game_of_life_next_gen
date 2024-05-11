@@ -11,12 +11,6 @@ jobs:
         node-version: [20]
     steps:
     - uses: actions/checkout@v4
-      with:
-        path: www
-    - name: Echo the current directory
-      run: pwd
-    - name: Echo the file listings
-      run: ls www
     - name: Install pnpm
       uses: pnpm/action-setup@v3
       with:
@@ -26,7 +20,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        cd www
+        pnpm install
     - name: Run Tests
-      run: pnpm test
+      run: |
+        cd www
+        pnpm test
