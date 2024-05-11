@@ -14,7 +14,7 @@ jobs:
         version: 'latest'
     - name: Build wasm
       run: wasm-pack build
-  build:
+  test:
     runs-on: ubuntu-22.04
     needs: build-wasm
     strategy:
@@ -32,9 +32,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
         cache-dependency-path: '**/pnpm-lock.yaml'
-    - name: Change directory to www
-      run: cd www
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        cd www
+        pnpm install
     - name: Run Tests
-      run: pnpm test
+      run: |
+        cd www
+        pnpm test
