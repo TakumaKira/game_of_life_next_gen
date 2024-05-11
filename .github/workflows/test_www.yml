@@ -11,6 +11,8 @@ jobs:
         node-version: [20]
     steps:
     - uses: actions/checkout@v4
+    - name: Change directory to www
+      run: cd www
     - name: Install pnpm
       uses: pnpm/action-setup@v3
       with:
@@ -20,8 +22,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-    - name: Change directory to www
-      run: cd www
     - name: Install dependencies
       run: pnpm install
     - name: Run Tests
