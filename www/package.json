@@ -7,7 +7,7 @@
     "dev": "./dev.mjs",
     "build": "./build.mjs",
     "test": "jest",
-    "test:generate-coverage-report": "jest --coverageReporters=html"
+    "test:generate-coverage-report": "rm -rf coverage && mkdir coverage && jest > coverage/coverage-report.txt"
   },
   "author": "Takuma Kira",
   "license": "ISC",
