@@ -13,6 +13,8 @@ jobs:
     - uses: actions/checkout@v4
       with:
         path: www
+    - name: Echo the current directory
+      run: pwd
     - name: Install pnpm
       uses: pnpm/action-setup@v3
       with:
