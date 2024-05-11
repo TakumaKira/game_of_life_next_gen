@@ -4,8 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-wasm:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install wasm-pack
+      uses: jetli/wasm-pack-action@v0.4.0
+      with:
+        version: 'latest'
+    - name: Build wasm
+      run: wasm-pack build
   build:
     runs-on: ubuntu-22.04
+    needs: build-wasm
     strategy:
       matrix:
         node-version: [20]
@@ -21,11 +32,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
         cache-dependency-path: '**/pnpm-lock.yaml'
+    - name: Change directory to www
+      run: cd www
     - name: Install dependencies
-      run: |
-        cd www
-        pnpm install
+      run: pnpm install
     - name: Run Tests
-      run: |
-        cd www
-        pnpm test
+      run: pnpm test
