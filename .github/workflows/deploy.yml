@@ -5,7 +5,6 @@ on:
   push:
     branches:
     - main
-    - feature/build-CICD # Only for dubugging on the first PR.
   workflow_dispatch:
 
 # Build wasm and www, then deploy to S3, using GitHub Actions.
