@@ -55,9 +55,9 @@ jobs:
         cd www
         pnpm install
     - name: Run Tests
-      run: |-
+      run: |
         cd www
-        pnpm test:generate-coverage-report
+        pnpm test\:generate\-coverage\-report
     - name: Commit generated coverage report
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
