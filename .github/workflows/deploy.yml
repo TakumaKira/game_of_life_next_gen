@@ -1,0 +1,60 @@
+# Run this on every push to the main branch or dispatching this workflow.
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+# Build wasm and www, then deploy to S3, using GitHub Actions.
+jobs:
+  build-wasm:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install wasm-pack
+      uses: jetli/wasm-pack-action@v0.4.0
+      with:
+        version: 'latest'
+    - name: Build wasm
+      run: wasm-pack build
+  build-www:
+    runs-on: ubuntu-22.04
+    needs: build-wasm
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 9
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Change directory to www
+      run: cd www
+    - name: Install dependencies
+      run: pnpm install
+    - name: Build www
+      run: pnpm build
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build-www
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download www
+      uses: actions/download-artifact@v4
+      with:
+        name: www
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --delete --exclude '.gitkeep'
+        bucket-name: game-of-life-next-gen
+        source-dir: www/public
