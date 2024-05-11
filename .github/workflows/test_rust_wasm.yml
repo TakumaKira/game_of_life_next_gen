@@ -1,4 +1,5 @@
 name: Test Rust WASM
+
 on:
   pull_request:
   workflow_dispatch:
