@@ -41,8 +41,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: pkg
-    - name: Echo download result
-      run: ls
+        path: pkg
     - name: Install dependencies
       run: |
         cd www
