@@ -1,15 +1,13 @@
 name: Deploy to S3
 
-
 # Run this on every push to the main branch or dispatching this workflow.
 on:
   push:
     branches:
     - main
   workflow_dispatch:
-  pull_request: # Only for dubugging on the first PR.
-    branches:
-    - feature/build-CICD
+  branches:
+  - feature/build-CICD # Only for dubugging on the first PR.
 
 # Build wasm and www, then deploy to S3, using GitHub Actions.
 jobs:
