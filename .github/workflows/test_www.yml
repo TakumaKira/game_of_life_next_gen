@@ -15,6 +15,8 @@ jobs:
         path: www
     - name: Echo the current directory
       run: pwd
+    - name: Echo the file listings
+      run: ls
     - name: Install pnpm
       uses: pnpm/action-setup@v3
       with:
