@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - main
-    - feature/show-test-coverage # Debugging porpose only
   workflow_dispatch:
 
 jobs:
