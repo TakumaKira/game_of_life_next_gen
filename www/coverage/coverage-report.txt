@@ -1,0 +1,38 @@
+------------------------------------------|---------|----------|---------|---------|-------------------
+File                                      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------------------------------|---------|----------|---------|---------|-------------------
+All files                                 |      97 |     93.1 |      94 |      97 |                   
+ components                               |     100 |       75 |     100 |     100 |                   
+  App.tsx                                 |     100 |       75 |     100 |     100 | 55-57,61,64       
+ game-of-life-next-gen                    |   97.67 |      100 |   83.33 |   97.67 |                   
+  constants.ts                            |     100 |      100 |     100 |     100 |                   
+  setup.ts                                |   94.59 |      100 |   83.33 |   94.59 | 13-14             
+ game-of-life-next-gen/anim-controller    |     100 |      100 |     100 |     100 |                   
+  AnimationState.ts                       |     100 |      100 |     100 |     100 |                   
+  pause.ts                                |     100 |      100 |     100 |     100 |                   
+  play.ts                                 |     100 |      100 |     100 |     100 |                   
+  renderLoop.ts                           |     100 |      100 |     100 |     100 |                   
+ game-of-life-next-gen/drawer             |   85.05 |    86.66 |     100 |   85.05 |                   
+  drawCells.ts                            |   78.33 |    77.77 |     100 |   78.33 | 27-37,47-48       
+  drawGrid.ts                             |     100 |      100 |     100 |     100 |                   
+  getIsAgeInRange.ts                      |     100 |      100 |     100 |     100 |                   
+ game-of-life-next-gen/game-of-life       |     100 |      100 |   71.42 |     100 |                   
+  FPS.ts                                  |     100 |      100 |     100 |     100 |                   
+  getIndex.ts                             |     100 |      100 |     100 |     100 |                   
+  getUniverse.ts                          |     100 |      100 |     100 |     100 |                   
+  index.ts                                |     100 |      100 |   33.33 |     100 |                   
+ game-of-life-next-gen/getInterface       |     100 |      100 |     100 |     100 |                   
+  DestroyedState.ts                       |     100 |      100 |     100 |     100 |                   
+  destroyImpl.ts                          |     100 |      100 |     100 |     100 |                   
+  getInterface.ts                         |     100 |      100 |     100 |     100 |                   
+  nextFrameImpl.ts                        |     100 |      100 |     100 |     100 |                   
+  pauseImpl.ts                            |     100 |      100 |     100 |     100 |                   
+  playImpl.ts                             |     100 |      100 |     100 |     100 |                   
+ game-of-life-next-gen/user-event-handler |     100 |      100 |     100 |     100 |                   
+  getRowColFromTextureHoverPosition.ts    |     100 |      100 |     100 |     100 |                   
+  onClickCanvas.ts                        |     100 |      100 |     100 |     100 |                   
+  onClickNextFrameButton.ts               |     100 |      100 |     100 |     100 |                   
+  onClickPlayPauseButton.ts               |     100 |      100 |     100 |     100 |                   
+ hooks                                    |      92 |       80 |     100 |      92 |                   
+  getController.tsx                       |      92 |       80 |     100 |      92 | 12-13             
+------------------------------------------|---------|----------|---------|---------|-------------------
