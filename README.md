@@ -27,3 +27,7 @@ tutorial. The tutorial builds increasingly featureful implementations of
 
 [game-of-life]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 [tutorial]: https://rustwasm.github.io/book/game-of-life/introduction.html
+
+### Test coverage
+
+[Test coverage for www directory](./www/coverage/coverage-report.txt)
