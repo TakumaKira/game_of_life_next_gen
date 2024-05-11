@@ -7,7 +7,7 @@
     "dev": "./dev.mjs",
     "build": "./build.mjs",
     "test": "jest",
-    "test_generate_coverage_report": "jest --coverageReporters=html"
+    "testgeneratecoveragereport": "jest --coverageReporters=html"
   },
   "author": "Takuma Kira",
   "license": "ISC",
