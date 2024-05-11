@@ -4,7 +4,7 @@ name: Deploy to S3
 on:
   push:
     branches:
-    - main
+    - master
   workflow_dispatch:
 
 # Build wasm and www, then deploy to S3, using GitHub Actions.
