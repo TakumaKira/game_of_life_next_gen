@@ -32,13 +32,13 @@ const canvasStyles: React.CSSProperties = {
 export default function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const [isPlaying, setIsPlaying] = React.useState<boolean>()
-  const updatePlayingState: OnUpdatePlayingStateFn = isPlaying => {
+  const updatePlayingState = React.useCallback<OnUpdatePlayingStateFn>(isPlaying => {
     setIsPlaying(isPlaying)
-  }
+  }, [setIsPlaying])
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
-  const updateFpsData: OnUpdateFpsDataFn = fpsData => {
+  const updateFpsData = React.useCallback<OnUpdateFpsDataFn>(fpsData => {
     setFpsData(fpsData)
-  }
+  }, [setFpsData])
   const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
   const fpsContents = React.useMemo(() => {
     return fpsData ? `
