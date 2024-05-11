@@ -57,7 +57,7 @@ jobs:
     - name: Run Tests
       run: |
         cd www
-        format('pnpm test{0}generate-coverage-report', ':')
+        format('pnpm test{0}generate{1}coverage{2}report', ':', '-', '-')
     - name: Commit generated coverage report
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
