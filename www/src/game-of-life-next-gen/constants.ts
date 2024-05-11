@@ -3,17 +3,17 @@ import { Color4 } from "babylonjs";
 const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
-const FIELD_SIZE = 128;
+const FIELD_SIZE = 128; // TODO: Add controller UI
 const CELL_SIZE = TEXTURE_RESOLUTION / FIELD_SIZE - 1;
-const GRID_COLOR = "#111";
-const DEAD_COLOR = "#222";
-const ALIVE_COLOR_BASE_1 = "#FF0000";
-const ALIVE_COLOR_BASE_2 = "#FFFF00";
-const ALIVE_COLOR_BASE_3 = "#0000FF";
+const GRID_COLOR = "#111"; // TODO: Add controller UI
+const DEAD_COLOR = "#222"; // TODO: Add controller UI
+const ALIVE_COLOR_BASE_1 = "#FF0000"; // TODO: Add controller UI
+const ALIVE_COLOR_BASE_2 = "#FFFF00"; // TODO: Add controller UI
+const ALIVE_COLOR_BASE_3 = "#0000FF"; // TODO: Add controller UI
 const ALIVE_COLORS = [ALIVE_COLOR_BASE_1, ALIVE_COLOR_BASE_2, ALIVE_COLOR_BASE_3];
-const LIFE_SPAN = 200;
+const LIFE_SPAN = 200; // TODO: Add controller UI
 
-const SHOW_ON_SCREEN_CONTROLS = false;
+const SHOW_ON_SCREEN_CONTROLS = true; // TODO: Add controller UI
 
 const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
 const EFFCT_DEFAULTS = {

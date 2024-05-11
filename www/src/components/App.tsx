@@ -69,6 +69,7 @@ max of last 100 = ${Math.round(fpsData.max)}
       <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>Next Frame</button>
       <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
+      {/* TODO: Destroy should be Restart */}
       <button onClick={onClickDestroyButton} disabled={destroy === null}>Destroy</button>
     </div>
   );
