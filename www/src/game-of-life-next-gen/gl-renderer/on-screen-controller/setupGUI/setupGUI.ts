@@ -21,7 +21,7 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
     advancedTexture.layer.layerMask = 0x10000000;
   }
 
-  const panel = getStackPanel('300px', true, '20px', GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT, GUI.Control.VERTICAL_ALIGNMENT_CENTER)
+  const { panel, svcontainer } = getStackPanel('300px', '20px', GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT, GUI.Control.VERTICAL_ALIGNMENT_CENTER)
   if (SHOW_ON_SCREEN_CONTROLS) {
     advancedTexture.addControl(panel);
   }
@@ -33,9 +33,9 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
   }
 
   const values = buildValues(defaultPipeline, scene)
-  addControls(panel, defaultPipeline, values, scene)
+  addControls(svcontainer, defaultPipeline, values, scene)
 
-  addTextureControls(panel, textureValues)
+  addTextureControls(svcontainer, textureValues)
 
   return { bgCamera }
 }
