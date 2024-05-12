@@ -1,7 +1,6 @@
 import * as GUI from 'babylonjs-gui'
 import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
 import { ArcRotateCamera, Vector3 } from 'babylonjs'
-import { SHOW_ON_SCREEN_CONTROLS } from '@/game-of-life-next-gen/constants';
 import { addControls, addTextureControls } from '../addControls';
 import buildValues from './buildValues';
 import getColorCurve from './getColorCurve';
@@ -22,9 +21,7 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
   }
 
   const { panel, svcontainer } = getStackPanel('300px', '20px', GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT, GUI.Control.VERTICAL_ALIGNMENT_CENTER)
-  if (SHOW_ON_SCREEN_CONTROLS) {
-    advancedTexture.addControl(panel);
-  }
+  advancedTexture.addControl(panel);
 
   const curve = getColorCurve(200, 80, 80, 20, 80, -80, 2, 80, 40)
 

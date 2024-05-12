@@ -19,8 +19,6 @@ const TEXTURE_DEFAULTS: TextureValues = {
 }
 const LIFE_SPAN = 200; // TODO: Add controller UI
 
-const SHOW_ON_SCREEN_CONTROLS = true; // TODO: Add controller UI
-
 const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
 const EFFCT_DEFAULTS = {
   BLOOM_ENABLED: true,
@@ -48,6 +46,5 @@ export {
 
   SCENE_BACKGROUND_COLOR_DEFAULT,
 
-  SHOW_ON_SCREEN_CONTROLS,
   EFFCT_DEFAULTS,
 }

@@ -5,7 +5,7 @@ import type { OnTextureHoverPosition, OnHoverTextureContextFn } from "@/game-of-
 import type { OnUpdateFpsDataFn } from "@/game-of-life-next-gen/game-of-life";
 import { AnimationState, type OnUpdatePlayingStateFn } from "./anim-controller";
 
-export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory): { onTogglePlayPause: () => void, animationState: AnimationState, onNextFrame: () => void, onClickCanvasFnRef: () => void, destroy: () => void } {
+export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory): { onTogglePlayPause: () => void, animationState: AnimationState, onNextFrame: () => void, onClickCanvasFnRef: () => void, onToggleGUIControlsVisibility: () => void, destroy: () => void } {
   const { universe, width, height, lifeSpan } = getUniverse();
 
   let onTextureHoverPosition: OnTextureHoverPosition = null
@@ -13,7 +13,7 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
     onTextureHoverPosition = hoverPos
   }
 
-  const { updateTextureContext, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
+  const { updateTextureContext, toggleGUIControlsVisibility, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
 
   const animationState = new AnimationState();
   animationState.registerOnUpdatePlayingState(updatePlayingState);
@@ -33,5 +33,5 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
     animationState.clear()
   }
 
-  return { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, destroy }
+  return { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, onToggleGUIControlsVisibility: toggleGUIControlsVisibility, destroy }
 }

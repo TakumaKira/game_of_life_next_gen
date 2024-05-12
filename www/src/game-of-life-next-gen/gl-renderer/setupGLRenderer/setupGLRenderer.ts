@@ -9,7 +9,7 @@ import setupGround from './setupGround';
 import updateHoverState from './updateHoverState';
 import buildTextureValues from '../on-screen-controller/setupGUI/buildTextureValues';
 
-export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, dispose: () => void} {
+export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, toggleGUIControlsVisibility: () => void, dispose: () => void} {
   const engine = new Engine(canvas, true);
   const scene = getScene(engine, SCENE_BACKGROUND_COLOR_DEFAULT)
 
@@ -38,7 +38,18 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
     textureGround.update();
   }
 
-  scene.activeCameras = [camera, bgCamera];
+  scene.activeCameras = [camera];
+  const toggleGUIControlsVisibility = () => {
+    if (!scene.activeCameras) {
+      return
+    }
+    const bgCameraIndex = scene.activeCameras.indexOf(bgCamera);
+    if (bgCameraIndex === -1) {
+      scene.activeCameras.push(bgCamera);
+    } else {
+      scene.activeCameras.splice(bgCameraIndex, 1);
+    }
+  }
 
   scene.onBeforeRenderObservable.add(() => {
     updateHoverState(scene, camera, onHoverTextureContext)
@@ -56,5 +67,5 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
     window.removeEventListener("resize", onWindowResize)
   }
 
-  return { updateTextureContext, dispose }
+  return { updateTextureContext, toggleGUIControlsVisibility, dispose }
 }
