@@ -1,10 +1,10 @@
-import { CELL_SIZE, GRID_COLOR } from "@/game-of-life-next-gen/constants";
+import { CELL_SIZE } from "@/game-of-life-next-gen/constants";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 
 export default function drawGrid(updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number): void {
-  updateTextureContext(context => {
+  updateTextureContext((context, textureValues) => {
     context.beginPath();
-    context.strokeStyle = GRID_COLOR;
+    context.strokeStyle = textureValues.gridColor.toHexString();
 
     // Vertical lines.
     for (let i = 0; i <= width; i++) {
