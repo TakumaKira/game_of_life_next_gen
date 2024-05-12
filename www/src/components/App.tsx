@@ -49,7 +49,7 @@ min of last 100 = ${Math.round(fpsData.min)}
 max of last 100 = ${Math.round(fpsData.max)}
 `.trim() : ''
   }, [fpsData])
-  const { play, pause, nextFrame, toggleGUIControlsVisibility, destroy } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
+  const { play, pause, nextFrame, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
       pause?.()
@@ -63,8 +63,9 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onToggleGUIControlsVisibility = () => {
     toggleGUIControlsVisibility?.()
   }
-  const onClickDestroyButton = () => {
+  const onClickRestartButton = () => {
     destroy?.()
+    restart()
   }
   return (
     <div style={containerStyles}>
@@ -73,8 +74,7 @@ max of last 100 = ${Math.round(fpsData.max)}
       <div style={fpsDisplayStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
       <button onClick={onToggleGUIControlsVisibility}>Toggle GUI Controls</button>
-      {/* TODO: Destroy should be Restart */}
-      <button onClick={onClickDestroyButton} disabled={destroy === null}>Destroy</button>
+      <button onClick={onClickRestartButton} disabled={destroy === null}>Restart</button>
     </div>
   );
 }

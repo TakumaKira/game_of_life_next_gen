@@ -1,14 +1,14 @@
 import React from 'react';
 import type { OnUpdatePlayingStateFn, OnUpdateFpsDataFn, getInterface as getInterfaceType } from '@/game-of-life-next-gen';
 
-export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn): { play: (() => void) | null, pause: (() => void) | null, nextFrame: (() => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null } {
+export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn): { play: (() => void) | null, pause: (() => void) | null, nextFrame: (() => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null, restart: () => void } {
   const [play, setPlay] = React.useState<(() => void) | null>(null)
   const [pause, setPause] = React.useState<(() => void) | null>(null)
   const [nextFrame, setNextFrame] = React.useState<(() => void) | null>(null)
   const [toggleGUIControlsVisibility, setToggleGUIControlsVisibility] = React.useState<(() => void) | null>(null)
   const [destroy, setDestroy] = React.useState<(() => void) | null>(null)
   const destroyRef = React.useRef<(() => void) | null>(null)
-  React.useEffect(() => {
+  const start = React.useCallback(() => {
     if (!canvasRef.current) {
       return
     }
@@ -21,7 +21,14 @@ export default function getController(getInterface: typeof getInterfaceType, can
         setDestroy(() => destroy)
         destroyRef.current = destroy
       })
-    return () => destroyRef.current?.()
   }, [canvasRef, updatePlayingState, updateFpsData])
-  return { play, pause, nextFrame, toggleGUIControlsVisibility, destroy }
+  React.useEffect(() => {
+    start()
+    return () => destroyRef.current?.()
+  }, [start])
+  const restart = React.useCallback(() => {
+    destroyRef.current?.()
+    start()
+  }, [start])
+  return { play, pause, nextFrame, toggleGUIControlsVisibility, destroy, restart }
 }
