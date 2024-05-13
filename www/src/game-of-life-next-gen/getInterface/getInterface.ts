@@ -10,8 +10,10 @@ import destroyImpl from "./destroyImpl";
 import DestroyedState from "./DestroyedState";
 import type { OnUpdatePlayingStateFn } from "../anim-controller";
 
+const wasmModulePromise = buildWasmModule({'./wasm_game_of_life_bg.js': bg})
+
 export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, toggleGUIControlsVisibility: () => void, destroy: () => void }> {
-  const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
+  const wasmModule = await wasmModulePromise
   bg.__wbg_set_wasm(wasmModule)
   const destroyedState = new DestroyedState();
   const { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, onToggleGUIControlsVisibility, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory)

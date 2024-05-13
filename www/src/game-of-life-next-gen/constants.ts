@@ -6,6 +6,7 @@ const TEXTURE_SIZE = 20;
 const TEXTURE_RESOLUTION = 512;
 const FIELD_SIZE = 128; // TODO: Add controller UI
 const CELL_SIZE = TEXTURE_RESOLUTION / FIELD_SIZE - 1;
+const SPEED = 10;
 const GRID_COLOR = new Color4(0.05, 0.05, 0.05, 1);
 const DEAD_COLOR = new Color4(0.1, 0.1, 0.1, 1);
 const ALIVE_COLOR_BASE_1 = new Color4(1, 0, 0, 1);
@@ -41,6 +42,7 @@ export {
   TEXTURE_RESOLUTION,
   FIELD_SIZE,
   CELL_SIZE,
+  SPEED,
   TEXTURE_DEFAULTS,
   LIFE_SPAN,
 
