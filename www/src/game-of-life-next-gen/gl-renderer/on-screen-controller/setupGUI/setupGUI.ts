@@ -2,7 +2,7 @@ import * as GUI from 'babylonjs-gui'
 import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
 import { ArcRotateCamera, Vector3 } from 'babylonjs'
 import { addControls, addTextureControls } from '../addControls';
-import buildValues from './buildValues';
+import buildGLValues from './buildGLValues';
 import getColorCurve from './getColorCurve';
 import getStackPanel from './getStackPanel';
 import type { TextureValues } from '@/game-of-life-next-gen/drawer';
@@ -29,8 +29,8 @@ export default function setupGUI(scene: Scene, defaultPipeline: DefaultRendering
     defaultPipeline.imageProcessing.colorCurves = curve;
   }
 
-  const values = buildValues(defaultPipeline, scene)
-  addControls(svcontainer, defaultPipeline, values, scene)
+  const glValues = buildGLValues(defaultPipeline, scene)
+  addControls(svcontainer, defaultPipeline, glValues, scene)
 
   addTextureControls(svcontainer, textureValues)
 

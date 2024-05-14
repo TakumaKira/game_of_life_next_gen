@@ -1,7 +1,7 @@
 import type { DefaultRenderingPipeline } from 'babylonjs'
-import type { Values } from '../types';
+import type { GLValues } from '../types';
 
-export default function rebindValues(defaultPipeline: DefaultRenderingPipeline, values: Values) {
+export default function rebindValues(defaultPipeline: DefaultRenderingPipeline, values: GLValues) {
   if (defaultPipeline.imageProcessing) {
     const {
       toneMappingEnabled,
