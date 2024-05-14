@@ -5,7 +5,7 @@ import type { GLValues } from '../types';
 import addCheckbox from './addCheckbox';
 import addSlider from './addSlider';
 import addColorPicker from './addColorPicker';
-import rebindValues from './rebindValues';
+import rebindGLValues from './rebindGLValues';
 
 export default function addGLControls(panel: GUI.StackPanel, defaultPipeline: DefaultRenderingPipeline, glValues: GLValues, scene: Scene) {
   addColorPicker(panel, "background color", value => {
@@ -15,12 +15,12 @@ export default function addGLControls(panel: GUI.StackPanel, defaultPipeline: De
 
   addCheckbox(panel, "fxaa", value => {
     defaultPipeline.fxaaEnabled = value;
-    rebindValues(defaultPipeline, glValues);
+    rebindGLValues(defaultPipeline, glValues);
   }, defaultPipeline.fxaaEnabled );
 
   addCheckbox(panel, "bloom", value => {
     defaultPipeline.bloomEnabled = value;
-    rebindValues(defaultPipeline, glValues);
+    rebindGLValues(defaultPipeline, glValues);
   }, defaultPipeline.bloomEnabled);
 
   addSlider(panel, "bloom weight", value => {
@@ -29,7 +29,7 @@ export default function addGLControls(panel: GUI.StackPanel, defaultPipeline: De
 
   addCheckbox(panel, "image processing", value => {
     defaultPipeline.imageProcessingEnabled = value;
-    rebindValues(defaultPipeline, glValues);
+    rebindGLValues(defaultPipeline, glValues);
   }, defaultPipeline.imageProcessingEnabled);
 
   addCheckbox(panel, "tone mapping", value => {
