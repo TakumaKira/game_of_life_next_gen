@@ -66,7 +66,7 @@ max of last 100 = ${Math.round(fpsData.max)}
   }
   const onClickRestartButton = () => {
     destroy?.()
-    restart()
+    restart({ fieldSize, lifeSpan, speed })
   }
   const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
   const [lifeSpan, setLifeSpan] = React.useState(DEFAULT_LIFE_SPAN)
