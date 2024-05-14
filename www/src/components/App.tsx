@@ -19,7 +19,7 @@ const playStopButtonStyles: React.CSSProperties = {
   width: 33,
   height: 28,
 }
-const fpsDisplayStyles: React.CSSProperties = {
+const onScreenTypographyStyles: React.CSSProperties = {
   whiteSpace: 'pre',
   fontFamily: 'monospace',
   color: '#cccccc',
@@ -113,12 +113,15 @@ max of last 100 = ${Math.round(fpsData.max)}
     <div style={containerStyles}>
       <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>{playStopButtonLabel}</button>
       <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>Next Frame</button>
-      <div style={fpsDisplayStyles}>{fpsContents}</div>
+      <div style={onScreenTypographyStyles}>{fpsContents}</div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
       <button onClick={onToggleGUIControlsVisibility}>Toggle GUI Controls</button>
       <button onClick={onClickRestartButton} disabled={destroy === null}>Restart</button>
+      <span style={onScreenTypographyStyles}>Current Field Size: {fieldSize}</span>
       <button onClick={onClickChangeFieldSizeAndRestartButton} disabled={destroy === null}>Change field size and restart</button>
+      <span style={onScreenTypographyStyles}>Current Life Span: {lifeSpan}</span>
       <button onClick={onClickChangeLifeSpanAndRestartButton} disabled={destroy === null}>Change life span and restart</button>
+      <span style={onScreenTypographyStyles}>Current Speed: {speed}</span>
       <button onClick={onClickChangeSpeedAndRestartButton} disabled={destroy === null}>Change speed and restart</button>
     </div>
   );
