@@ -4,9 +4,9 @@ import type { TextureValues } from "./drawer";
 const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
-const FIELD_SIZE = 128; // TODO: Add controller UI
-const CELL_SIZE = TEXTURE_RESOLUTION / FIELD_SIZE - 1;
-const SPEED = 3;
+const DEFAULT_FIELD_SIZE = 128;
+const getCellSize = (fieldSize: number) => TEXTURE_RESOLUTION / fieldSize - 1;
+const DEFAULT_SPEED = 3;
 const GRID_COLOR = new Color4(0.05, 0.05, 0.05, 1);
 const DEAD_COLOR = new Color4(0.1, 0.1, 0.1, 1);
 const ALIVE_COLOR_BASE_1 = new Color4(1, 0, 0, 1);
@@ -18,7 +18,7 @@ const TEXTURE_DEFAULTS: TextureValues = {
   deadColor: DEAD_COLOR,
   aliveColors: ALIVE_COLORS,
 }
-const LIFE_SPAN = 200; // TODO: Add controller UI
+const DEFAULT_LIFE_SPAN = 200;
 
 const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
 const EFFCT_DEFAULTS = {
@@ -40,11 +40,11 @@ const EFFCT_DEFAULTS = {
 export {
   TEXTURE_SIZE,
   TEXTURE_RESOLUTION,
-  FIELD_SIZE,
-  CELL_SIZE,
-  SPEED,
+  DEFAULT_FIELD_SIZE,
+  getCellSize,
+  DEFAULT_SPEED,
   TEXTURE_DEFAULTS,
-  LIFE_SPAN,
+  DEFAULT_LIFE_SPAN,
 
   SCENE_BACKGROUND_COLOR_DEFAULT,
 

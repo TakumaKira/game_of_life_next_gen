@@ -1,6 +1,7 @@
 import React from 'react';
 import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
+import { DEFAULT_FIELD_SIZE, DEFAULT_LIFE_SPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 
 const containerStyles: React.CSSProperties = {
   position: 'absolute',
@@ -25,7 +26,7 @@ const fpsDisplayStyles: React.CSSProperties = {
 }
 const canvasStyles: React.CSSProperties = {
   width: '100%',
-  height: 'calc(100% - 200px)',
+  height: 'calc(100% - 300px)',
   outline: 'none',
 }
 
@@ -67,6 +68,47 @@ max of last 100 = ${Math.round(fpsData.max)}
     destroy?.()
     restart()
   }
+  const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
+  const [lifeSpan, setLifeSpan] = React.useState(DEFAULT_LIFE_SPAN)
+  const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
+  const onClickChangeFieldSizeAndRestartButton = () => {
+    const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
+    if (fieldSizeInput === null) {
+      return
+    }
+    const newFieldSize = parseInt(fieldSizeInput)
+    if (isNaN(newFieldSize)) {
+      return
+    }
+    setFieldSize(newFieldSize)
+  }
+  const onClickChangeLifeSpanAndRestartButton = () => {
+    const lifeSpanInput = prompt('Enter new life span', lifeSpan.toString())
+    if (lifeSpanInput === null) {
+      return
+    }
+    const newLifeSpan = parseInt(lifeSpanInput)
+    if (isNaN(newLifeSpan)) {
+      return
+    }
+    setLifeSpan(newLifeSpan)
+  }
+  const onClickChangeSpeedAndRestartButton = () => {
+    const speedInput = prompt('Enter new speed', speed.toString())
+    if (speedInput === null) {
+      return
+    }
+    const newSpeed = parseInt(speedInput)
+    if (isNaN(newSpeed)) {
+      return
+    }
+    setSpeed(newSpeed)
+  }
+  // Change universe config
+  React.useEffect(() => {
+    destroy?.()
+    restart({ fieldSize, lifeSpan, speed })
+  }, [fieldSize, lifeSpan, speed])
   return (
     <div style={containerStyles}>
       <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>{playStopButtonLabel}</button>
@@ -75,6 +117,9 @@ max of last 100 = ${Math.round(fpsData.max)}
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
       <button onClick={onToggleGUIControlsVisibility}>Toggle GUI Controls</button>
       <button onClick={onClickRestartButton} disabled={destroy === null}>Restart</button>
+      <button onClick={onClickChangeFieldSizeAndRestartButton} disabled={destroy === null}>Change field size and restart</button>
+      <button onClick={onClickChangeLifeSpanAndRestartButton} disabled={destroy === null}>Change life span and restart</button>
+      <button onClick={onClickChangeSpeedAndRestartButton} disabled={destroy === null}>Change speed and restart</button>
     </div>
   );
 }

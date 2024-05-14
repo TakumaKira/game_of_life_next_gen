@@ -1,11 +1,10 @@
 import { CellState } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js"
 import { getIndex } from "@/game-of-life-next-gen/game-of-life";
-import { CELL_SIZE } from "@/game-of-life-next-gen/constants";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 import getIsAgeInRange from "./getIsAgeInRange";
 
-export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number) {
+export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, lifeSpan: number, cellSize: number) {
   const cellsStatePtr = universe.cells_state();
   const cellsState = new Uint8Array(memory.buffer, cellsStatePtr, width * height);
 
@@ -29,10 +28,10 @@ export default function drawCells(universe: Universe, memory: WebAssembly.Memory
             continue;
           }
           context.fillRect(
-            col * (CELL_SIZE + 1) + 1,
-            row * (CELL_SIZE + 1) + 1,
-            CELL_SIZE,
-            CELL_SIZE
+            col * (cellSize + 1) + 1,
+            row * (cellSize + 1) + 1,
+            cellSize,
+            cellSize
           );
         }
       }
@@ -47,10 +46,10 @@ export default function drawCells(universe: Universe, memory: WebAssembly.Memory
           continue;
         }
         context.fillRect(
-          col * (CELL_SIZE + 1) + 1,
-          row * (CELL_SIZE + 1) + 1,
-          CELL_SIZE,
-          CELL_SIZE
+          col * (cellSize + 1) + 1,
+          row * (cellSize + 1) + 1,
+          cellSize,
+          cellSize
         );
       }
     }
