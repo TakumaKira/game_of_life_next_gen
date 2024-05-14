@@ -7,7 +7,7 @@ import addSlider from './addSlider';
 import addColorPicker from './addColorPicker';
 import rebindValues from './rebindValues';
 
-export default function addControls(panel: GUI.StackPanel, defaultPipeline: DefaultRenderingPipeline, glValues: GLValues, scene: Scene) {
+export default function addGLControls(panel: GUI.StackPanel, defaultPipeline: DefaultRenderingPipeline, glValues: GLValues, scene: Scene) {
   addColorPicker(panel, "background color", value => {
     scene.clearColor = value;
     glValues.backgroundColor = value;
