@@ -12,6 +12,7 @@
   "author": "Takuma Kira",
   "license": "ISC",
   "devDependencies": {
+    "@dotenv-run/core": "^1.3.5",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^8.0.1",

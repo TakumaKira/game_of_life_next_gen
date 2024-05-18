@@ -1,7 +1,7 @@
 import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
-import type { Values } from '../types';
+import type { GLValues } from '../types';
 
-export default function buildValue(defaultPipeline: DefaultRenderingPipeline, scene: Scene): Values {
+export default function buildGLValues(defaultPipeline: DefaultRenderingPipeline, scene: Scene): GLValues {
   return {
     toneMappingEnabled: defaultPipeline.imageProcessing?.toneMappingEnabled,
     vignetteEnabled: defaultPipeline.imageProcessing?.vignetteEnabled,

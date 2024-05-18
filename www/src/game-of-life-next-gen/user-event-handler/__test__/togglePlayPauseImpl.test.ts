@@ -1,4 +1,4 @@
-import onClickPlayPauseButton from '../onClickPlayPauseButton'; // Adjust the import path as necessary
+import togglePlayPauseImpl from '../togglePlayPauseImpl'; // Adjust the import path as necessary
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 import type { FPS } from "@/game-of-life-next-gen/game-of-life";
 import { pause, play } from "@/game-of-life-next-gen/anim-controller";
@@ -16,7 +16,7 @@ const universeMock = { /* Mock Universe object properties */ } as Universe;
 const memoryMock = { /* Mock Memory object properties */ } as WebAssembly.Memory;
 const animationStateMock = { isPlaying: false };
 
-describe('onClickPlayPauseButton', () => {
+describe('togglePlayPauseImpl', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -26,31 +26,22 @@ describe('onClickPlayPauseButton', () => {
     animationStateMock.isPlaying = false;
 
     // Mock updateTextureContext function
-    const updateTextureContextMock = jest.fn();
+    const updateUniverseMock = jest.fn();
 
-    // Mock updateAnimId function
-    const updateAnimIdMock = jest.fn();
-
-    onClickPlayPauseButton(
+    togglePlayPauseImpl(
       fpsMock,
       universeMock,
-      memoryMock,
-      updateTextureContextMock,
-      100, // Width
-      100, // Height
-      1000, // lifeSpan
-      animationStateMock as AnimationState
+      updateUniverseMock,
+      animationStateMock as AnimationState,
+      1, // speed
     );
 
     expect(play).toHaveBeenCalledWith(
       fpsMock,
       universeMock,
-      memoryMock,
-      updateTextureContextMock,
-      100, // Width
-      100, // Height
-      1000, // lifeSpan
-      animationStateMock
+      updateUniverseMock,
+      animationStateMock,
+      1, // speed
     );
     expect(pause).not.toHaveBeenCalled();
   });
@@ -59,21 +50,12 @@ describe('onClickPlayPauseButton', () => {
     // Mock animationStateMock.isPlaying to return false
     animationStateMock.isPlaying = true;
 
-    // Mock getCurrentAnimId function
-    const getCurrentAnimIdMock = jest.fn().mockReturnValue(123);
-
-    // Mock updateAnimId function
-    const updateAnimIdMock = jest.fn();
-
-    onClickPlayPauseButton(
+    togglePlayPauseImpl(
       fpsMock,
       universeMock,
-      memoryMock,
       jest.fn(), // Mock updateTextureContext function
-      100, // Width
-      100, // Height
-      1000, // lifeSpan
-      animationStateMock as AnimationState
+      animationStateMock as AnimationState,
+      1, // speed
     );
 
     expect(pause).toHaveBeenCalledWith(animationStateMock);

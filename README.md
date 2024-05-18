@@ -30,4 +30,4 @@ tutorial. The tutorial builds increasingly featureful implementations of
 
 ### Test coverage
 
-[Test coverage for www directory](./www/coverage/coverage-report.txt)
+[Test coverage for www directory](https://github.com/TakumaKira/game_of_life_next_gen/blob/master/www/coverage/coverage-report.txt)

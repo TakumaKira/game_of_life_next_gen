@@ -213,7 +213,7 @@ impl Universe {
         self.cells = next;
     }
 
-    pub fn new(size: u32, life_span: u8) -> Universe {
+    pub fn new(size: u32, life_span: u8, alive_cell_base: Vec<u32>) -> Universe {
         utils::set_panic_hook();
 
         let size = if size == 0 { 128 } else { size };
@@ -223,7 +223,8 @@ impl Universe {
 
         let cells = (0..width * height)
             .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
+                let should_alive = alive_cell_base.iter().any(|&base| i % base == 0);
+                if should_alive {
                     Cell::new()
                 } else {
                     let mut cell = Cell::new();
