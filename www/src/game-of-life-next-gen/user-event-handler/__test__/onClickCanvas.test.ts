@@ -3,12 +3,6 @@ import getRowColFromTextureHoverPosition from '../getRowColFromTextureHoverPosit
 import type { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
 import type { OnTextureHoverPosition } from "@/game-of-life-next-gen/gl-renderer";
 
-// Mock imports
-jest.mock('@/game-of-life-next-gen/drawer', () => ({
-  drawGrid: jest.fn(),
-  drawCells: jest.fn()
-}));
-
 jest.mock('@/game-of-life-next-gen/gl-renderer', () => ({
   OnTextureHoverPosition: jest.fn()
 }));
