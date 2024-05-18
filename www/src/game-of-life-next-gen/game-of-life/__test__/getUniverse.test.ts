@@ -1,10 +1,9 @@
 import getUniverse from '../getUniverse';
 import { Universe } from "wasm-game-of-life/wasm_game_of_life_bg.js";
-import { DEFAULT_FIELD_SIZE, DEFAULT_LIFE_SPAN } from "@/game-of-life-next-gen/constants";
 
 jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => {
   const mockUniverse = {
-    new: jest.fn((size, lifeSpan) => ({
+    new: jest.fn((size, lifeSpan, aliveCellBase) => ({
       width: jest.fn(() => size),
       height: jest.fn(() => size),
       get_life_span: jest.fn(() => lifeSpan),
@@ -14,24 +13,28 @@ jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => {
 });
 
 describe('getUniverse', () => {
-  it('should construct the universe with the specified size and life span', () => {
-    const { universe } = getUniverse();
+  let fieldSize = 10;
+  let lifeSpan = 100;
+  let aliveCellBase = [1, 2]
 
-    expect(Universe.new).toHaveBeenCalledWith(DEFAULT_FIELD_SIZE, DEFAULT_LIFE_SPAN);
-    expect(universe.width()).toBe(DEFAULT_FIELD_SIZE);
-    expect(universe.height()).toBe(DEFAULT_FIELD_SIZE);
+  it('should construct the universe with the specified size and life span', () => {
+    const { universe } = getUniverse(fieldSize, lifeSpan, aliveCellBase);
+
+    expect(Universe.new).toHaveBeenCalledWith(fieldSize, lifeSpan, new Uint32Array(aliveCellBase));
+    expect(universe.width()).toBe(fieldSize);
+    expect(universe.height()).toBe(fieldSize);
   });
 
   it('should return the width and height of the constructed universe', () => {
-    const { width, height } = getUniverse();
+    const { width, height } = getUniverse(fieldSize, lifeSpan, aliveCellBase);
 
-    expect(width).toBe(DEFAULT_FIELD_SIZE);
-    expect(height).toBe(DEFAULT_FIELD_SIZE);
+    expect(width).toBe(fieldSize);
+    expect(height).toBe(fieldSize);
   });
 
   it('should return the life span of the constructed universe', () => {
-    const { lifeSpan } = getUniverse();
+    const { lifeSpan: returnLifeSpan } = getUniverse(fieldSize, lifeSpan, aliveCellBase);
 
-    expect(lifeSpan).toBe(DEFAULT_LIFE_SPAN);
+    expect(returnLifeSpan).toBe(lifeSpan);
   });
 });
