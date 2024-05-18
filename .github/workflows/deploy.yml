@@ -6,6 +6,12 @@ on:
     branches:
     - master
   workflow_dispatch:
+    inputs:
+      aliveCellBaseOptions:
+        description: 'Base options for alive cells'
+        required: false
+        default: '10'
+        type: number
 
 # Build wasm and www, then deploy to S3, using GitHub Actions.
 jobs:
@@ -52,6 +58,8 @@ jobs:
       run: |
         cd www
         pnpm build
+      env:
+        ALIVE_CELL_BASE_OPTIONS: ${{ github.event.inputs.aliveCellBaseOptions }}
     - name: Upload www artifact
       uses: actions/upload-artifact@v4
       with:

@@ -23,6 +23,20 @@ describe('nextFrameImpl', () => {
     expect(onNextFrameMock).toHaveBeenCalled();
   });
 
+  it('calls onNextFrame() with showLog flag when destroyedState.isDestroyed is false', () => {
+    const animationState = {
+      isPlaying: true,
+      cancel: jest.fn(),
+    } as unknown as AnimationState;
+    const destroyedState = {
+      isDestroyed: false,
+    } as unknown as DestroyedState;
+    const showLog = true;
+    nextFrameImpl(onNextFrameMock, animationState, destroyedState, showLog);
+    expect(animationState.cancel).toHaveBeenCalled();
+    expect(onNextFrameMock).toHaveBeenCalledWith(showLog);
+  });
+
   it('does not call onNextFrame() when destroyedState.isDestroyed is true', () => {
     const animationState = {
       isPlaying: true,

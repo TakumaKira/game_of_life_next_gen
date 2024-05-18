@@ -1,6 +1,6 @@
 import type { Nullable, Color4, ColorCurves } from 'babylonjs'
 
-export type Values = {
+export type GLValues = {
   toneMappingEnabled?: boolean,
   vignetteEnabled?: boolean,
   vignetteColor?: Color4,

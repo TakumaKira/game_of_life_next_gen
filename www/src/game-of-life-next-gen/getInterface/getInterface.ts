@@ -9,18 +9,24 @@ import nextFrameImpl from "./nextFrameImpl";
 import destroyImpl from "./destroyImpl";
 import DestroyedState from "./DestroyedState";
 import type { OnUpdatePlayingStateFn } from "../anim-controller";
+import type { UniverseConfig } from "..";
 
-export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, autoStart = true): Promise<{ play: () => void, pause: () => void, nextFrame: () => void, destroy: () => void }> {
-  const wasmModule = await buildWasmModule({'./wasm_game_of_life_bg.js': bg})
+const wasmModulePromise = buildWasmModule({'./wasm_game_of_life_bg.js': bg})
+
+export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, autoStart = true, universeConfig?: UniverseConfig): Promise<{ play: () => void, pause: () => void, nextFrame: (showLog?: boolean) => void, resetCamera: () => void, toggleGUIControlsVisibility: () => void, destroy: () => void }> {
+  const wasmModule = await wasmModulePromise
   bg.__wbg_set_wasm(wasmModule)
   const destroyedState = new DestroyedState();
-  const { onTogglePlayPause, animationState, onNextFrame, onClickCanvasFnRef, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory)
+  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, toggleGUIControlsVisibility: onToggleGUIControlsVisibility, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
   const play = () => playImpl(onTogglePlayPause, animationState, destroyedState)
   const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedState)
-  const nextFrame = () => nextFrameImpl(onNextFrame, animationState, destroyedState)
+  const nextFrame = (showLog?: boolean) => nextFrameImpl(onNextFrame, animationState, destroyedState, showLog)
+  const toggleGUIControlsVisibility = () => onToggleGUIControlsVisibility()
   const destroy = () => destroyImpl(onClickCanvasFnRef, canvas, animationState, destroySetup, destroyedState)
   if (autoStart) {
     play()
+  } else {
+    nextFrameImpl(onNextFrame, animationState, destroyedState)
   }
-  return { play, pause, nextFrame, destroy }
+  return { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy }
 }

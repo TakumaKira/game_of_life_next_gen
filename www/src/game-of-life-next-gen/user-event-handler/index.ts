@@ -1,3 +1,3 @@
-export { default as onClickNextFrameButton } from './onClickNextFrameButton'
-export { default as onClickPlayPauseButton } from './onClickPlayPauseButton'
+export { default as nextFrameImpl } from './nextFrameImpl'
+export { default as togglePlayPauseImpl } from './togglePlayPauseImpl'
 export { default as onClickCanvas } from './onClickCanvas'
