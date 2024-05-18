@@ -28,7 +28,7 @@ const onScreenTypographyStyles: React.CSSProperties = {
 }
 const canvasStyles: React.CSSProperties = {
   width: '100%',
-  height: 'calc(100% - 350px)',
+  height: 'calc(100% - 400px)',
   outline: 'none',
 }
 
