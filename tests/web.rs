@@ -24,7 +24,7 @@ fn pass() {
 
 #[cfg(test)]
 pub fn input_spaceship() -> Universe {
-    let mut universe = Universe::new(6, 2);
+    let mut universe = Universe::new(6, 2, Vec::<u32>::new());
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(1,2), (2,3), (3,1), (3,2), (3,3)]);
@@ -39,7 +39,7 @@ pub fn input_spaceship() -> Universe {
 
 #[cfg(test)]
 pub fn expected_spaceship_after_first_tick() -> Universe {
-    let mut universe = Universe::new(6, 2);
+    let mut universe = Universe::new(6, 2, Vec::<u32>::new());
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(2,1), (2,3), (3,2), (3,3), (4,2)]);
@@ -54,7 +54,7 @@ pub fn expected_spaceship_after_first_tick() -> Universe {
 
 #[cfg(test)]
 pub fn expected_spaceship_after_second_tick() -> Universe {
-    let mut universe = Universe::new(6, 2);
+    let mut universe = Universe::new(6, 2, Vec::<u32>::new());
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(3,1), (4,2), (4,3)]);
