@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Checkbox from './Checkbox'; // Adjust the import path according to your project structure
+import Checkbox from '../Checkbox';
 
 test('renders with initial state', () => {
   const { getByLabelText } = render(<Checkbox id="test-checkbox" label="Test Checkbox" checked={false} onChange={() => {}} labelStyles={{}} />);
