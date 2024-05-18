@@ -18,31 +18,68 @@ describe('getController', () => {
     const mockPlay = jest.fn();
     const mockPause = jest.fn();
     const mockNextFrame = jest.fn();
+    const mockResetCamera = jest.fn();
+    const mockToggleGUIControlsVisibility = jest.fn();
     const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
       play: mockPlay,
       pause: mockPause,
       nextFrame: mockNextFrame,
+      resetCamera: mockResetCamera,
+      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
       destroy: mockDestroy,
     });
     const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
     await result.waitForNextUpdate();
-    expect(mockGetInterface).toHaveBeenCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn);
+    expect(mockGetInterface).toHaveBeenCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, undefined, undefined);
     expect(result.result.current.play).toEqual(mockPlay);
     expect(result.result.current.pause).toEqual(mockPause);
     expect(result.result.current.nextFrame).toEqual(mockNextFrame);
+    expect(result.result.current.resetCamera).toEqual(mockResetCamera);
+    expect(result.result.current.toggleGUIControlsVisibility).toEqual(mockToggleGUIControlsVisibility);
     expect(result.result.current.destroy).toEqual(mockDestroy);
   });
+
+  it('should call getInterface with autoStart and universeConfig when restart function is called with autoStart and universeConfig', async () => {
+    const mockPlay = jest.fn();
+    const mockPause = jest.fn();
+    const mockNextFrame = jest.fn();
+    const mockResetCamera = jest.fn();
+    const mockToggleGUIControlsVisibility = jest.fn();
+    const mockDestroy = jest.fn();
+    const mockGetInterface = jest.fn().mockResolvedValue({
+      play: mockPlay,
+      pause: mockPause,
+      nextFrame: mockNextFrame,
+      resetCamera: mockResetCamera,
+      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+      destroy: mockDestroy,
+    });
+    const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
+    await result.waitForNextUpdate();
+    expect(mockGetInterface).toHaveBeenLastCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, undefined, undefined);
+    const autoStart = true
+    const universeConfig = {}
+    act(() => {
+      result.result.current.restart(universeConfig, autoStart)
+    })
+    await result.waitForNextUpdate();
+    expect(mockGetInterface).toHaveBeenLastCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, autoStart, universeConfig);
+  })
 
   it('should call destroy function on unmount', async () => {
     const mockPlay = jest.fn();
     const mockPause = jest.fn();
     const mockNextFrame = jest.fn();
+    const mockResetCamera = jest.fn();
+    const mockToggleGUIControlsVisibility = jest.fn();
     const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
       play: mockPlay,
       pause: mockPause,
       nextFrame: mockNextFrame,
+      resetCamera: mockResetCamera,
+      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
       destroy: mockDestroy,
     });
     const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
