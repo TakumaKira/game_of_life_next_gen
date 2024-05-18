@@ -1,5 +1,6 @@
 export type UniverseConfig = {
-  fieldSize? : number;
-  lifeSpan? : number;
-  speed? : number;
+  fieldSize?: number;
+  lifeSpan?: number;
+  speed?: number;
+  aliveCellBase?: number[];
 }

@@ -5,6 +5,7 @@ const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
 const DEFAULT_FIELD_SIZE = 128;
+const DEFAULT_ALIVE_CELL_BASE = [2, 7];
 const getCellSize = (fieldSize: number) => TEXTURE_RESOLUTION / fieldSize - 1;
 const DEFAULT_SPEED = 3;
 const GRID_COLOR = new Color4(0.05, 0.05, 0.05, 1);
@@ -41,6 +42,7 @@ export {
   TEXTURE_SIZE,
   TEXTURE_RESOLUTION,
   DEFAULT_FIELD_SIZE,
+  DEFAULT_ALIVE_CELL_BASE,
   getCellSize,
   DEFAULT_SPEED,
   TEXTURE_DEFAULTS,

@@ -1,13 +1,8 @@
 #!/usr/bin/env node
 import * as esbuild from 'esbuild'
-import wasmPlugin from './wasmPlugin.mjs'
+import esbuildSharedOption from './esbuildSharedOptions.mjs'
 
-const ctx = await esbuild.context({
-  entryPoints: ['./src/index.jsx'],
-  bundle: true,
-  outfile: './public/bundle/index.js',
-  plugins: [wasmPlugin],
-})
+const ctx = await esbuild.context(esbuildSharedOption)
 
 const { host, port } = await ctx.serve({
   servedir: 'public',
