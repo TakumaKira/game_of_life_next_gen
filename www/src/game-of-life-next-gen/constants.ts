@@ -1,4 +1,4 @@
-import { Color4 } from "babylonjs";
+import { Color4, Vector3 } from "babylonjs";
 import type { TextureValues } from "./drawer";
 
 const TEXTURE_SIZE = 20;
@@ -22,6 +22,16 @@ const TEXTURE_DEFAULTS: TextureValues = {
 const DEFAULT_LIFE_SPAN = 200;
 
 const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
+const CAMERA_ALPHA_DEFAULT = -Math.PI/2
+const CAMERA_BETA_DEFAULT = Math.PI / 3
+const CAMERA_RADIUS_DEFAULT = 25
+const CAMERA_TARGET_DEFAULT = Vector3.Zero()
+const CAMERA_DEFAULTS = {
+  alpha: CAMERA_ALPHA_DEFAULT,
+  beta: CAMERA_BETA_DEFAULT,
+  radius: CAMERA_RADIUS_DEFAULT,
+  target: CAMERA_TARGET_DEFAULT
+}
 const EFFCT_DEFAULTS = {
   BLOOM_ENABLED: true,
   BLOOM_WEIGHT: 2,
@@ -50,5 +60,6 @@ export {
 
   SCENE_BACKGROUND_COLOR_DEFAULT,
 
+  CAMERA_DEFAULTS,
   EFFCT_DEFAULTS,
 }

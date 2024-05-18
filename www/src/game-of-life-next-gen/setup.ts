@@ -8,7 +8,7 @@ import type { UniverseConfig } from "./types";
 import { drawCells, drawGrid } from "./drawer";
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFE_SPAN, DEFAULT_SPEED, getCellSize } from "./constants";
 
-export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory, universeConfig?: UniverseConfig): { togglePlayPause: () => void, animationState: AnimationState, nextFrame: (showLog?: boolean) => void, onClickCanvasFnRef: () => void, toggleGUIControlsVisibility: () => void, destroy: () => void } {
+export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory, universeConfig?: UniverseConfig): { togglePlayPause: () => void, animationState: AnimationState, nextFrame: (showLog?: boolean) => void, onClickCanvasFnRef: () => void, resetCamera: () => void, toggleGUIControlsVisibility: () => void, destroy: () => void } {
   const fieldSize = universeConfig?.fieldSize || DEFAULT_FIELD_SIZE;
   const lifeSpan = universeConfig?.lifeSpan || DEFAULT_LIFE_SPAN;
   const speed = universeConfig?.speed || DEFAULT_SPEED;
@@ -22,7 +22,7 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
     onTextureHoverPosition = hoverPos
   }
 
-  const { updateTextureContext, toggleGUIControlsVisibility, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
+  const { updateTextureContext, toggleGUIControlsVisibility, resetCamera, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
 
   const updateUniverse = () => {
     drawGrid(updateTextureContext, width, height, cellSize);
@@ -47,5 +47,5 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
     animationState.clear()
   }
 
-  return { togglePlayPause, animationState, nextFrame, onClickCanvasFnRef, toggleGUIControlsVisibility, destroy }
+  return { togglePlayPause, animationState, nextFrame, onClickCanvasFnRef, resetCamera, toggleGUIControlsVisibility, destroy }
 }

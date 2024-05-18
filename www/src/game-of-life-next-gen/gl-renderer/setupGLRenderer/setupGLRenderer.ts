@@ -1,5 +1,5 @@
 import { ArcRotateCamera, Color3, Engine, Vector3 } from 'babylonjs'
-import { EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_DEFAULTS, TEXTURE_RESOLUTION, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
+import { CAMERA_DEFAULTS, EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_DEFAULTS, TEXTURE_RESOLUTION, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
 import type { OnHoverTextureContextFn, TextContextUpdateFn } from '../types';
 import { setupGUI } from '../on-screen-controller';
 import getDefaultRenderPipeline from './getDefaultRenderPipeline';
@@ -9,17 +9,23 @@ import setupGround from './setupGround';
 import updateHoverState from './updateHoverState';
 import buildTextureValues from '../on-screen-controller/setupGUI/buildTextureValues';
 
-export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, toggleGUIControlsVisibility: () => void, dispose: () => void} {
+export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextureContext: OnHoverTextureContextFn): { updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, toggleGUIControlsVisibility: () => void, resetCamera: () => void, dispose: () => void} {
   const engine = new Engine(canvas, true);
   const scene = getScene(engine, SCENE_BACKGROUND_COLOR_DEFAULT)
 
   const camera = new ArcRotateCamera(
     "Camera",
-    -Math.PI/2, Math.PI / 3, 25,
-    Vector3.Zero(),
+    CAMERA_DEFAULTS.alpha, CAMERA_DEFAULTS.beta, CAMERA_DEFAULTS.radius,
+    CAMERA_DEFAULTS.target,
     scene
   );
   camera.attachControl(canvas, true);
+  const resetCamera = () => {
+    camera.alpha = CAMERA_DEFAULTS.alpha
+    camera.beta = CAMERA_DEFAULTS.beta
+    camera.radius = CAMERA_DEFAULTS.radius
+    camera.target = CAMERA_DEFAULTS.target
+  }
 
   const light = getLight("light1", new Vector3(0, 1, 0), scene, 0.7)
 
@@ -67,5 +73,5 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
     window.removeEventListener("resize", onWindowResize)
   }
 
-  return { updateTextureContext, toggleGUIControlsVisibility, dispose }
+  return { updateTextureContext, toggleGUIControlsVisibility, resetCamera, dispose }
 }

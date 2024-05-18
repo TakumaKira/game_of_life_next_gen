@@ -1,10 +1,11 @@
 import React from 'react';
 import type { OnUpdatePlayingStateFn, OnUpdateFpsDataFn, getInterface as getInterfaceType, UniverseConfig } from '@/game-of-life-next-gen';
 
-export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn): { play: (() => void) | null, pause: (() => void) | null, nextFrame: ((showLog?: boolean) => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null, restart: (universeConfig?: UniverseConfig, autoStart?: boolean) => void } {
+export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn): { play: (() => void) | null, pause: (() => void) | null, nextFrame: ((showLog?: boolean) => void) | null, resetCamera: (() => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null, restart: (universeConfig?: UniverseConfig, autoStart?: boolean) => void } {
   const [play, setPlay] = React.useState<(() => void) | null>(null)
   const [pause, setPause] = React.useState<(() => void) | null>(null)
   const [nextFrame, setNextFrame] = React.useState<((showLog?: boolean) => void) | null>(null)
+  const [resetCamera, setResetCamera] = React.useState<(() => void) | null>(null)
   const [toggleGUIControlsVisibility, setToggleGUIControlsVisibility] = React.useState<(() => void) | null>(null)
   const [destroy, setDestroy] = React.useState<(() => void) | null>(null)
   const destroyRef = React.useRef<(() => void) | null>(null)
@@ -13,10 +14,11 @@ export default function getController(getInterface: typeof getInterfaceType, can
       return
     }
     getInterface(canvasRef.current, updatePlayingState, updateFpsData, autoStart, universeConfig)
-      .then(({ play, pause, nextFrame, toggleGUIControlsVisibility, destroy }) => {
+      .then(({ play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy }) => {
         setPlay(() => play)
         setPause(() => pause)
         setNextFrame(() => nextFrame)
+        setResetCamera(() => resetCamera)
         setToggleGUIControlsVisibility(() => toggleGUIControlsVisibility)
         setDestroy(() => destroy)
         destroyRef.current = destroy
@@ -30,5 +32,5 @@ export default function getController(getInterface: typeof getInterfaceType, can
     destroyRef.current?.()
     start(universeConfig, autoStart)
   }, [start])
-  return { play, pause, nextFrame, toggleGUIControlsVisibility, destroy, restart }
+  return { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart }
 }

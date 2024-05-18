@@ -54,7 +54,7 @@ min of last 100 = ${Math.round(fpsData.min)}
 max of last 100 = ${Math.round(fpsData.max)}
 `.trim() : ''
   }, [fpsData])
-  const { play, pause, nextFrame, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
+  const { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
       pause?.()
@@ -67,6 +67,9 @@ max of last 100 = ${Math.round(fpsData.max)}
   }
   const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
     setShowWasmLogOnNextFrame(e.target.checked)
+  }
+  const onClickResetCamera = () => {
+    resetCamera?.()
   }
   const onToggleGUIControlsVisibility = () => {
     toggleGUIControlsVisibility?.()
@@ -152,6 +155,9 @@ max of last 100 = ${Math.round(fpsData.max)}
         {fpsContents}
       </div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
+      <button onClick={onClickResetCamera}>
+        Reset Camera
+      </button>
       <button onClick={onToggleGUIControlsVisibility}>
         Toggle GUI Controls
       </button>

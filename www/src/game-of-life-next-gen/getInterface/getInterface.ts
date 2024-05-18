@@ -13,11 +13,11 @@ import type { UniverseConfig } from "..";
 
 const wasmModulePromise = buildWasmModule({'./wasm_game_of_life_bg.js': bg})
 
-export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, autoStart = true, universeConfig?: UniverseConfig): Promise<{ play: () => void, pause: () => void, nextFrame: (showLog?: boolean) => void, toggleGUIControlsVisibility: () => void, destroy: () => void }> {
+export default async function getInterface(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, autoStart = true, universeConfig?: UniverseConfig): Promise<{ play: () => void, pause: () => void, nextFrame: (showLog?: boolean) => void, resetCamera: () => void, toggleGUIControlsVisibility: () => void, destroy: () => void }> {
   const wasmModule = await wasmModulePromise
   bg.__wbg_set_wasm(wasmModule)
   const destroyedState = new DestroyedState();
-  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, toggleGUIControlsVisibility: onToggleGUIControlsVisibility, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
+  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, toggleGUIControlsVisibility: onToggleGUIControlsVisibility, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
   const play = () => playImpl(onTogglePlayPause, animationState, destroyedState)
   const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedState)
   const nextFrame = (showLog?: boolean) => nextFrameImpl(onNextFrame, animationState, destroyedState, showLog)
@@ -28,5 +28,5 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
   } else {
     nextFrameImpl(onNextFrame, animationState, destroyedState)
   }
-  return { play, pause, nextFrame, toggleGUIControlsVisibility, destroy }
+  return { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy }
 }
