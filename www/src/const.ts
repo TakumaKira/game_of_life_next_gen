@@ -1,3 +1,15 @@
 const ALIVE_CELL_BASE_OPTIONS_DEFAULT = 10
-const ALIVE_CELL_BASE_OPTIONS_ENV = process.env.ALIVE_CELL_BASE_OPTIONS && parseInt(process.env.ALIVE_CELL_BASE_OPTIONS)
+const ALIVE_CELL_BASE_OPTIONS_ENV = (() => {
+  if (!process.env.ALIVE_CELL_BASE_OPTIONS) {
+    return null
+  }
+  const _ALIVE_CELL_BASE_OPTIONS_ENV = parseInt(process.env.ALIVE_CELL_BASE_OPTIONS)
+  if (isNaN(_ALIVE_CELL_BASE_OPTIONS_ENV)) {
+    return null
+  }
+  if (_ALIVE_CELL_BASE_OPTIONS_ENV < 0) {
+    return null
+  }
+  return _ALIVE_CELL_BASE_OPTIONS_ENV
+})()
 export const ALIVE_CELL_BASE_OPTIONS = ALIVE_CELL_BASE_OPTIONS_ENV || ALIVE_CELL_BASE_OPTIONS_DEFAULT
