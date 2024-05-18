@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Checkbox from '../Checkbox';
 
 test('renders with initial state', () => {
