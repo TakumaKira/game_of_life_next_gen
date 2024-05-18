@@ -1,7 +1,7 @@
 import React from 'react';
 import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
-import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFE_SPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
+import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
 import Checkbox from './ui/Checkbox';
 
@@ -54,7 +54,23 @@ min of last 100 = ${Math.round(fpsData.min)}
 max of last 100 = ${Math.round(fpsData.max)}
 `.trim() : ''
   }, [fpsData])
-  const { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData)
+  const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
+  const [lifespan, setLifespan] = React.useState(DEFAULT_LIFESPAN)
+  const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
+  const aliveCellBaseOptions = [...new Array(ALIVE_CELL_BASE_OPTIONS)].map((_, i) => i + 1)
+  const [aliveCellBase, setAliveCellBase] = React.useState<{ [number: number]: boolean }>(Object.fromEntries(aliveCellBaseOptions.map(number => [number, DEFAULT_ALIVE_CELL_BASE.includes(number)])))
+  const universeConfig = React.useMemo<UniverseConfig>(() => ({
+    fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : [])
+  }), [fieldSize, lifespan, speed, aliveCellBase])
+  const { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
+  // Change universe config
+  React.useEffect(() => {
+    if (destroy === null) {
+      return
+    }
+    destroy?.()
+    restart(universeConfig, autoStart)
+  }, [universeConfig])
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
       pause?.()
@@ -78,14 +94,6 @@ max of last 100 = ${Math.round(fpsData.max)}
     destroy?.()
     restart(universeConfig, autoStart)
   }
-  const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
-  const [lifeSpan, setLifeSpan] = React.useState(DEFAULT_LIFE_SPAN)
-  const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
-  const aliveCellBaseOptions = [...new Array(ALIVE_CELL_BASE_OPTIONS)].map((_, i) => i + 1)
-  const [aliveCellBase, setAliveCellBase] = React.useState<{ [number: number]: boolean }>(Object.fromEntries(aliveCellBaseOptions.map(number => [number, DEFAULT_ALIVE_CELL_BASE.includes(number)])))
-  const universeConfig = React.useMemo<UniverseConfig>(() => ({
-    fieldSize, lifeSpan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : [])
-  }), [fieldSize, lifeSpan, speed, aliveCellBase])
   const onClickChangeFieldSizeAndRestartButton = () => {
     const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
     if (fieldSizeInput === null) {
@@ -97,16 +105,16 @@ max of last 100 = ${Math.round(fpsData.max)}
     }
     setFieldSize(newFieldSize)
   }
-  const onClickChangeLifeSpanAndRestartButton = () => {
-    const lifeSpanInput = prompt('Enter new life span', lifeSpan.toString())
-    if (lifeSpanInput === null) {
+  const onClickChangeLifespanAndRestartButton = () => {
+    const lifespanInput = prompt('Enter new lifespan', lifespan.toString())
+    if (lifespanInput === null) {
       return
     }
-    const newLifeSpan = parseInt(lifeSpanInput)
-    if (isNaN(newLifeSpan)) {
+    const newLifespan = parseInt(lifespanInput)
+    if (isNaN(newLifespan)) {
       return
     }
-    setLifeSpan(newLifeSpan)
+    setLifespan(newLifespan)
   }
   const onClickChangeSpeedAndRestartButton = () => {
     const speedInput = prompt('Enter new speed', speed.toString())
@@ -125,17 +133,9 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
     setAliveCellBase(aliveCellBase => {
       aliveCellBase[index] = e.target.checked
-      return {...aliveCellBase}
+      return ({...aliveCellBase})
     })
   }
-  // Change universe config
-  React.useEffect(() => {
-    if (destroy === null) {
-      return
-    }
-    destroy?.()
-    restart(universeConfig, autoStart)
-  }, [universeConfig])
   return (
     <div style={containerStyles}>
       <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>
@@ -171,10 +171,10 @@ max of last 100 = ${Math.round(fpsData.max)}
         Change field size and restart
       </button>
       <span style={onScreenTypographyStyles}>
-        Current Life Span: {lifeSpan}
+        Current Lifespan: {lifespan}
       </span>
-      <button onClick={onClickChangeLifeSpanAndRestartButton} disabled={destroy === null}>
-        Change life span and restart
+      <button onClick={onClickChangeLifespanAndRestartButton} disabled={destroy === null}>
+        Change lifespan and restart
       </button>
       <span style={onScreenTypographyStyles}>
         Current Speed: {speed}
@@ -184,12 +184,13 @@ max of last 100 = ${Math.round(fpsData.max)}
       </button>
       <Checkbox
         id="auto-play"
-        label="Auto play on restart"
+        label="Autoplay on restart"
         checked={autoStart}
         onChange={onChangeAutoPlay}
         labelStyles={onScreenTypographyStyles}
       />
       <div>
+        <span style={onScreenTypographyStyles}>Alive cell base</span>
         {aliveCellBaseOptions.map(number => 
           <Checkbox
             key={number.toString()}

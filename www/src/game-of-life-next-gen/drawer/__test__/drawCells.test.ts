@@ -32,7 +32,7 @@ describe('drawCells function', () => {
   test('draws alive cells correctly', () => {
     const width = 10;
     const height = 10;
-    const lifeSpan = 100;
+    const lifespan = 100;
     const cellSize = 1;
 
     // Mock cellsState and cellsAge values
@@ -43,7 +43,7 @@ describe('drawCells function', () => {
     mockUniverseInstance.cells_state.mockReturnValue(cellsState);
     mockUniverseInstance.cells_age.mockReturnValue(cellsAge);
 
-    drawCells(mockUniverseInstance as unknown as Universe, memory, mockUpdateTextureContext, width, height, lifeSpan, cellSize);
+    drawCells(mockUniverseInstance as unknown as Universe, memory, mockUpdateTextureContext, width, height, lifespan, cellSize);
 
     // Assert that cells_state and cells_age were called with the correct arguments
     expect(mockUniverseInstance.cells_state).toHaveBeenCalled();

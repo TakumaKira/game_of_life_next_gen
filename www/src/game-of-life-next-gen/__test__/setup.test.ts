@@ -49,8 +49,8 @@ jest.mock('../anim-controller', () => ({
   }
 }))
 
-const mockUniverseConfig = { fieldSize: 10, lifeSpan: 100, speed: 1, aliveCellBase: [1, 2] };
-const mockGetUniverseReturn = { universe: {}, width: mockUniverseConfig.fieldSize, height: mockUniverseConfig.fieldSize, lifeSpan: mockUniverseConfig.lifeSpan };
+const mockUniverseConfig = { fieldSize: 10, lifespan: 100, speed: 1, aliveCellBase: [1, 2] };
+const mockGetUniverseReturn = { universe: {}, width: mockUniverseConfig.fieldSize, height: mockUniverseConfig.fieldSize, lifespan: mockUniverseConfig.lifespan };
 
 describe('setup function', () => {
   let canvas: HTMLCanvasElement | null;
@@ -86,7 +86,7 @@ describe('setup function', () => {
   test('returns correct functions and state', () => {
     const result = setup(canvas!, updatePlayingState!, updateFpsData!, memory!, universeConfig!);
 
-    expect(getUniverse).toHaveBeenCalledWith(universeConfig?.fieldSize, universeConfig?.lifeSpan, universeConfig?.aliveCellBase);
+    expect(getUniverse).toHaveBeenCalledWith(universeConfig?.fieldSize, universeConfig?.lifespan, universeConfig?.aliveCellBase);
     expect(setupGLRenderer).toHaveBeenCalledWith(canvas, expect.any(Function));
     expect(mockAnimationStateConstructor).toHaveBeenCalled();
     expect(mockRegisterOnUpdatePlayingState).toHaveBeenCalledWith(updatePlayingState);
@@ -169,7 +169,7 @@ describe('setup function', () => {
       mockUpdateTextureContext,
       mockGetUniverseReturn.width,
       mockGetUniverseReturn.height,
-      universeConfig?.lifeSpan,
+      universeConfig?.lifespan,
       getCellSize(universeConfig?.fieldSize!),
     )
 

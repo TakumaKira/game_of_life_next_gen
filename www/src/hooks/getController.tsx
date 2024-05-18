@@ -1,7 +1,7 @@
 import React from 'react';
 import type { OnUpdatePlayingStateFn, OnUpdateFpsDataFn, getInterface as getInterfaceType, UniverseConfig } from '@/game-of-life-next-gen';
 
-export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn): { play: (() => void) | null, pause: (() => void) | null, nextFrame: ((showLog?: boolean) => void) | null, resetCamera: (() => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null, restart: (universeConfig?: UniverseConfig, autoStart?: boolean) => void } {
+export default function getController(getInterface: typeof getInterfaceType, canvasRef: React.RefObject<HTMLCanvasElement>, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, initialUniverseConfig?: UniverseConfig, initialAutoStart?: boolean): { play: (() => void) | null, pause: (() => void) | null, nextFrame: ((showLog?: boolean) => void) | null, resetCamera: (() => void) | null, toggleGUIControlsVisibility: (() => void) | null, destroy: (() => void) | null, restart: (universeConfig?: UniverseConfig, autoStart?: boolean) => void } {
   const [play, setPlay] = React.useState<(() => void) | null>(null)
   const [pause, setPause] = React.useState<(() => void) | null>(null)
   const [nextFrame, setNextFrame] = React.useState<((showLog?: boolean) => void) | null>(null)
@@ -25,7 +25,7 @@ export default function getController(getInterface: typeof getInterfaceType, can
       })
   }, [canvasRef, updatePlayingState, updateFpsData])
   React.useEffect(() => {
-    start()
+    start(initialUniverseConfig, initialAutoStart)
     return () => destroyRef.current?.()
   }, [])
   const restart = React.useCallback((universeConfig, autoStart) => {

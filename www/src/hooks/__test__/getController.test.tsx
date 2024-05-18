@@ -29,9 +29,11 @@ describe('getController', () => {
       toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
       destroy: mockDestroy,
     });
-    const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
+    const initialUniverseConfig = {}
+    const initialAutoStart = true
+    const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, initialUniverseConfig, initialAutoStart));
     await result.waitForNextUpdate();
-    expect(mockGetInterface).toHaveBeenCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, undefined, undefined);
+    expect(mockGetInterface).toHaveBeenCalledWith(mockCanvasRef.current, mockUpdatePlayingStateFn, mockUpdateFpsDataFn, initialAutoStart, initialUniverseConfig);
     expect(result.result.current.play).toEqual(mockPlay);
     expect(result.result.current.pause).toEqual(mockPause);
     expect(result.result.current.nextFrame).toEqual(mockNextFrame);
