@@ -3,32 +3,17 @@ import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, Univ
 import { getController } from '@/hooks';
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
-import Checkbox from './ui/Checkbox';
 
 const containerStyles: React.CSSProperties = {
-  position: 'absolute',
+  position: 'fixed',
   top: 0,
   left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#222222',
+  width: '100vw',
+  height: '100vh',
 };
-const playStopButtonStyles: React.CSSProperties = {
-  width: 33,
-  height: 28,
-}
-const onScreenTypographyStyles: React.CSSProperties = {
-  whiteSpace: 'pre',
-  fontFamily: 'monospace',
-  color: '#cccccc',
-}
 const canvasStyles: React.CSSProperties = {
   width: '100%',
-  height: 'calc(100% - 400px)',
+  height: '100%',
   outline: 'none',
 }
 
@@ -44,16 +29,6 @@ export default function App() {
   }, [setFpsData])
   const [autoStart, setAutoStart] = React.useState<boolean>(true)
   const [showWasmLogOnNextFrame, setShowWasmLogOnNextFrame] = React.useState<boolean>(true)
-  const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
-  const fpsContents = React.useMemo(() => {
-    return fpsData ? `
-Frames per Second:
-          latest = ${Math.round(fpsData.fps)}
-avg of last 100 = ${Math.round(fpsData.mean)}
-min of last 100 = ${Math.round(fpsData.min)}
-max of last 100 = ${Math.round(fpsData.max)}
-`.trim() : ''
-  }, [fpsData])
   const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
   const [lifespan, setLifespan] = React.useState(DEFAULT_LIFESPAN)
   const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
@@ -87,14 +62,11 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onClickResetCamera = () => {
     resetCamera?.()
   }
-  const onToggleGUIControlsVisibility = () => {
-    toggleGUIControlsVisibility?.()
-  }
   const onClickRestartButton = () => {
     destroy?.()
     restart(universeConfig, autoStart)
   }
-  const onClickChangeFieldSizeAndRestartButton = () => {
+  const onClickChangeFieldSizeButton = () => {
     const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
     if (fieldSizeInput === null) {
       return
@@ -105,7 +77,7 @@ max of last 100 = ${Math.round(fpsData.max)}
     }
     setFieldSize(newFieldSize)
   }
-  const onClickChangeLifespanAndRestartButton = () => {
+  const onClickChangeLifespanButton = () => {
     const lifespanInput = prompt('Enter new lifespan', lifespan.toString())
     if (lifespanInput === null) {
       return
@@ -116,7 +88,7 @@ max of last 100 = ${Math.round(fpsData.max)}
     }
     setLifespan(newLifespan)
   }
-  const onClickChangeSpeedAndRestartButton = () => {
+  const onClickChangeSpeedButton = () => {
     const speedInput = prompt('Enter new speed', speed.toString())
     if (speedInput === null) {
       return
@@ -138,70 +110,7 @@ max of last 100 = ${Math.round(fpsData.max)}
   }
   return (
     <div style={containerStyles}>
-      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>
-        {playStopButtonLabel}
-      </button>
-      <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>
-        Next Frame
-      </button>
-      <Checkbox
-        id="show-wasm-log"
-        label="Show log from WASM on clicking next frame button"
-        checked={showWasmLogOnNextFrame}
-        onChange={onToggleShowWasmLogOnNextFrame}
-        labelStyles={onScreenTypographyStyles}
-      />
-      <div style={onScreenTypographyStyles}>
-        {fpsContents}
-      </div>
       <canvas ref={canvasRef} style={canvasStyles}></canvas>
-      <button onClick={onClickResetCamera}>
-        Reset Camera
-      </button>
-      <button onClick={onToggleGUIControlsVisibility}>
-        Toggle GUI Controls
-      </button>
-      <button onClick={onClickRestartButton} disabled={destroy === null}>
-        Restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Field Size: {fieldSize}
-      </span>
-      <button onClick={onClickChangeFieldSizeAndRestartButton} disabled={destroy === null}>
-        Change field size and restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Lifespan: {lifespan}
-      </span>
-      <button onClick={onClickChangeLifespanAndRestartButton} disabled={destroy === null}>
-        Change lifespan and restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Speed: {speed}
-      </span>
-      <button onClick={onClickChangeSpeedAndRestartButton} disabled={destroy === null}>
-        Change speed and restart
-      </button>
-      <Checkbox
-        id="auto-play"
-        label="Autoplay on restart"
-        checked={autoStart}
-        onChange={onChangeAutoPlay}
-        labelStyles={onScreenTypographyStyles}
-      />
-      <div>
-        <span style={onScreenTypographyStyles}>Alive cell base</span>
-        {aliveCellBaseOptions.map(number => 
-          <Checkbox
-            key={number.toString()}
-            id={number.toString()}
-            label={number.toString()}
-            checked={aliveCellBase[number]}
-            onChange={onChangeAliveCellBase(number)}
-            labelStyles={onScreenTypographyStyles}
-          />
-        )}
-      </div>
     </div>
   );
 }

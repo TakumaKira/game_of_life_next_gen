@@ -1,9 +1,10 @@
-import { Color4, Vector3 } from "babylonjs";
+import { Color3, Color4, Vector3 } from "babylonjs";
 import type { TextureValues } from "./drawer";
 
 const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
+const TEXTURE_MATERIAL_COLOR = new Color3(0.075, 0.075, 0.075);
 const DEFAULT_FIELD_SIZE = 128;
 const DEFAULT_ALIVE_CELL_BASE = [2, 7];
 const getCellSize = (fieldSize: number) => TEXTURE_RESOLUTION / fieldSize - 1;
@@ -21,7 +22,7 @@ const TEXTURE_DEFAULTS: TextureValues = {
 }
 const DEFAULT_LIFESPAN = 200;
 
-const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
+const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0.005, 0.005, 0.005, 1);
 const CAMERA_ALPHA_DEFAULT = -Math.PI/2
 const CAMERA_BETA_DEFAULT = Math.PI / 3
 const CAMERA_RADIUS_DEFAULT = 25
@@ -51,6 +52,7 @@ const EFFCT_DEFAULTS = {
 export {
   TEXTURE_SIZE,
   TEXTURE_RESOLUTION,
+  TEXTURE_MATERIAL_COLOR,
   DEFAULT_FIELD_SIZE,
   DEFAULT_ALIVE_CELL_BASE,
   getCellSize,
