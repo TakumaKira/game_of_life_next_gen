@@ -31,3 +31,7 @@ tutorial. The tutorial builds increasingly featureful implementations of
 ### Test coverage
 
 [Test coverage for www directory](https://github.com/TakumaKira/game_of_life_next_gen/blob/master/www/coverage/coverage-report.txt)
+
+### Design
+
+[Design Process](https://www.figma.com/design/kJu2hyu2u9JXVERsx6cGCv/Game-of-Life-Next-Gen?node-id=0%3A1&t=Pd6HUq6KpkIBaw4Q-1)
