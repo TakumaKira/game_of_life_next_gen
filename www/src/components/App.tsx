@@ -1,21 +1,22 @@
 import React from 'react';
+import styled from 'styled-components';
 import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
 
-const containerStyles: React.CSSProperties = {
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh',
-};
-const canvasStyles: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  outline: 'none',
-}
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+`
+const Canvas = styled.canvas`
+  width: 100%;
+  height: 100%;
+  outline: none;
+`
 
 export default function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
@@ -109,8 +110,8 @@ export default function App() {
     })
   }
   return (
-    <div style={containerStyles}>
-      <canvas ref={canvasRef} style={canvasStyles}></canvas>
-    </div>
+    <Container>
+      <Canvas ref={canvasRef}></Canvas>
+    </Container>
   );
 }
