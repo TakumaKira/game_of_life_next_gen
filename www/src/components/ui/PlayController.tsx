@@ -24,6 +24,15 @@ const PlayButton = () =>
   <PlayIcon />
 </Tooltip>
 const NextFrameIcon = PlayControllerButtonBase(NextFrameSVG)
+const NextFrameButton = styled.div`
+  &:hover {
+    :after {
+      content: 'Next Frame';
+      color: white;
+      font-family: 'Play';
+    }
+  }
+`
 const RestartIcon = PlayControllerButtonBase(RestartSVG)
 const CheckboxCheckedIcon = PlayControllerButtonBase(CheckboxCheckedSVG)
 const CameraResetIcon = PlayControllerButtonBase(CameraResetSVG)
@@ -32,7 +41,9 @@ export default function PlayController({ style }: { style: React.CSSProperties }
   return (
     <Container style={style}>
       <PlayButton />
-      <NextFrameIcon />
+      <NextFrameButton>
+        <NextFrameIcon />
+      </NextFrameButton>
       <RestartIcon />
       <CheckboxCheckedIcon />
       <CameraResetIcon />
