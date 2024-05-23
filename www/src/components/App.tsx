@@ -4,6 +4,7 @@ import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, Univ
 import { getController } from '@/hooks';
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
+import PlayController from './ui/PlayController';
 
 const Container = styled.div`
   position: fixed;
@@ -11,8 +12,15 @@ const Container = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 `
 const Canvas = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   outline: none;
@@ -112,6 +120,7 @@ export default function App() {
   return (
     <Container>
       <Canvas ref={canvasRef}></Canvas>
+      <PlayController style={{ position: 'relative', bottom: 50 }} />
     </Container>
   );
 }

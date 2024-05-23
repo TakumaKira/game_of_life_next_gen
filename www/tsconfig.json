@@ -6,7 +6,7 @@
     "lib": ["ES2015", "dom"],
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*", "./public/*"],
     },
   }
 }
