@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PlayControllerButtonBase from './PlayControllerButtonBase';
-import { PlaySVG, PauseSVG, NextFrameSVG, RestartSVG, CheckboxCheckedSVG, CheckboxUncheckedSVG, CameraResetSVG } from '../SVG';
+import { PlaySVG, PauseSVG, NextFrameSVG, RestartSVG, CheckboxCheckedSVG, CheckboxUncheckedSVG, CameraResetSVG } from '../../SVG';
 import PlayControllerButtonTooltip from './PlayControllerButtonTooltip';
 
 const Container = styled.div`

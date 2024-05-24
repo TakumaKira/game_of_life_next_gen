@@ -5,6 +5,7 @@ import { getController } from '@/hooks';
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
 import PlayController from './ui/PlayController';
+import OptionController from './ui/OptionController';
 
 const Container = styled.div`
   position: fixed;
@@ -130,6 +131,7 @@ export default function App() {
         onChangeAutoStart={onChangeAutoStart}
         onClickCameraResetButton={onClickResetCamera}
       />
+      <OptionController />
     </Container>
   );
 }
