@@ -28,7 +28,7 @@ const Canvas = styled.canvas`
 
 export default function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [isPlaying, setIsPlaying] = React.useState<boolean>()
+  const [isPlaying, setIsPlaying] = React.useState<boolean>(false)
   const updatePlayingState = React.useCallback<OnUpdatePlayingStateFn>(isPlaying => {
     setIsPlaying(isPlaying)
   }, [setIsPlaying])
@@ -108,8 +108,8 @@ export default function App() {
     }
     setSpeed(newSpeed)
   }
-  const onChangeAutoPlay: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setAutoStart(e.target.checked)
+  const onChangeAutoStart = (autoStart: boolean) => {
+    setAutoStart(autoStart)
   }
   const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
     setAliveCellBase(aliveCellBase => {
@@ -120,7 +120,16 @@ export default function App() {
   return (
     <Container>
       <Canvas ref={canvasRef}></Canvas>
-      <PlayController style={{ position: 'relative', bottom: 50 }} />
+      <PlayController
+        style={{ position: 'relative', bottom: 50 }}
+        isPlaying={isPlaying}
+        onClickPlayPauseButton={onClickPlayPauseButton}
+        onClickNextFrameButton={onClickNextFrameButton}
+        onClickRestartButton={onClickRestartButton}
+        autoStart={autoStart}
+        onChangeAutoStart={onChangeAutoStart}
+        onClickCameraResetButton={onClickResetCamera}
+      />
     </Container>
   );
 }
