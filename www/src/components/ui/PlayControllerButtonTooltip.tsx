@@ -15,6 +15,7 @@ const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
       transform: translateY(-100%);
       content: ${props => `"${props.$text}"`};
       font-family: 'Play';
+      font-size: 18px;
       text-align: center;
       color: #8b8b8b;
       opacity: 0.8;
