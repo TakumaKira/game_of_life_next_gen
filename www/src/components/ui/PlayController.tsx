@@ -19,19 +19,19 @@ export default function PlayController({ style }: { style: React.CSSProperties }
   return (
     <Container style={style}>
       <PlayControllerButtonTooltip $text="Play">
-        <PlayIcon />
+        <PlayIcon size={42} />
       </PlayControllerButtonTooltip>
       <PlayControllerButtonTooltip $text="Next Frame">
         <NextFrameIcon />
       </PlayControllerButtonTooltip>
       <PlayControllerButtonTooltip $text="Restart">      
-        <RestartIcon />
+        <RestartIcon size={36} />
       </PlayControllerButtonTooltip>
       <PlayControllerButtonTooltip $text="Autoplay on Restart">
-        <CheckboxCheckedIcon />
+        <CheckboxCheckedIcon size={36} />
       </PlayControllerButtonTooltip>
       <PlayControllerButtonTooltip $text="Reset Camera">
-        <CameraResetIcon />
+        <CameraResetIcon size={36} />
       </PlayControllerButtonTooltip>
     </Container>
   )

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
+  width: 48px;
+  height: 48px;
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -12,9 +14,10 @@ const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
       top: -10%;
       transform: translateY(-100%);
       content: ${props => `"${props.$text}"`};
-      color: white;
       font-family: 'Play';
       text-align: center;
+      color: #8b8b8b;
+      opacity: 0.8;
     }
   }
 `
