@@ -65,15 +65,15 @@ export default function App() {
   const onClickNextFrameButton = () => {
     nextFrame?.(showWasmLogOnNextFrame)
   }
-  const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setShowWasmLogOnNextFrame(e.target.checked)
-  }
-  const onClickResetCamera = () => {
-    resetCamera?.()
-  }
   const onClickRestartButton = () => {
     destroy?.()
     restart(universeConfig, autoStart)
+  }
+  const onChangeAutoStart = (autoStart: boolean) => {
+    setAutoStart(autoStart)
+  }
+  const onClickResetCamera = () => {
+    resetCamera?.()
   }
   const onClickChangeFieldSizeButton = () => {
     const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
@@ -108,14 +108,14 @@ export default function App() {
     }
     setSpeed(newSpeed)
   }
-  const onChangeAutoStart = (autoStart: boolean) => {
-    setAutoStart(autoStart)
-  }
   const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
     setAliveCellBase(aliveCellBase => {
       aliveCellBase[index] = e.target.checked
       return ({...aliveCellBase})
     })
+  }
+  const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
+    setShowWasmLogOnNextFrame(e.target.checked)
   }
   return (
     <Container>
