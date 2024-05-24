@@ -122,7 +122,7 @@ export default function App() {
     <Container>
       <Canvas ref={canvasRef}></Canvas>
       <PlayController
-        style={{ position: 'relative', bottom: 50 }}
+        style={{ position: 'relative', bottom: 30 }}
         isPlaying={isPlaying}
         onClickPlayPauseButton={onClickPlayPauseButton}
         onClickNextFrameButton={onClickNextFrameButton}

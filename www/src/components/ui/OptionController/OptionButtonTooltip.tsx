@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
-  width: 48px;
-  height: 48px;
+const OptionButtonTooltip = styled.div<{ $text: string }>`
+  width: 36px;
+  height: 36px;
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -11,14 +11,15 @@ const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
   &:hover {
     :after {
       position: absolute;
-      bottom: 110%;
+      right: 120%;
       content: ${props => `"${props.$text}"`};
       font-family: 'Play';
       font-size: 18px;
-      text-align: center;
+      text-align: right;
+      white-space: nowrap;
       color: #8b8b8b;
       opacity: 0.8;
     }
   }
 `
-export default PlayControllerButtonTooltip
+export default OptionButtonTooltip
