@@ -12,13 +12,13 @@ export default function OptionController() {
     <>
       <OptionButtons onSelectOpenedPanel={setOpenedPanel} />
       {<Drawer
+        onClose={() => setOpenedPanel(OptionPanels.NONE)}
         title={{
           [OptionPanels.NONE]: '',
           [OptionPanels.GAME_RULES]: GAME_RULES_PANEL_TITLE,
           [OptionPanels.EFFECTS]: EFFECTS_PANEL_TITLE,
           [OptionPanels.STATS]: STATS_PANEL_TITLE,
         }[openedPanel]}
-        onClose={() => setOpenedPanel(OptionPanels.NONE)}
         width={{
           [OptionPanels.NONE]: 0,
           [OptionPanels.GAME_RULES]: GAME_RULES_PANEL_WIDTH,
