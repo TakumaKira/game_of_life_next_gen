@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Checkbox from '../Checkbox';
+import Checkbox from '../OptionController/Panels/Checkbox';
 
 test('renders with initial state', () => {
   const { getByLabelText } = render(<Checkbox id="test-checkbox" label="Test Checkbox" checked={false} onChange={() => {}} labelStyles={{}} />);

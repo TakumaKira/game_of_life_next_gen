@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import NumberSetter from './NumberSetter';
+import NumberSetters from './NumberSetters';
+import AliveCellBaseSetter from './AliveCellBaseSetter';
+import AutoStartSetter from './AutoStartSetter';
 
 export const TITLE = 'Game Rules';
 
 export const WIDTH = 720;
 
 const Container = styled.div`
-`;
-const NumberSetterContainer = styled.div`
-  width: 460px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 56px;
 `;
 
 export default function GameRulesPanel({
@@ -22,6 +21,11 @@ export default function GameRulesPanel({
   onChangeLifespan,
   speed,
   onChangeSpeed,
+  aliveCellBaseOptions,
+  aliveCellBase,
+  onChangeAliveCellBase,
+  autoStartOnChangeGameRules,
+  onChangeAutoStartOnChangeGameRules,
 }: {
   fieldSize: number
   onChangeFieldSize: (fieldSize: number) => void
@@ -29,14 +33,31 @@ export default function GameRulesPanel({
   onChangeLifespan: (lifespan: number) => void
   speed: number
   onChangeSpeed: (speed: number) => void
+  aliveCellBaseOptions: number[]
+  aliveCellBase: { [number: number]: boolean }
+  onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
+  autoStartOnChangeGameRules: boolean
+  onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
 }) {
   return (
     <Container>
-      <NumberSetterContainer>
-        <NumberSetter label="Field Size" value={fieldSize} onChange={v => onChangeFieldSize(v)} />
-        <NumberSetter label="Lifespan" value={lifespan} onChange={v => onChangeLifespan(v)} />
-        <NumberSetter label="Speed" value={speed} onChange={v => onChangeSpeed(v)} />
-      </NumberSetterContainer>
+      <NumberSetters
+        fieldSize={fieldSize}
+        onChangeFieldSize={onChangeFieldSize}
+        lifespan={lifespan}
+        onChangeLifespan={onChangeLifespan}
+        speed={speed}
+        onChangeSpeed={onChangeSpeed}
+      />
+      <AliveCellBaseSetter
+        aliveCellBaseOptions={aliveCellBaseOptions}
+        aliveCellBase={aliveCellBase}
+        onChangeAliveCellBase={onChangeAliveCellBase}
+      />
+      <AutoStartSetter
+        autoStartOnChangeGameRules={autoStartOnChangeGameRules}
+        onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
+      />
     </Container>
   )
 }

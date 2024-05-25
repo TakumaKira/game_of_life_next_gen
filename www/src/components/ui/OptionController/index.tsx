@@ -13,6 +13,11 @@ export default function OptionController({
   onChangeLifespan,
   speed,
   onChangeSpeed,
+  aliveCellBaseOptions,
+  aliveCellBase,
+  onChangeAliveCellBase,
+  autoStartOnChangeGameRules,
+  onChangeAutoStartOnChangeGameRules,
 }: {
   fieldSize: number
   onChangeFieldSize: (fieldSize: number) => void
@@ -20,6 +25,11 @@ export default function OptionController({
   onChangeLifespan: (lifespan: number) => void
   speed: number
   onChangeSpeed: (speed: number) => void
+  aliveCellBaseOptions: number[]
+  aliveCellBase: { [number: number]: boolean }
+  onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
+  autoStartOnChangeGameRules: boolean
+  onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
 }) {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
   return (
@@ -50,6 +60,11 @@ export default function OptionController({
               onChangeLifespan={onChangeLifespan}
               speed={speed}
               onChangeSpeed={onChangeSpeed}
+              aliveCellBaseOptions={aliveCellBaseOptions}
+              aliveCellBase={aliveCellBase}
+              onChangeAliveCellBase={onChangeAliveCellBase}
+              autoStartOnChangeGameRules={autoStartOnChangeGameRules}
+              onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
             />,
           [OptionPanels.EFFECTS]:
             <EffectsPanel />,

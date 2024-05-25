@@ -48,6 +48,7 @@ export default function App() {
   const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
   const aliveCellBaseOptions = [...new Array(ALIVE_CELL_BASE_OPTIONS)].map((_, i) => i + 1)
   const [aliveCellBase, setAliveCellBase] = React.useState<{ [number: number]: boolean }>(Object.fromEntries(aliveCellBaseOptions.map(number => [number, DEFAULT_ALIVE_CELL_BASE.includes(number)])))
+  const [autoStartOnChangeGameRules, setAutoStartOnChangeGameRules] = React.useState<boolean>(true)
   const universeConfig = React.useMemo<UniverseConfig>(() => ({
     fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : [])
   }), [fieldSize, lifespan, speed, aliveCellBase])
@@ -58,7 +59,7 @@ export default function App() {
       return
     }
     destroy?.()
-    restart(universeConfig, autoStart)
+    restart(universeConfig, autoStartOnChangeGameRules)
   }, [universeConfig])
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
@@ -79,12 +80,6 @@ export default function App() {
   }
   const onClickResetCamera = () => {
     resetCamera?.()
-  }
-  const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
-    setAliveCellBase(aliveCellBase => {
-      aliveCellBase[index] = e.target.checked
-      return ({...aliveCellBase})
-    })
   }
   const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
     setShowWasmLogOnNextFrame(e.target.checked)
@@ -109,6 +104,11 @@ export default function App() {
         onChangeLifespan={setLifespan}
         speed={speed}
         onChangeSpeed={setSpeed}
+        aliveCellBaseOptions={aliveCellBaseOptions}
+        aliveCellBase={aliveCellBase}
+        onChangeAliveCellBase={setAliveCellBase}
+        autoStartOnChangeGameRules={autoStartOnChangeGameRules}
+        onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
       />
     </Container>
   );
