@@ -2,9 +2,9 @@ import React from 'react'
 import OptionButtons from './OptionButtons'
 import Drawer from './Drawer'
 import { OptionPanels } from './types'
-import GameRulesPanel, { WIDTH as GAME_RULES_PANEL_WIDTH } from './Panels/GameRulesPanel'
-import EffectsPanel, { WIDTH as EFFECTS_PANEL_WIDTH } from './Panels/EffectsPanel'
-import StatsPanel, { WIDTH as STATS_PANEL_WIDTH } from './Panels/StatsPanel'
+import GameRulesPanel, { TITLE as GAME_RULES_PANEL_TITLE, WIDTH as GAME_RULES_PANEL_WIDTH } from './Panels/GameRulesPanel'
+import EffectsPanel, { TITLE as EFFECTS_PANEL_TITLE, WIDTH as EFFECTS_PANEL_WIDTH } from './Panels/EffectsPanel'
+import StatsPanel, { TITLE as STATS_PANEL_TITLE, WIDTH as STATS_PANEL_WIDTH } from './Panels/StatsPanel'
 
 export default function OptionController() {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
@@ -12,6 +12,12 @@ export default function OptionController() {
     <>
       <OptionButtons onSelectOpenedPanel={setOpenedPanel} />
       {<Drawer
+        title={{
+          [OptionPanels.NONE]: '',
+          [OptionPanels.GAME_RULES]: GAME_RULES_PANEL_TITLE,
+          [OptionPanels.EFFECTS]: EFFECTS_PANEL_TITLE,
+          [OptionPanels.STATS]: STATS_PANEL_TITLE,
+        }[openedPanel]}
         onClose={() => setOpenedPanel(OptionPanels.NONE)}
         width={{
           [OptionPanels.NONE]: 0,

@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CloseButtonTooltip from './CloseButtonTooltip';
 import CloseButtonBase from './CloseButtonBase';
+import DrawerTitle from './DrawerTitle';
 
 const OPEN_CLOSE_DURATION = 300;
 
@@ -15,6 +16,9 @@ const Container = styled.div<{ width: number, delayedWidth: number }>`
   transition: left ${_ => OPEN_CLOSE_DURATION * 0.001}s ease-in-out;
   backdrop-filter: blur(20px);
 `
+const titleLayout: React.CSSProperties = {
+  margin: '21px 27px',
+}
 const CloseIcon = CloseButtonBase(CloseSVG)
 const closeButtonPosition: React.CSSProperties = {
   position: 'absolute',
@@ -23,14 +27,24 @@ const closeButtonPosition: React.CSSProperties = {
 }
 
 export default function Drawer({
+  title,
   children,
   width,
   onClose,
 }: {
+  title: string
   children: React.ReactNode
   width: number
   onClose: () => void
 }) {
+  const [delayedTitle, setDelayedTitle] = React.useState(title);
+  React.useEffect(() => {
+    if (title.length > 0) {
+      setDelayedTitle(title)
+      return
+    }
+    setTimeout(() => setDelayedTitle(title), OPEN_CLOSE_DURATION)
+  }, [title]);
   const [delayedChildren, setDelayedChildren] = React.useState<React.ReactNode>(children);
   React.useEffect(() => {
     if (children !== null) {
@@ -49,6 +63,11 @@ export default function Drawer({
   }, [width]);
   return (
     <Container width={width} delayedWidth={delayedWidth}>
+      {delayedChildren &&
+        <DrawerTitle style={titleLayout}>
+          {delayedTitle}
+        </DrawerTitle>
+      }
       {delayedChildren}
       {delayedChildren &&
         <CloseButtonTooltip $text="Close" onClick={onClose} style={{...closeButtonPosition}}>
