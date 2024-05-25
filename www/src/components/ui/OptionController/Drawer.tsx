@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+export const OPEN_CLOSE_DURATION = 300;
+
 const Container = styled.div<{ width: number }>`
   position: fixed;
   top: 0;
@@ -8,7 +10,7 @@ const Container = styled.div<{ width: number }>`
   height: 100%;
   backdrop-filter: blur(20px);
   width: ${props => props.width}px;
-  transition: width 0.3s ease-in-out;
+  transition: width ${_ => OPEN_CLOSE_DURATION * 0.001}s ease-in-out;
 `
 
 export default function Drawer({

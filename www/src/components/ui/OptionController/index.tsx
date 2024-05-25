@@ -1,10 +1,10 @@
 import React from 'react'
 import OptionButtons from './OptionButtons'
-import Drawer from './Drawer'
+import Drawer, { OPEN_CLOSE_DURATION } from './Drawer'
 import { OptionPanels } from './types'
-import GameRules from './GameRules'
-import Effects from './Effects'
-import Stats from './Stats'
+import GameRules, { WIDTH as GAME_RULES_WIDTH } from './GameRules'
+import Effects, { WIDTH as EFFECTS_WIDTH } from './Effects'
+import Stats, { WIDTH as STATS_WIDTH } from './Stats'
 
 export default function OptionController() {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
@@ -14,7 +14,7 @@ export default function OptionController() {
       setDelayedOpenedPanel(openedPanel)
       return
     }
-    setTimeout(() => setDelayedOpenedPanel(OptionPanels.NONE), 300)
+    setTimeout(() => setDelayedOpenedPanel(OptionPanels.NONE), OPEN_CLOSE_DURATION)
   }, [openedPanel])
   return (
     <>
@@ -23,9 +23,9 @@ export default function OptionController() {
         onClose={() => setOpenedPanel(OptionPanels.NONE)}
         width={{
           [OptionPanels.NONE]: 0,
-          [OptionPanels.GAME_RULES]: 720,
-          [OptionPanels.EFFECTS]: 600,
-          [OptionPanels.STATS]: 480,
+          [OptionPanels.GAME_RULES]: GAME_RULES_WIDTH,
+          [OptionPanels.EFFECTS]: EFFECTS_WIDTH,
+          [OptionPanels.STATS]: STATS_WIDTH,
         }[openedPanel]}
       >
         {{

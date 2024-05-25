@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+export const WIDTH = 480;
+
 const Container = styled.div`
-  width: 480px;
+  width: ${_ => WIDTH}px;
 `;
 
 export default function Stats() {
