@@ -7,7 +7,7 @@ const Container = styled.div`
   width: ${_ => WIDTH}px;
 `;
 
-export default function Effects() {
+export default function EffectsPanel() {
   return (
     <Container>Effects</Container>
   )

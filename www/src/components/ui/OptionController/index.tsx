@@ -2,9 +2,9 @@ import React from 'react'
 import OptionButtons from './OptionButtons'
 import Drawer from './Drawer'
 import { OptionPanels } from './types'
-import GameRules, { WIDTH as GAME_RULES_WIDTH } from './GameRules'
-import Effects, { WIDTH as EFFECTS_WIDTH } from './Effects'
-import Stats, { WIDTH as STATS_WIDTH } from './Stats'
+import GameRulesPanel, { WIDTH as GAME_RULES_PANEL_WIDTH } from './GameRulesPanel'
+import EffectsPanel, { WIDTH as EFFECTS_PANEL_WIDTH } from './EffectsPanel'
+import StatsPanel, { WIDTH as STATS_PANEL_WIDTH } from './StatsPanel'
 
 export default function OptionController() {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
@@ -15,16 +15,16 @@ export default function OptionController() {
         onClose={() => setOpenedPanel(OptionPanels.NONE)}
         width={{
           [OptionPanels.NONE]: 0,
-          [OptionPanels.GAME_RULES]: GAME_RULES_WIDTH,
-          [OptionPanels.EFFECTS]: EFFECTS_WIDTH,
-          [OptionPanels.STATS]: STATS_WIDTH,
+          [OptionPanels.GAME_RULES]: GAME_RULES_PANEL_WIDTH,
+          [OptionPanels.EFFECTS]: EFFECTS_PANEL_WIDTH,
+          [OptionPanels.STATS]: STATS_PANEL_WIDTH,
         }[openedPanel]}
       >
         {{
           [OptionPanels.NONE]: null,
-          [OptionPanels.GAME_RULES]: <GameRules />,
-          [OptionPanels.EFFECTS]: <Effects />,
-          [OptionPanels.STATS]: <Stats />,
+          [OptionPanels.GAME_RULES]: <GameRulesPanel />,
+          [OptionPanels.EFFECTS]: <EffectsPanel />,
+          [OptionPanels.STATS]: <StatsPanel />,
         }[openedPanel]}
       </Drawer>}
     </>

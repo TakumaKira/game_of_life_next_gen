@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const WIDTH = 480;
+export const WIDTH = 720;
 
 const Container = styled.div`
   width: ${_ => WIDTH}px;
 `;
 
-export default function Stats() {
+export default function GameRulesPanel() {
   return (
-    <Container>Stats</Container>
+    <Container>Game Rules</Container>
   )
 }
