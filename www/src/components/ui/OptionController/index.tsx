@@ -2,9 +2,9 @@ import React from 'react'
 import OptionButtons from './OptionButtons'
 import Drawer from './Drawer'
 import { OptionPanels } from './types'
-import GameRulesPanel, { WIDTH as GAME_RULES_PANEL_WIDTH } from './GameRulesPanel'
-import EffectsPanel, { WIDTH as EFFECTS_PANEL_WIDTH } from './EffectsPanel'
-import StatsPanel, { WIDTH as STATS_PANEL_WIDTH } from './StatsPanel'
+import GameRulesPanel, { WIDTH as GAME_RULES_PANEL_WIDTH } from './Panels/GameRulesPanel'
+import EffectsPanel, { WIDTH as EFFECTS_PANEL_WIDTH } from './Panels/EffectsPanel'
+import StatsPanel, { WIDTH as STATS_PANEL_WIDTH } from './Panels/StatsPanel'
 
 export default function OptionController() {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
