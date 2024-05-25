@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import Checkbox from './Checkbox'
+import ActiveCellBaseCheckbox from './ActiveCellBaseCheckbox'
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ export default function AliveCellBaseSetter({
       <Label>Alive Cell Base:</Label>
       <CheckboxContainer>
         {aliveCellBaseOptions.map(number => 
-          <Checkbox
+          <ActiveCellBaseCheckbox
             key={number.toString()}
             id={number.toString()}
             label={number.toString()}

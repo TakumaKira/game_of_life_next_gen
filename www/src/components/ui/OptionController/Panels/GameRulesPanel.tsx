@@ -6,7 +6,7 @@ import AutoStartSetter from './AutoStartSetter';
 
 export const TITLE = 'Game Rules';
 
-export const WIDTH = 720;
+export const WIDTH = 572;
 
 const Container = styled.div`
   display: flex;

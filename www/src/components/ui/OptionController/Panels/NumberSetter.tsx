@@ -57,7 +57,7 @@ export default function NumberSetter({
   return (
     <Container>
       <TextContainer>
-        <Text>Current {label}:</Text>
+        <Text style={{ marginBottom: 2 }}>Current {label}:</Text>
         <Text style={{...numberTypography}}>{value.toLocaleString()}</Text>
       </TextContainer>
       <Button onClick={onClickButton}>Change {label}</Button>
