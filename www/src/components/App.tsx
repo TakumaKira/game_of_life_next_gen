@@ -6,6 +6,7 @@ import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
 import PlayController from './ui/PlayController';
 import OptionController from './ui/OptionController';
+import FPSDisplay from './ui/FPSDisplay';
 
 const Container = styled.div`
   position: fixed;
@@ -42,7 +43,8 @@ export default function App() {
     setFpsData(fpsData)
   }, [setFpsData])
   const [autoStart, setAutoStart] = React.useState<boolean>(true)
-  const [showWasmLogOnNextFrame, setShowWasmLogOnNextFrame] = React.useState<boolean>(true)
+  const [showFPS, setShowFPS] = React.useState<boolean>(false)
+  const [showWasmLogOnNextFrame, setShowWasmLogOnNextFrame] = React.useState<boolean>(false)
   const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
   const [lifespan, setLifespan] = React.useState(DEFAULT_LIFESPAN)
   const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
@@ -87,6 +89,9 @@ export default function App() {
   return (
     <Container>
       <Canvas ref={canvasRef}></Canvas>
+      {showFPS && fpsData &&
+        <FPSDisplay fpsData={fpsData} />
+      }
       <PlayController
         style={{...playControllerPosition}}
         isPlaying={isPlaying}
@@ -109,6 +114,10 @@ export default function App() {
         onChangeAliveCellBase={setAliveCellBase}
         autoStartOnChangeGameRules={autoStartOnChangeGameRules}
         onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
+        showFPS={showFPS}
+        onChangeShowFPS={setShowFPS}
+        showWasmLogOnNextFrame={showWasmLogOnNextFrame}
+        onChangeShowWasmLogOnNextFrame={setShowWasmLogOnNextFrame}
       />
     </Container>
   );

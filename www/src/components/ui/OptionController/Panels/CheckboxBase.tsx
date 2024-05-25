@@ -31,6 +31,7 @@ export default function CheckboxBase({
   labelPosition,
   checkedIcon,
   uncheckedIcon,
+  containerStyle,
   labelStyle,
   color,
   hoverColor,
@@ -42,12 +43,13 @@ export default function CheckboxBase({
   labelPosition: "before" | "after"
   checkedIcon: React.ReactNode
   uncheckedIcon: React.ReactNode
+  containerStyle?: React.CSSProperties
   labelStyle: React.CSSProperties
   color: React.CSSProperties['color']
   hoverColor: React.CSSProperties['color']
 }) {
   return (
-    <Container>
+    <Container style={containerStyle}>
       <Input id={id} type='checkbox' checked={checked} onChange={onChange} />
       <Label htmlFor={id} style={{...labelStyle}} color={color} hoverColor={hoverColor}>
         {labelPosition === "before" && label}

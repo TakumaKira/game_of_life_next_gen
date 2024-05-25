@@ -18,6 +18,10 @@ export default function OptionController({
   onChangeAliveCellBase,
   autoStartOnChangeGameRules,
   onChangeAutoStartOnChangeGameRules,
+  showFPS,
+  onChangeShowFPS,
+  showWasmLogOnNextFrame,
+  onChangeShowWasmLogOnNextFrame,
 }: {
   fieldSize: number
   onChangeFieldSize: (fieldSize: number) => void
@@ -30,6 +34,10 @@ export default function OptionController({
   onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
   autoStartOnChangeGameRules: boolean
   onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
+  showFPS: boolean
+  onChangeShowFPS: (showFPS: boolean) => void
+  showWasmLogOnNextFrame: boolean
+  onChangeShowWasmLogOnNextFrame: (showWasmLogOnNextFrame: boolean) => void
 }) {
   const [openedPanel, setOpenedPanel] = React.useState<OptionPanels>(OptionPanels.NONE)
   return (
@@ -69,7 +77,12 @@ export default function OptionController({
           [OptionPanels.EFFECTS]:
             <EffectsPanel />,
           [OptionPanels.STATS]:
-            <StatsPanel />,
+            <StatsPanel
+              showFPS={showFPS}
+              onChangeShowFPS={onChangeShowFPS}
+              showWasmLogOnNextFrame={showWasmLogOnNextFrame}
+              onChangeShowWasmLogOnNextFrame={onChangeShowWasmLogOnNextFrame}
+            />,
         }[openedPanel]}
       </Drawer>}
     </>
