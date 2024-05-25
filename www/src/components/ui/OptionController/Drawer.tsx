@@ -19,6 +19,9 @@ const Container = styled.div<{ width: number, delayedWidth: number }>`
 const titleLayout: React.CSSProperties = {
   margin: '21px 27px',
 }
+const ChildrenContainer = styled.div`
+  padding: 12px 42px;
+`
 const CloseIcon = CloseButtonBase(CloseSVG)
 const closeButtonPosition: React.CSSProperties = {
   position: 'absolute',
@@ -68,7 +71,11 @@ export default function Drawer({
           {delayedTitle}
         </DrawerTitle>
       }
-      {delayedChildren}
+      {delayedChildren &&
+        <ChildrenContainer>
+          {delayedChildren}
+        </ChildrenContainer>
+      }
       {delayedChildren &&
         <CloseButtonTooltip $text="Close" onClick={onClose} style={{...closeButtonPosition}}>
           <CloseIcon />

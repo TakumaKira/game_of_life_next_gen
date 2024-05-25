@@ -6,7 +6,6 @@ export const TITLE = 'Game Rules';
 export const WIDTH = 720;
 
 const Container = styled.div`
-  width: ${_ => WIDTH}px;
 `;
 
 export default function GameRulesPanel() {
