@@ -80,39 +80,6 @@ export default function App() {
   const onClickResetCamera = () => {
     resetCamera?.()
   }
-  const onClickChangeFieldSizeButton = () => {
-    const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
-    if (fieldSizeInput === null) {
-      return
-    }
-    const newFieldSize = parseInt(fieldSizeInput)
-    if (isNaN(newFieldSize)) {
-      return
-    }
-    setFieldSize(newFieldSize)
-  }
-  const onClickChangeLifespanButton = () => {
-    const lifespanInput = prompt('Enter new lifespan', lifespan.toString())
-    if (lifespanInput === null) {
-      return
-    }
-    const newLifespan = parseInt(lifespanInput)
-    if (isNaN(newLifespan)) {
-      return
-    }
-    setLifespan(newLifespan)
-  }
-  const onClickChangeSpeedButton = () => {
-    const speedInput = prompt('Enter new speed', speed.toString())
-    if (speedInput === null) {
-      return
-    }
-    const newSpeed = parseInt(speedInput)
-    if (isNaN(newSpeed)) {
-      return
-    }
-    setSpeed(newSpeed)
-  }
   const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
     setAliveCellBase(aliveCellBase => {
       aliveCellBase[index] = e.target.checked
@@ -135,7 +102,14 @@ export default function App() {
         onChangeAutoStart={onChangeAutoStart}
         onClickCameraResetButton={onClickResetCamera}
       />
-      <OptionController />
+      <OptionController
+        fieldSize={fieldSize}
+        onChangeFieldSize={setFieldSize}
+        lifespan={lifespan}
+        onChangeLifespan={setLifespan}
+        speed={speed}
+        onChangeSpeed={setSpeed}
+      />
     </Container>
   );
 }

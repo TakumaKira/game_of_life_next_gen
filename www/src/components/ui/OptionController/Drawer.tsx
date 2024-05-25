@@ -15,12 +15,13 @@ const Container = styled.div<{ width: number, delayedWidth: number }>`
   width: ${props => props.delayedWidth}px;
   transition: left ${_ => OPEN_CLOSE_DURATION * 0.001}s ease-in-out;
   backdrop-filter: blur(20px);
+  z-index: 2;
 `
 const titleLayout: React.CSSProperties = {
-  margin: '21px 27px',
+  margin: '32px 36px',
 }
 const ChildrenContainer = styled.div`
-  padding: 12px 42px;
+  padding: 18px 56px;
 `
 const CloseIcon = CloseButtonBase(CloseSVG)
 const closeButtonPosition: React.CSSProperties = {

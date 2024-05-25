@@ -7,13 +7,13 @@ import { OptionPanels } from './types';
 
 const Container = styled.div`
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 16px;
+  right: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
 `;
 const GameSettingIcon = OptionButtonBase(GameSettingSVG)
 const EffectSettingIcon = OptionButtonBase(EffectSettingSVG)
