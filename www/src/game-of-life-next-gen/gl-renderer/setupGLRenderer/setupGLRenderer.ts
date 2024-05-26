@@ -7,7 +7,7 @@ import getScene from './getScene';
 import setupGround from './setupGround';
 import updateHoverState from './updateHoverState';
 import getColorCurve from './getColorCurve';
-import buildGLValuesRebindRequired from './buildGLValues';
+import buildGLValuesRebindRequired from './buildGLValuesRebindRequired';
 import updateGLValues from './updateGLValues';
 import type { GLValuesConfigurable } from './types';
 
