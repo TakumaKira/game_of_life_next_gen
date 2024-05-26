@@ -1,17 +1,17 @@
 import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
-import type { GLValues } from '../types';
+import type { GLValuesRebindRequired } from './types'
+import { toColor } from '../utils'
 
-export default function buildGLValues(defaultPipeline: DefaultRenderingPipeline, scene: Scene): GLValues {
+export default function buildGLValuesRebindRequired(defaultPipeline: DefaultRenderingPipeline): GLValuesRebindRequired {
   return {
     toneMappingEnabled: defaultPipeline.imageProcessing?.toneMappingEnabled,
     vignetteEnabled: defaultPipeline.imageProcessing?.vignetteEnabled,
-    vignetteColor: defaultPipeline.imageProcessing?.vignetteColor,
+    vignetteColor: toColor(defaultPipeline.imageProcessing?.vignetteColor),
     vignetteWeight: defaultPipeline.imageProcessing?.vignetteWeight,
     vignetteBlendMode: defaultPipeline.imageProcessing?.vignetteBlendMode,
     colorCurvesEnabled: defaultPipeline.imageProcessing?.colorCurvesEnabled,
     contrast: defaultPipeline.imageProcessing?.contrast,
     exposure: defaultPipeline.imageProcessing?.exposure,
     curve: defaultPipeline.imageProcessing.colorCurves,
-    backgroundColor: scene.clearColor,
   }
 }

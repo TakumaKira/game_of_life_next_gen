@@ -1,9 +1,10 @@
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
+import type { TextureColors } from "./types";
 
-export default function drawGrid(updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, width: number, height: number, cellSize: number): void {
-  updateTextureContext((context, textureValues) => {
+export default function drawGrid(updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, textureColors: TextureColors, width: number, height: number, cellSize: number): void {
+  updateTextureContext(context => {
     context.beginPath();
-    context.strokeStyle = textureValues.gridColor.toHexString();
+    context.strokeStyle = textureColors.gridColor;
 
     // Vertical lines.
     for (let i = 0; i <= width; i++) {
@@ -13,7 +14,7 @@ export default function drawGrid(updateTextureContext: (textContextUpdateFn: Tex
 
     // Horizontal lines.
     for (let j = 0; j <= height; j++) {
-      context.moveTo(0,                           j * (cellSize + 1) + 1);
+      context.moveTo(0, j * (cellSize + 1) + 1);
       context.lineTo((cellSize + 1) * width + 1, j * (cellSize + 1) + 1);
     }
 

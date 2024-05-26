@@ -1,7 +1,8 @@
 import type { DefaultRenderingPipeline } from 'babylonjs'
-import type { GLValues } from '../types';
+import type { GLValuesRebindRequired } from './types';
+import { toColor4 } from '../utils';
 
-export default function rebindGLValues(defaultPipeline: DefaultRenderingPipeline, values: GLValues) {
+export default function rebindGLValues(defaultPipeline: DefaultRenderingPipeline, values: GLValuesRebindRequired) {
   if (defaultPipeline.imageProcessing) {
     const {
       toneMappingEnabled,
@@ -24,7 +25,7 @@ export default function rebindGLValues(defaultPipeline: DefaultRenderingPipeline
       defaultPipeline.imageProcessing.vignetteWeight = vignetteWeight;
     }
     if (vignetteColor) {
-      defaultPipeline.imageProcessing.vignetteColor = vignetteColor;
+      defaultPipeline.imageProcessing.vignetteColor = toColor4(vignetteColor);
     }
     if (vignetteBlendMode) {
       defaultPipeline.imageProcessing.vignetteBlendMode = vignetteBlendMode;

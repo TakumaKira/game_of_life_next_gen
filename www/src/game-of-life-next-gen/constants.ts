@@ -1,5 +1,6 @@
 import { Color3, Color4, Vector3 } from "babylonjs";
-import type { TextureValues } from "./drawer";
+import type { Color } from "./types";
+import type { TextureColors } from "./drawer";
 
 const TEXTURE_SIZE = 20;
 /** In `px` */
@@ -9,16 +10,15 @@ const DEFAULT_FIELD_SIZE = 128;
 const DEFAULT_ALIVE_CELL_BASE = [2, 7];
 const getCellSize = (fieldSize: number) => TEXTURE_RESOLUTION / fieldSize - 1;
 const DEFAULT_SPEED = 3;
-const GRID_COLOR = new Color4(0.05, 0.05, 0.05, 1);
-const DEAD_COLOR = new Color4(0.1, 0.1, 0.1, 1);
-const ALIVE_COLOR_BASE_1 = new Color4(1, 0, 0, 1);
-const ALIVE_COLOR_BASE_2 = new Color4(1, 1, 0, 1);
-const ALIVE_COLOR_BASE_3 = new Color4(0, 0, 1, 1);
-const ALIVE_COLORS: TextureValues['aliveColors'] = [ALIVE_COLOR_BASE_1, ALIVE_COLOR_BASE_2, ALIVE_COLOR_BASE_3];
-const TEXTURE_DEFAULTS: TextureValues = {
+const GRID_COLOR = '#111111ff';
+const DEAD_COLOR = '#222222ff';
+const ALIVE_COLOR_YOUNG = '#ff0000ff';
+const ALIVE_COLOR_MIDDLE = '#ffff00ff';
+const ALIVE_COLOR_ELDER = '#0000ffff';
+const TEXTURE_COLORS_DEFAULT: TextureColors = {
   gridColor: GRID_COLOR,
   deadColor: DEAD_COLOR,
-  aliveColors: ALIVE_COLORS,
+  aliveColors: [ALIVE_COLOR_YOUNG, ALIVE_COLOR_MIDDLE, ALIVE_COLOR_ELDER],
 }
 const DEFAULT_LIFESPAN = 200;
 
@@ -33,19 +33,32 @@ const CAMERA_DEFAULTS = {
   radius: CAMERA_RADIUS_DEFAULT,
   target: CAMERA_TARGET_DEFAULT
 }
+const BLOOM_WEIGHT_MIN = 0
+const BLOOM_WEIGHT_MAX = 2
+const BLOOM_WEIGHT_DEFAULT = 2
+const VIGNETTE_WEIGHT_MIN = 0
+const VIGNETTE_WEIGHT_MAX = 20
+const VIGNETTE_WEIGHT_DEFAULT = 10
+const CAMERA_CONTRAST_MIN = 0
+const CAMERA_CONTRAST_MAX = 4
+const CAMERA_CONTRAST_DEFAULT = 1.2
+const CAMERA_EXPOSURE_MIN = 0
+const CAMERA_EXPOSURE_MAX = 4
+const CAMERA_EXPOSURE_DEFAULT = 4
+const VIGNETTE_COLOR_DEFAULT: Color = { r: 0, g: 0, b: 255, a: 1 }
 const EFFCT_DEFAULTS = {
   BLOOM_ENABLED: true,
-  BLOOM_WEIGHT: 2,
+  BLOOM_WEIGHT: BLOOM_WEIGHT_DEFAULT,
   FXAA_ENABLED: false,
   IMAGE_PROCESSING: {
     ENABLED: true,
     TONE_MAPPING_ENABLED: false,
     VIGNETTE_ENABLED: false,
-    VIGNETTE_COLOR: new Color4(0, 0, 1, 0),
-    VIGNETTE_WEIGHT: 10,
+    VIGNETTE_COLOR: VIGNETTE_COLOR_DEFAULT,
+    VIGNETTE_WEIGHT: VIGNETTE_WEIGHT_DEFAULT,
     COLOR_CURVES_ENABLED: false,
-    CONTRAST: 1.2,
-    EXPOSURE: 4,
+    CONTRAST: CAMERA_CONTRAST_DEFAULT,
+    EXPOSURE: CAMERA_EXPOSURE_DEFAULT,
   },
 }
 
@@ -57,11 +70,19 @@ export {
   DEFAULT_ALIVE_CELL_BASE,
   getCellSize,
   DEFAULT_SPEED,
-  TEXTURE_DEFAULTS,
+  TEXTURE_COLORS_DEFAULT,
   DEFAULT_LIFESPAN,
 
   SCENE_BACKGROUND_COLOR_DEFAULT,
 
   CAMERA_DEFAULTS,
+  BLOOM_WEIGHT_MIN,
+  BLOOM_WEIGHT_MAX,
+  VIGNETTE_WEIGHT_MIN,
+  VIGNETTE_WEIGHT_MAX,
+  CAMERA_CONTRAST_MIN,
+  CAMERA_CONTRAST_MAX,
+  CAMERA_EXPOSURE_MIN,
+  CAMERA_EXPOSURE_MAX,
   EFFCT_DEFAULTS,
 }

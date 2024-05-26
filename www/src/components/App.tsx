@@ -54,7 +54,7 @@ export default function App() {
   const universeConfig = React.useMemo<UniverseConfig>(() => ({
     fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : [])
   }), [fieldSize, lifespan, speed, aliveCellBase])
-  const { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
+  const { play, pause, nextFrame, resetCamera, updateColors, updateEffects, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
   // Change universe config
   React.useEffect(() => {
     if (destroy === null) {
@@ -82,9 +82,6 @@ export default function App() {
   }
   const onClickResetCamera = () => {
     resetCamera?.()
-  }
-  const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setShowWasmLogOnNextFrame(e.target.checked)
   }
   return (
     <Container>
@@ -114,6 +111,8 @@ export default function App() {
         onChangeAliveCellBase={setAliveCellBase}
         autoStartOnChangeGameRules={autoStartOnChangeGameRules}
         onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
+        updateColors={updateColors}
+        updateEffects={updateEffects}
         showFPS={showFPS}
         onChangeShowFPS={setShowFPS}
         showWasmLogOnNextFrame={showWasmLogOnNextFrame}
