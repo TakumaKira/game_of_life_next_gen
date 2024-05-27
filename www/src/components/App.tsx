@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig } from '@/game-of-life-next-gen'
+import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig, type GLValuesConfigurable, TextureColors, TextureColorsNullable } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
-import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
+import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED, GL_VALUES_CONFIGURABLE_DEFAULTS, TEXTURE_COLORS_DEFAULT } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
 import PlayController from './ui/PlayController';
 import OptionController from './ui/OptionController';
@@ -38,6 +38,8 @@ export default function App() {
   const updatePlayingState = React.useCallback<OnUpdatePlayingStateFn>(isPlaying => {
     setIsPlaying(isPlaying)
   }, [setIsPlaying])
+  const [textureColors, setTextureColors] = React.useState<TextureColors>(TEXTURE_COLORS_DEFAULT)
+  const [glValuesConfigurable, setGlValuesConfigurable] = React.useState<GLValuesConfigurable>(GL_VALUES_CONFIGURABLE_DEFAULTS)
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
   const updateFpsData = React.useCallback<OnUpdateFpsDataFn>(fpsData => {
     setFpsData(fpsData)
@@ -83,6 +85,17 @@ export default function App() {
   const onClickResetCamera = () => {
     resetCamera?.()
   }
+  const onChangeTextureColors = (value: TextureColorsNullable) => {
+    updateColors?.(value)
+    setTextureColors(current => {
+      const { aliveColors, ...rest } = value || {}
+      return { ...current, ...rest, aliveColors: current.aliveColors.map((v, i) => value.aliveColors?.[i] !== undefined ? value.aliveColors?.[i] : v) as [string, string, string] }
+    })
+  }
+  const onChangeGlValuesConfigurable = (value: Partial<GLValuesConfigurable>) => {
+    updateEffects?.(value)
+    setGlValuesConfigurable(current => ({ ...current, ...value }))
+  }
   return (
     <Container>
       <Canvas ref={canvasRef}></Canvas>
@@ -111,8 +124,10 @@ export default function App() {
         onChangeAliveCellBase={setAliveCellBase}
         autoStartOnChangeGameRules={autoStartOnChangeGameRules}
         onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
-        updateColors={updateColors}
-        updateEffects={updateEffects}
+        textureColors={textureColors}
+        onChangeTextureColors={onChangeTextureColors}
+        glValuesConfigurable={glValuesConfigurable}
+        onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
         showFPS={showFPS}
         onChangeShowFPS={setShowFPS}
         showWasmLogOnNextFrame={showWasmLogOnNextFrame}

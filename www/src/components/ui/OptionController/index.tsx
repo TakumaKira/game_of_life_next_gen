@@ -5,7 +5,7 @@ import { OptionPanels } from './types'
 import GameRulesPanel, { TITLE as GAME_RULES_PANEL_TITLE, WIDTH as GAME_RULES_PANEL_WIDTH } from './Panels/GameRulesPanel'
 import EffectsPanel, { TITLE as EFFECTS_PANEL_TITLE, WIDTH as EFFECTS_PANEL_WIDTH } from './Panels/EffectsPanel'
 import StatsPanel, { TITLE as STATS_PANEL_TITLE, WIDTH as STATS_PANEL_WIDTH } from './Panels/StatsPanel'
-import type { GLValuesConfigurable, TextureColorsNullable } from '@/game-of-life-next-gen'
+import type { GLValuesConfigurable, TextureColors, TextureColorsNullable } from '@/game-of-life-next-gen'
 
 export default function OptionController({
   fieldSize,
@@ -19,8 +19,10 @@ export default function OptionController({
   onChangeAliveCellBase,
   autoStartOnChangeGameRules,
   onChangeAutoStartOnChangeGameRules,
-  updateColors,
-  updateEffects,
+  textureColors,
+  onChangeTextureColors,
+  glValuesConfigurable,
+  onChangeGlValuesConfigurable,
   showFPS,
   onChangeShowFPS,
   showWasmLogOnNextFrame,
@@ -37,8 +39,10 @@ export default function OptionController({
   onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
   autoStartOnChangeGameRules: boolean
   onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
-  updateColors: ((value: TextureColorsNullable) => void) | null
-  updateEffects: ((value: Partial<GLValuesConfigurable>) => void) | null
+  textureColors: TextureColors
+  onChangeTextureColors: (value: TextureColorsNullable) => void
+  glValuesConfigurable: GLValuesConfigurable
+  onChangeGlValuesConfigurable: (value: Partial<GLValuesConfigurable>) => void
   showFPS: boolean
   onChangeShowFPS: (showFPS: boolean) => void
   showWasmLogOnNextFrame: boolean
@@ -81,8 +85,10 @@ export default function OptionController({
             />,
           [OptionPanels.EFFECTS]:
             <EffectsPanel
-              updateColors={updateColors}
-              updateEffects={updateEffects}
+              textureColors={textureColors}
+              onChangeTextureColors={onChangeTextureColors}
+              glValuesConfigurable={glValuesConfigurable}
+              onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
             />,
           [OptionPanels.STATS]:
             <StatsPanel

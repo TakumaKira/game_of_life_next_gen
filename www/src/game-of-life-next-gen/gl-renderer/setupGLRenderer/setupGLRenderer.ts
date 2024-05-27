@@ -1,5 +1,5 @@
 import { ArcRotateCamera, Engine, Vector3 } from 'babylonjs'
-import { CAMERA_DEFAULTS, EFFCT_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_SPECULAR_COLOR, TEXTURE_RESOLUTION, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
+import { CAMERA_DEFAULTS, GL_VALUES_CONFIGURABLE_DEFAULTS, SCENE_BACKGROUND_COLOR_DEFAULT, TEXTURE_SPECULAR_COLOR_DEFAULT, TEXTURE_RESOLUTION, TEXTURE_SIZE } from '@/game-of-life-next-gen/constants';
 import type { OnHoverTextureContextFn, TextContextUpdateFn } from '../types';
 import getDefaultRenderPipeline from './getDefaultRenderPipeline';
 import getLight from './getLight';
@@ -31,9 +31,9 @@ export default function setupGLRenderer(canvas: HTMLCanvasElement, onHoverTextur
 
   const light = getLight("light1", new Vector3(0, 1, 0), scene, 0.7)
 
-  const { textureGround, textureContext, materialGround } = setupGround(scene, TEXTURE_SIZE, "ground1", "dynamic texture", "Mat", TEXTURE_RESOLUTION, TEXTURE_SPECULAR_COLOR)
+  const { textureGround, textureContext, materialGround } = setupGround(scene, TEXTURE_SIZE, "ground1", "dynamic texture", "Mat", TEXTURE_RESOLUTION, TEXTURE_SPECULAR_COLOR_DEFAULT)
 
-  const defaultPipeline = getDefaultRenderPipeline("default", scene, camera, EFFCT_DEFAULTS)
+  const defaultPipeline = getDefaultRenderPipeline("default", scene, camera, GL_VALUES_CONFIGURABLE_DEFAULTS)
   const curve = getColorCurve(200, 80, 80, 20, 80, -80, 2, 80, 40)
   if (defaultPipeline.imageProcessing) {
     defaultPipeline.imageProcessing.colorCurves = curve;

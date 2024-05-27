@@ -6,7 +6,6 @@ export type GLValuesRebindRequiredConfigurable = {
   vignetteEnabled: boolean,
   vignetteColor: Color,
   vignetteWeight: number,
-  vignetteBlendMode: number,
   colorCurvesEnabled: boolean,
   contrast: number,
   exposure: number,
@@ -14,6 +13,7 @@ export type GLValuesRebindRequiredConfigurable = {
 
 export type GLValuesRebindRequired = GLValuesRebindRequiredConfigurable & {
   curve: Nullable<ColorCurves>,
+  vignetteBlendMode: number,
 }
 
 export type GLValuesConfigurable = GLValuesRebindRequiredConfigurable & {
