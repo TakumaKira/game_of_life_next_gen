@@ -25,7 +25,7 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
 
   const { updateTextureContext, updateEffects, resetCamera, dispose } = setupGLRenderer(canvas, onHoverTextureContext);
 
-  const textureColors: TextureColors = TEXTURE_COLORS_DEFAULT
+  const textureColors: TextureColors = JSON.parse(JSON.stringify(TEXTURE_COLORS_DEFAULT))
 
   const updateUniverse = () => {
     drawGrid(updateTextureContext, textureColors, width, height, cellSize);

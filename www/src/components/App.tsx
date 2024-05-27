@@ -38,7 +38,7 @@ export default function App() {
   const updatePlayingState = React.useCallback<OnUpdatePlayingStateFn>(isPlaying => {
     setIsPlaying(isPlaying)
   }, [setIsPlaying])
-  const [textureColors, setTextureColors] = React.useState<TextureColors>(TEXTURE_COLORS_DEFAULT)
+  const [textureColors, setTextureColors] = React.useState<TextureColors>(JSON.parse(JSON.stringify(TEXTURE_COLORS_DEFAULT)))
   const [glValuesConfigurable, setGlValuesConfigurable] = React.useState<GLValuesConfigurable>(GL_VALUES_CONFIGURABLE_DEFAULTS)
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
   const updateFpsData = React.useCallback<OnUpdateFpsDataFn>(fpsData => {

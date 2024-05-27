@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CheckboxBase from './CheckboxBase';
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from '@/components/SVG';
-import CheckboxButtonBase from './CheckboxButtonBase';
+import IconBase from './IconBase';
 
 export const TITLE = 'Stats';
 
@@ -22,8 +22,8 @@ const Text = styled.span<{ size: number }>`
   font-family: 'Play';
   font-size: ${props => props.size}px;
 `
-const CheckboxCheckedIcon = CheckboxButtonBase(CheckboxCheckedSVG)
-const CheckboxUncheckedIcon = CheckboxButtonBase(CheckboxUncheckedSVG)
+const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)
+const CheckboxUncheckedIcon = IconBase(CheckboxUncheckedSVG)
 const checkboxContainerStyle: React.CSSProperties = {
   width: '100%',
 }

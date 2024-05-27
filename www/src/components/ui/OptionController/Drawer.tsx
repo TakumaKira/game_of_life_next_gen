@@ -7,12 +7,12 @@ import DrawerTitle from './DrawerTitle';
 
 const OPEN_CLOSE_DURATION = 300;
 
-const Container = styled.div<{ width: number, delayedWidth: number }>`
+const Container = styled.div<{ $width: number, $delayedwidth: number }>`
   position: fixed;
   top: 0;
   height: 100vh;
-  left: calc(100vw - ${props => props.width}px);
-  width: ${props => props.delayedWidth}px;
+  left: calc(100vw - ${props => props.$width}px);
+  width: ${props => props.$delayedwidth}px;
   transition: left ${_ => OPEN_CLOSE_DURATION * 0.001}s ease-in-out;
   backdrop-filter: blur(20px);
   z-index: 2;
@@ -57,16 +57,16 @@ export default function Drawer({
     }
     setTimeout(() => setDelayedChildren(children), OPEN_CLOSE_DURATION)
   }, [children]);
-  const [delayedWidth, setDelayedWidth] = React.useState(width);
+  const [delayedwidth, setDelayedwidth] = React.useState(width);
   React.useEffect(() => {
     if (width > 0) {
-      setDelayedWidth(width)
+      setDelayedwidth(width)
       return
     }
-    setTimeout(() => setDelayedWidth(width), OPEN_CLOSE_DURATION)
+    setTimeout(() => setDelayedwidth(width), OPEN_CLOSE_DURATION)
   }, [width]);
   return (
-    <Container width={width} delayedWidth={delayedWidth}>
+    <Container $width={width} $delayedwidth={delayedwidth}>
       {delayedChildren &&
         <DrawerTitle style={titleLayout}>
           {delayedTitle}

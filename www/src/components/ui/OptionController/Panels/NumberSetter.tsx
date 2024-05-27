@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import Button from './Button';
 
 const Container = styled.div`
   display: flex;
@@ -19,20 +20,6 @@ const Text = styled.span`
 const numberTypography: React.CSSProperties = {
   fontSize: '26px',
 }
-const Button = styled.button`
-  width: 170px;
-  background: transparent;
-  border: 1px solid #ffffff33;
-  border-radius: 2px;
-  font-family: 'Play';
-  color: #ffffff77;
-  font-size: 16px;
-  cursor: pointer;
-  &:hover {
-    background: #ffffff11;
-  }
-  transition: background 0.2s;
-`
 
 export default function NumberSetter({
   label,

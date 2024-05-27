@@ -1,7 +1,7 @@
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from "@/components/SVG"
 import React from "react"
 import styled from "styled-components"
-import CheckboxButtonBase from "./CheckboxButtonBase"
+import IconBase from "./IconBase"
 import CheckboxBase from "./CheckboxBase"
 
 const labelStyle: React.CSSProperties = {
@@ -10,8 +10,8 @@ const labelStyle: React.CSSProperties = {
   fontFamily: 'Play',
   fontSize: '20px',
 }
-const CheckboxCheckedIcon = CheckboxButtonBase(CheckboxCheckedSVG)
-const CheckboxUncheckedIcon = CheckboxButtonBase(CheckboxUncheckedSVG)
+const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)
+const CheckboxUncheckedIcon = IconBase(CheckboxUncheckedSVG)
 const Text = styled.span`
   line-height: 20px;
 `

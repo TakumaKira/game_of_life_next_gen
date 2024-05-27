@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import CheckboxBase from './CheckboxBase';
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from '@/components/SVG';
-import CheckboxButtonBase from './CheckboxButtonBase';
+import IconBase from './IconBase';
 
 const TextContainer = styled.div`
   display: flex;
@@ -13,8 +13,8 @@ const Text = styled.span`
   font-family: 'Play';
   font-size: 22px;
 `
-const CheckboxCheckedIcon = CheckboxButtonBase(CheckboxCheckedSVG)
-const CheckboxUncheckedIcon = CheckboxButtonBase(CheckboxUncheckedSVG)
+const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)
+const CheckboxUncheckedIcon = IconBase(CheckboxUncheckedSVG)
 const labelStyle: React.CSSProperties = {
   gap: '28px',
 }
