@@ -1,8 +1,11 @@
-import { Color4 } from "babylonjs";
+import { Color3, Color4 } from "babylonjs";
 import { Color } from "../types";
 
 export function toColor4(color: Color): Color4 {
   return new Color4(color.r / 255, color.g / 255, color.b / 255, color.a);
+}
+export function toColor3(color: Color): Color3 {
+  return new Color3(color.r / 255, color.g / 255, color.b / 255);
 }
 export function toColor(color4: Color4): Color {
   return {

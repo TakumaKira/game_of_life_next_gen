@@ -1,12 +1,15 @@
-import type { DefaultRenderingPipeline, Scene } from 'babylonjs'
+import type { DefaultRenderingPipeline, Scene, StandardMaterial } from 'babylonjs'
 import { ImageProcessingConfiguration } from 'babylonjs'
 import rebindGLValues from './rebindGLValues';
 import type { GLValuesConfigurable, GLValuesRebindRequired } from './types';
-import { toColor4 } from '../utils';
+import { toColor3, toColor4 } from '../utils';
 
-export default function updateGLValues(defaultPipeline: DefaultRenderingPipeline, glValuesRebindRequired: GLValuesRebindRequired, scene: Scene, updatedValues: Partial<GLValuesConfigurable>) {
+export default function updateGLValues(defaultPipeline: DefaultRenderingPipeline, glValuesRebindRequired: GLValuesRebindRequired, materialGround: StandardMaterial, scene: Scene, updatedValues: Partial<GLValuesConfigurable>) {
   if (updatedValues.backgroundColor !== undefined) {
     scene.clearColor = toColor4(updatedValues.backgroundColor);
+  }
+  if (updatedValues.specularColor !== undefined) {
+    materialGround.specularColor = toColor3(updatedValues.specularColor);
   }
   if (updatedValues.fxaaEnabled !== undefined) {
     defaultPipeline.fxaaEnabled = updatedValues.fxaaEnabled;

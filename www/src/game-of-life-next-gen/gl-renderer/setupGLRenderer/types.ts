@@ -18,6 +18,7 @@ export type GLValuesRebindRequired = GLValuesRebindRequiredConfigurable & {
 
 export type GLValuesConfigurable = GLValuesRebindRequiredConfigurable & {
   backgroundColor: Color,
+  specularColor: Color,
   fxaaEnabled: boolean,
   bloomEnabled: boolean,
   bloomWeight: number,
