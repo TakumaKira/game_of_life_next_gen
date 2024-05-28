@@ -9,7 +9,7 @@ const OptionButtonTooltip = styled.div<{ $text: string }>`
   justify-content: center;
   align-items: center;
   &:hover {
-    :after {
+    &:after {
       position: absolute;
       right: 120%;
       content: ${props => `"${props.$text}"`};

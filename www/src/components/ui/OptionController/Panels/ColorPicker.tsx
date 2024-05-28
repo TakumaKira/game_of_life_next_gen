@@ -38,7 +38,16 @@ export default function ColorPicker({
             },
           },
         ],
+        width: 200,
       })
+      Array.from(_colorPicker.el.getElementsByClassName('IroSlider'))
+        .forEach(slider => {
+          (slider as HTMLDivElement).style.height = '20px' // default 28px
+          Array.from(slider.getElementsByClassName('IroHandle'))
+            .forEach(handle => {
+              (handle as HTMLDivElement).style.top = '-12px' // default -8px
+            })
+        })
       if ('color' in value) {
         _colorPicker.color.red = value.color.r
         _colorPicker.color.green = value.color.g

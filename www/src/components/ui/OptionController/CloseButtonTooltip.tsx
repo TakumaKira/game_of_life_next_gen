@@ -9,7 +9,7 @@ const CloseButtonTooltip = styled.div<{ $text: string }>`
   justify-content: center;
   align-items: center;
   &:hover {
-    :after {
+    &:after {
       position: absolute;
       right: 100%;
       content: ${props => `"${props.$text}"`};

@@ -8,10 +8,20 @@ import type { RadioSelectorOption } from './RadioSelector/types';
 import ColorPicker from './ColorPicker';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
 `
 const Upper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `
 const Lower = styled.div`
+  display: flex;
+  gap: 18px;
 `
 
 const keyOptions: RadioSelectorOption[] = [
@@ -163,8 +173,12 @@ export default function ColorsSetting({
         <ColorPicker value={colorValue} onChange={onChangeColor} />
       </Upper>
       <Lower>
-        <Button onClick={onClickResetSelected}>Reset Selected Color</Button>
-        <Button onClick={onClickResetAll}>Reset All Colors</Button>
+        <Button onClick={onClickResetSelected} $width={180} $height={28}>
+          Reset Selected Color
+        </Button>
+        <Button onClick={onClickResetAll} $width={180} $height={28}>
+          Reset All Colors
+        </Button>
       </Lower>
     </Container>
   )

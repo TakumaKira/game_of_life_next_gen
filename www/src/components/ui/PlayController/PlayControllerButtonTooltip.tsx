@@ -9,7 +9,7 @@ const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
   justify-content: center;
   align-items: center;
   &:hover {
-    :after {
+    &:after {
       position: absolute;
       bottom: 110%;
       content: ${props => `"${props.$text}"`};

@@ -4,10 +4,25 @@ import styled from 'styled-components';
 import IconBase from '../IconBase';
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
+  color: #ffffff66;
+  svg {
+    fill: #ffffff66;
+  }
+  &:hover {
+    color: #ffffffaa;
+    svg {
+      fill: #ffffffaa;
+    }
+  }
 `
 const Label = styled.span`
   font-family: 'Play';
-  color: #ffffff88;
+  font-size: 18px;
+  line-height: 18px;
 `
 
 const RadioCheckedIcon = IconBase(RadioCheckedSVG)

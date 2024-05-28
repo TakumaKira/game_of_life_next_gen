@@ -7,11 +7,19 @@ import type { GLValuesConfigurable, TextureColors, TextureColorsNullable } from 
 
 export const TITLE = 'Colors and Effects'
 
-export const WIDTH = 600
+export const WIDTH = 520
 
 const Container = styled.div`
 `
+const ScrollableContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+`
 const HR = styled.hr`
+  width: 95%;
+  opacity: 0.2;
+  margin: 0;
 `
 
 export default function EffectsPanel({
@@ -28,17 +36,19 @@ export default function EffectsPanel({
   return (
     <Container>
       <Scrollable>
-        <ColorsSetting
-          textureColors={textureColors}
-          onChangeTextureColors={onChangeTextureColors}
-          glValuesConfigurable={glValuesConfigurable}
-          onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
-        />
-        <HR />
-        <EffectsSetting
-          glValuesConfigurable={glValuesConfigurable}
-          onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
-        />
+        <ScrollableContents>
+          <ColorsSetting
+            textureColors={textureColors}
+            onChangeTextureColors={onChangeTextureColors}
+            glValuesConfigurable={glValuesConfigurable}
+            onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
+          />
+          <HR />
+          <EffectsSetting
+            glValuesConfigurable={glValuesConfigurable}
+            onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
+          />
+        </ScrollableContents>
       </Scrollable>
     </Container>
   )

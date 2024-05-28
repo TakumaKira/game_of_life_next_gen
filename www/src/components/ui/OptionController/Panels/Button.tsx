@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
-const Button = styled.button`
-  width: 170px;
+const DEFAULT_WIDTH = 170;
+
+const Button = styled.button<{ $width?: number, $height?: number }>`
+  width: ${props => props.$width || DEFAULT_WIDTH}px;
+  height: ${props => props.$height ? `${props.$height}px` : undefined};
   background: transparent;
   border: 1px solid #ffffff33;
   border-radius: 2px;
