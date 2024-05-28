@@ -14,12 +14,13 @@ const Container = styled.div`
 const ScrollableContents = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 48px;
 `
 const HR = styled.hr`
-  width: 95%;
   opacity: 0.2;
   margin: 0;
+  width: 90%;
+  align-self: center;
 `
 
 export default function EffectsPanel({
