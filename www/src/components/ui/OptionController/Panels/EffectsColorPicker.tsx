@@ -3,16 +3,14 @@ import React from 'react'
 
 export default function EffectsColorPicker({
   label,
-  indent,
   value,
   onChange,
 }: {
   label: string
-  indent: number
   value: Color
   onChange: (value: Color) => void
 }) {
   return (
-    <p>{label} {indent} {JSON.stringify(value)}</p>
+    <p>{label} {JSON.stringify(value)}</p>
   )
 }

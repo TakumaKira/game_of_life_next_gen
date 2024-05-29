@@ -7,18 +7,18 @@ const Container = styled.div`
 const Input = styled.input`
   display: none;
 `
-const Label = styled.label<{ color: React.CSSProperties['color'], hoverColor: React.CSSProperties['color'] }>`
+const Label = styled.label<{ $color: React.CSSProperties['color'], $hoverColor: React.CSSProperties['color'] }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: ${props => props.color};
+  color: ${props => props.$color};
   svg {
-    fill: ${props => props.color};
+    fill: ${props => props.$color};
   }
   &:hover {
-    color: ${props => props.hoverColor};
+    color: ${props => props.$hoverColor};
     svg {
-      fill: ${props => props.hoverColor};
+      fill: ${props => props.$hoverColor};
     }
   }
 `
@@ -51,7 +51,7 @@ export default function CheckboxBase({
   return (
     <Container style={containerStyle}>
       <Input id={id} type='checkbox' checked={checked} onChange={onChange} />
-      <Label htmlFor={id} style={{...labelStyle}} color={color} hoverColor={hoverColor}>
+      <Label htmlFor={id} style={{...labelStyle}} $color={color} $hoverColor={hoverColor}>
         {labelPosition === "before" && label}
         {checked
           ? checkedIcon
