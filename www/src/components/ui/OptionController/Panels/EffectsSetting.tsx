@@ -11,6 +11,9 @@ import EffectsInputContainer from './EffectsInputContainer';
 const Container = styled.div`
 `;
 const Upper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `
 const Lower = styled.div`
 `

@@ -6,6 +6,9 @@ import ColorPicker from './ColorPicker'
 const Container = styled.div`
 `
 const Label = styled.span`
+  font-family: 'Play';
+  font-size: 20px;
+  color: #ffffff55;
 `
 
 export default function EffectsColorPicker({
@@ -27,8 +30,8 @@ export default function EffectsColorPicker({
         <ColorPicker
           id={id}
           value={{ color: value }}
-          onChange={value => onChange(value.color)} />
-       {JSON.stringify(value)}
+          onChange={value => onChange(value.color)}
+        />
     </Container>
   )
 }
