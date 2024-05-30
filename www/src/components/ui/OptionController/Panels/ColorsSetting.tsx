@@ -170,7 +170,7 @@ export default function ColorsSetting({
     <Container>
       <Upper>
         <RadioSelector selectedKey={selectedKey} options={keyOptions} onChange={onChangeKey} />
-        <ColorPicker value={colorValue} onChange={onChangeColor} />
+        <ColorPicker id="color-setting-color-picker" value={colorValue} onChange={onChangeColor} />
       </Upper>
       <Lower>
         <Button onClick={onClickResetSelected} $width={180} $height={28}>

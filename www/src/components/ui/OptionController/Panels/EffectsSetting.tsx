@@ -88,7 +88,9 @@ export default function EffectsSetting({
           />
         </EffectsInputContainer>
         <EffectsInputContainer $indent={2}>
-          <EffectsColorPicker label="Vignette Color"
+          <EffectsColorPicker
+            id="vignetteColor"
+            label="Vignette Color"
             value={glValuesConfigurable.vignetteColor}
             onChange={v => console.log(JSON.stringify(v))}
           />

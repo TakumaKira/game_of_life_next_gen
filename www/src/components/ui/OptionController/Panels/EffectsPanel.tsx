@@ -10,6 +10,7 @@ export const TITLE = 'Colors and Effects'
 export const WIDTH = 520
 
 const Container = styled.div`
+  height: 100%;
 `
 const ScrollableContents = styled.div`
   display: flex;

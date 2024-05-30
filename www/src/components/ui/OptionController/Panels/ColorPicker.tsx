@@ -8,9 +8,11 @@ const Picker = styled.div`
 `
 
 export default function ColorPicker({
+  id,
   value,
   onChange,
 }: {
+  id: string
   value: { color: Color } | { hex8String: string }
   onChange: (value: { color: Color, hex8String: string }) => void
 }) {
@@ -20,7 +22,7 @@ export default function ColorPicker({
   }, [onChange])
   React.useEffect(() => {
     if (!colorPicker) {
-      const _colorPicker = iro.ColorPicker('#color-picker', {
+      const _colorPicker = iro.ColorPicker(`#${id}`, {
         layout: [
           {
             component: iro.ui.Wheel,
@@ -75,6 +77,6 @@ export default function ColorPicker({
     }
   }, [value])
   return (
-    <Picker id="color-picker"></Picker>
+    <Picker id={id}></Picker>
   )
 }
