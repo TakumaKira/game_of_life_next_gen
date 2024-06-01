@@ -8,6 +8,7 @@ export default function PlayControllerButtonBase(SVG: React.FunctionComponent<Re
     height: ${props => props.size ?? DEFAULT_SIZE}px;
     cursor: pointer;
     opacity: 0.8;
-    fill: #ffffff;
+    fill: #ebebeb;
+    filter: drop-shadow(2px 3px 4px #00000033);
   `
 }

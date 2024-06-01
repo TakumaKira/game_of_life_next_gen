@@ -17,8 +17,8 @@ const OptionButtonTooltip = styled.div<{ $text: string }>`
       font-size: 18px;
       text-align: right;
       white-space: nowrap;
-      color: #8b8b8b;
-      opacity: 0.8;
+      color: #b7b7b7;
+      opacity: 0.6;
     }
   }
 `
