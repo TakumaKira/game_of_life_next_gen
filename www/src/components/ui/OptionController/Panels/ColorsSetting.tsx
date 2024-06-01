@@ -99,7 +99,7 @@ export default function ColorsSetting({
         onChangeTextureColors({ deadColor: hex8String })
         break
     }
-  }, [selectedKey])
+  }, [selectedKey, onChangeGlValuesConfigurable, onChangeTextureColors])
   const onClickResetSelected = () => {
     switch (selectedKey) {
       case 'backgroundColor':

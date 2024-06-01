@@ -3,16 +3,25 @@ import styled from 'styled-components';
 import NumberSetters from './NumberSetters';
 import AliveCellBaseSetter from './AliveCellBaseSetter';
 import AutoStartSetter from './AutoStartSetter';
+import Scrollable from './Scrollable';
 
 export const TITLE = 'Game Rules';
 
 export const WIDTH = 572;
 
 const Container = styled.div`
+  height: 100%; // For Scrollable to work
   display: flex;
   flex-direction: column;
   gap: 56px;
 `;
+const ScrollableContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding-top: 18px;
+  padding-bottom: 48px;
+`
 
 export default function GameRulesPanel({
   fieldSize,
@@ -41,23 +50,27 @@ export default function GameRulesPanel({
 }) {
   return (
     <Container>
-      <NumberSetters
-        fieldSize={fieldSize}
-        onChangeFieldSize={onChangeFieldSize}
-        lifespan={lifespan}
-        onChangeLifespan={onChangeLifespan}
-        speed={speed}
-        onChangeSpeed={onChangeSpeed}
-      />
-      <AliveCellBaseSetter
-        aliveCellBaseOptions={aliveCellBaseOptions}
-        aliveCellBase={aliveCellBase}
-        onChangeAliveCellBase={onChangeAliveCellBase}
-      />
-      <AutoStartSetter
-        autoStartOnChangeGameRules={autoStartOnChangeGameRules}
-        onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
-      />
+      <Scrollable>
+        <ScrollableContents>
+          <NumberSetters
+            fieldSize={fieldSize}
+            onChangeFieldSize={onChangeFieldSize}
+            lifespan={lifespan}
+            onChangeLifespan={onChangeLifespan}
+            speed={speed}
+            onChangeSpeed={onChangeSpeed}
+          />
+          <AliveCellBaseSetter
+            aliveCellBaseOptions={aliveCellBaseOptions}
+            aliveCellBase={aliveCellBase}
+            onChangeAliveCellBase={onChangeAliveCellBase}
+          />
+          <AutoStartSetter
+            autoStartOnChangeGameRules={autoStartOnChangeGameRules}
+            onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
+          />
+        </ScrollableContents>
+      </Scrollable>
     </Container>
   )
 }

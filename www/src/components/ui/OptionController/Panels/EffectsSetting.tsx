@@ -9,13 +9,19 @@ import { BLOOM_WEIGHT_MAX, BLOOM_WEIGHT_MIN, CAMERA_CONTRAST_MAX, CAMERA_CONTRAS
 import EffectsInputContainer from './EffectsInputContainer';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 `;
 const Upper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 18px;
+  user-select: none;
 `
 const Lower = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 
 export default function EffectsSetting({
@@ -138,7 +144,7 @@ export default function EffectsSetting({
         </EffectsInputContainer>
       </Upper>
       <Lower>
-        <Button onClick={onClickReset}>
+        <Button onClick={onClickReset} $width={180} $height={28} style={{ alignSelf: 'center' }}>
           Reset Effects
         </Button>
       </Lower>

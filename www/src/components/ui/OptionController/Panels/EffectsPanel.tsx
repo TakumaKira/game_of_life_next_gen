@@ -10,12 +10,14 @@ export const TITLE = 'Colors and Effects'
 export const WIDTH = 520
 
 const Container = styled.div`
-  height: 100%;
+  height: 100%; // For Scrollable to work
 `
 const ScrollableContents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
+  padding-top: 18px;
+  padding-bottom: 48px;
 `
 const HR = styled.hr`
   opacity: 0.2;

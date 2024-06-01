@@ -23,7 +23,6 @@ const titleLayout: React.CSSProperties = {
   margin: '32px 36px',
 }
 const ChildrenContainer = styled.div`
-  padding: 18px 0;
   min-height: 0;
 `
 const CloseIcon = CloseButtonBase(CloseSVG)

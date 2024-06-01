@@ -1,11 +1,22 @@
 import React from 'react';
 import styled from "styled-components"
 
-const Container = styled.div`
+const Container = styled.div<{ $value: number, $isDragging: boolean }>`
   background-color: #ffffff22;
   height: 18px;
   border-radius: 9px;
   cursor: pointer;
+  ${props => props.$isDragging ? '& > div' : '&:hover > div'}:after {
+    content: "${props => props.$value.toFixed(2)}";
+    font-family: 'Play';
+    color: #ffffff33;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 120%;
+  }
+  margin-top: 24px;
+  margin-bottom: 8px;
 `
 const Knob = styled.div<{ $left: number }>`
   background-color: #ffffff22;
@@ -73,7 +84,7 @@ export default function Slider({
     }
   }, [onMouseMove, onMouseUp])
   return (
-    <Container ref={containerRef} onMouseDown={onMouseDown}>
+    <Container ref={containerRef} onMouseDown={onMouseDown} $value={value} $isDragging={isDragging}>
       <Knob ref={knobRef} $left={knobLeft} />
     </Container>
   )

@@ -4,6 +4,11 @@ import type { Color } from '@/game-of-life-next-gen'
 import ColorPicker from './ColorPicker'
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 `
 const Label = styled.span`
   font-family: 'Play';
