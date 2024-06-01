@@ -7,10 +7,10 @@ export default function OptionButtonBase(SVG: React.FunctionComponent<React.SVGP
     width: ${props => props.size ?? DEFAULT_SIZE}px;
     height: ${props => props.size ?? DEFAULT_SIZE}px;
     cursor: pointer;
-    opacity: 0.3;
+    fill: #cfcfcf66;
+    filter: drop-shadow(2px 3px 4px #00000033);
     &:hover {
-      opacity: 0.6;
+      fill: #cfcfcf99;
     }
-    fill: #ffffff;
   `
 }
