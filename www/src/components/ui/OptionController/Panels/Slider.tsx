@@ -38,7 +38,7 @@ export default function Slider({
     const availableWidth = containerBoundingRect.width - knobBoundingRect.width
     const initialKnobLeft = valueToRate(value, range) * availableWidth
     setKnobLeft(initialKnobLeft)
-  }, [])
+  }, [value, range])
   React.useEffect(() => {
     onChange(rateToValue(rate, range))
   }, [rate])
@@ -51,8 +51,6 @@ export default function Slider({
     const knobBoundingRect = knobRef.current.getBoundingClientRect()
     const updatedRate = getUpdatedRate(e.clientX, containerBoundingRect, knobBoundingRect)
     setRate(updatedRate)
-    const updatedKnobLeft = getKnobLeft(e.clientX, containerBoundingRect, knobBoundingRect)
-    setKnobLeft(updatedKnobLeft)
   }
   const onMouseMove = React.useCallback((e: MouseEvent) => {
     if (!isDragging || !containerRef.current || !knobRef.current) {
@@ -62,8 +60,6 @@ export default function Slider({
     const knobBoundingRect = knobRef.current.getBoundingClientRect()
     const updatedRate = getUpdatedRate(e.clientX, containerBoundingRect, knobBoundingRect)
     setRate(updatedRate)
-    const updatedKnobLeft = getKnobLeft(e.clientX, containerBoundingRect, knobBoundingRect)
-    setKnobLeft(updatedKnobLeft)
   }, [isDragging])
   const onMouseUp = React.useCallback((e: MouseEvent) => {
     setIsDragging(false)
@@ -99,11 +95,4 @@ function getUpdatedRate(mouseX: number, container: DOMRect, knob: DOMRect): numb
 }
 function limitRate(rate: number): number {
   return Math.min(Math.max(rate, 0), 1)
-}
-function getKnobLeft(mouseX: number, container: DOMRect, knob: DOMRect): number {
-  return limitLeft(mouseX - container.left - knob.width / 2, container, knob)
-}
-function limitLeft(left: number, container: DOMRect, knob: DOMRect): number {
-  const maxLeft = container.width - knob.width
-  return Math.min(Math.max(left, 0), maxLeft)
 }
