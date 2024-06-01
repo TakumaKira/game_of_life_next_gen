@@ -2,14 +2,14 @@ import React from 'react';
 import styled from "styled-components"
 
 const Container = styled.div<{ $value: number, $isDragging: boolean }>`
-  background-color: #ffffff22;
+  background-color: #93939366;
   height: 18px;
   border-radius: 9px;
   cursor: pointer;
   ${props => props.$isDragging ? '& > div' : '&:hover > div'}:after {
     content: "${props => props.$value.toFixed(2)}";
     font-family: 'Play';
-    color: #ffffff33;
+    color: #ffffff66;
     display: flex;
     justify-content: center;
     position: relative;
@@ -19,11 +19,12 @@ const Container = styled.div<{ $value: number, $isDragging: boolean }>`
   margin-bottom: 8px;
 `
 const Knob = styled.div<{ $left: number }>`
-  background-color: #ffffff22;
+  background-color: #d2d2d2;
   height: 18px;
   width: 18px;
   border-radius: 50%;
   margin-left: ${props => props.$left}px;
+  box-shadow: 2px 4px 18px #2d2d2d66;
 `
 
 export default function Slider({

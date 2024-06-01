@@ -14,6 +14,7 @@ const Container = styled.div<{ $width: number, $delayedwidth: number }>`
   left: calc(100vw - ${props => props.$width}px);
   width: ${props => props.$delayedwidth}px;
   transition: left ${_ => OPEN_CLOSE_DURATION * 0.001}s ease-in-out;
+  background-color: #33333333;
   backdrop-filter: blur(20px);
   z-index: 2;
   display: flex;
