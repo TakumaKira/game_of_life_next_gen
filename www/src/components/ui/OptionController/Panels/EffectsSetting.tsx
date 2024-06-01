@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from './Button';
-import type { GLValuesConfigurable } from '@/game-of-life-next-gen';
+import type { Color, GLValuesConfigurable } from '@/game-of-life-next-gen';
 import EffectsCheckbox from './EffectsCheckbox';
 import EffectsSlider from './EffectsSlider';
 import EffectsColorPicker from './EffectsColorPicker';
-import { BLOOM_WEIGHT_MAX, BLOOM_WEIGHT_MIN, CAMERA_CONTRAST_MAX, CAMERA_CONTRAST_MIN, CAMERA_EXPOSURE_MAX, CAMERA_EXPOSURE_MIN, VIGNETTE_WEIGHT_MAX, VIGNETTE_WEIGHT_MIN } from '@/game-of-life-next-gen/constants';
+import { BLOOM_WEIGHT_MAX, BLOOM_WEIGHT_MIN, CAMERA_CONTRAST_MAX, CAMERA_CONTRAST_MIN, CAMERA_EXPOSURE_MAX, CAMERA_EXPOSURE_MIN, GL_VALUES_CONFIGURABLE_DEFAULTS, VIGNETTE_WEIGHT_MAX, VIGNETTE_WEIGHT_MIN } from '@/game-of-life-next-gen/constants';
 import EffectsInputContainer from './EffectsInputContainer';
 
 const Container = styled.div`
@@ -28,8 +28,14 @@ export default function EffectsSetting({
   const onChangeCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChangeGlValuesConfigurable({ [e.target.id]: e.target.checked })
   }
+  const onChangeSlider = (key: string, value: number) => {
+    onChangeGlValuesConfigurable({ [key]: value })
+  }
+  const onChangeColorPicker = (key: string, value: Color) => {
+    onChangeGlValuesConfigurable({ [key]: value })
+  }
   const onClickReset = () => {
-    onChangeGlValuesConfigurable({ backgroundColor: { r: 255, g: 255, b: 255, a: 1 } })
+    onChangeGlValuesConfigurable(GL_VALUES_CONFIGURABLE_DEFAULTS)
   }
   return (
     <Container>
@@ -55,7 +61,7 @@ export default function EffectsSetting({
             label="Bloom Weight"
             value={glValuesConfigurable.bloomWeight}
             range={[BLOOM_WEIGHT_MIN, BLOOM_WEIGHT_MAX]}
-            onChange={v => console.log(v)}
+            onChange={v => onChangeSlider('bloomWeight', v)}
           />
         </EffectsInputContainer>
         <EffectsInputContainer $indent={0}>
@@ -95,7 +101,7 @@ export default function EffectsSetting({
             id="vignetteColor"
             label="Vignette Color"
             value={glValuesConfigurable.vignetteColor}
-            onChange={v => console.log(JSON.stringify(v))}
+            onChange={v => onChangeColorPicker('vignetteColor', v)}
           />
         </EffectsInputContainer>
         <EffectsInputContainer $indent={2}>
@@ -103,7 +109,7 @@ export default function EffectsSetting({
             label="Vignette Weight"
             value={glValuesConfigurable.vignetteWeight}
             range={[VIGNETTE_WEIGHT_MIN, VIGNETTE_WEIGHT_MAX]}
-            onChange={v => console.log(v)}
+            onChange={v => onChangeSlider('vignetteWeight', v)}
           />
         </EffectsInputContainer>
         <EffectsInputContainer $indent={1}>
@@ -119,7 +125,7 @@ export default function EffectsSetting({
             label="Camera Contrast"
             value={glValuesConfigurable.contrast}
             range={[CAMERA_CONTRAST_MIN, CAMERA_CONTRAST_MAX]}
-            onChange={v => console.log(v)}
+            onChange={v => onChangeSlider('contrast', v)}
           />
         </EffectsInputContainer>
         <EffectsInputContainer $indent={1}>
@@ -127,7 +133,7 @@ export default function EffectsSetting({
             label="Camera Exposure"
             value={glValuesConfigurable.exposure}
             range={[CAMERA_EXPOSURE_MIN, CAMERA_EXPOSURE_MAX]}
-            onChange={v => console.log(v)}
+            onChange={v => onChangeSlider('exposure', v)}
           />
         </EffectsInputContainer>
       </Upper>
