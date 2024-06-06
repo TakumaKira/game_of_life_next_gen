@@ -8,7 +8,7 @@
     "build": "./build.mjs",
     "test": "jest",
     "test:generate-coverage-report": "rm -rf coverage && mkdir coverage && jest > coverage/coverage-report.txt",
-    "storybook": "BROWSER=\"safari\" storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "author": "Takuma Kira",
@@ -23,6 +23,7 @@
     "@storybook/react": "7.6.19",
     "@storybook/react-vite": "7.6.19",
     "@storybook/test": "7.6.19",
+    "@svgr/plugin-jsx": "^8.1.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^8.0.1",
@@ -38,7 +39,8 @@
     "storybook": "7.6.19",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "vite": "^5.2.12"
+    "vite": "^5.2.12",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "dependencies": {
     "@jaames/iro": "^5.5.2",

@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
-import PlayRegular from '../../public/assets/fonts/Play/Play-Regular.ttf';
-import PlayBold from '../../public/assets/fonts/Play/Play-Bold.ttf';
+import PlayRegular from '../assets/fonts/Play/Play-Regular.ttf';
+import PlayBold from '../assets/fonts/Play/Play-Bold.ttf';
 
 const Fonts = createGlobalStyle`
 @font-face {
