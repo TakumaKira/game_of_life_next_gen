@@ -6,6 +6,7 @@ const PlayControllerButtonTooltip = styled(IconTooltipBase)`
     &:after {
       text-align: center;
       bottom: 110%;
+      color: #b7b7b7;
     }
   }
 `

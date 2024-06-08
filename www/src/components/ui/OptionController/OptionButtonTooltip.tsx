@@ -7,6 +7,7 @@ const OptionButtonTooltip = styled(IconTooltipBase)`
       text-align: right;
       right: 120%;
       white-space: nowrap;
+      color: #b7b7b7;
     }
     svg {
       fill: #cfcfcf99;

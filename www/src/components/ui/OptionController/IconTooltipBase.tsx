@@ -13,7 +13,6 @@ const IconTooltipBase = styled.div<{ $text: string, $iconSize: number }>`
       position: absolute;
       content: ${props => `"${props.$text}"`};
       font-size: 18px;
-      color: #b7b7b7;
       opacity: 0.6;
     }
   }

@@ -9,6 +9,7 @@ const CloseButtonTooltip = styled(IconTooltipBase)`
       white-space: nowrap;
       bottom: 50%;
       transform: translateY(calc(50% - 1px));
+      color: #e8e8e8;
     }
     svg {
       opacity: 0.6;
