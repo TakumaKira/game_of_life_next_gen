@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import CheckboxBase from './CheckboxBase';
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from '@/components/SVG';
-import IconBase from './IconBase';
+import IconBase from '../../../IconBase';
 
 const TextContainer = styled.div`
   display: flex;
@@ -37,8 +37,8 @@ export default function AutoStartSetter({
         </TextContainer>
       }
       labelPosition="before"
-      checkedIcon={<CheckboxCheckedIcon size={36} />}
-      uncheckedIcon={<CheckboxUncheckedIcon size={36} />}
+      checkedIcon={<CheckboxCheckedIcon $size={36} />}
+      uncheckedIcon={<CheckboxUncheckedIcon $size={36} />}
       labelStyle={labelStyle}
       color="#ffffff55"
       hoverColor="#ffffff88"

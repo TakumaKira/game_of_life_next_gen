@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import IconTooltipBase from '../OptionController/IconTooltipBase';
+import IconTooltipBase from '../../IconTooltipBase';
 
 const PlayControllerButtonTooltip = styled(IconTooltipBase)`
   &:hover {

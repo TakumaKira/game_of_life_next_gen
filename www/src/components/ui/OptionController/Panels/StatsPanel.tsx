@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CheckboxBase from './CheckboxBase';
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from '@/components/SVG';
-import IconBase from './IconBase';
+import IconBase from '../../../IconBase';
 import Scrollable from './Scrollable';
 
 export const TITLE = 'Stats';
@@ -27,8 +27,8 @@ const TextContainer = styled.div`
   flex-direction: column;
   gap: 8px;
 `;
-const Text = styled.span<{ size: number }>`
-  font-size: ${props => props.size}px;
+const Text = styled.span<{ $size: number }>`
+  font-size: ${props => props.$size}px;
 `
 const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)
 const CheckboxUncheckedIcon = IconBase(CheckboxUncheckedSVG)
@@ -59,11 +59,11 @@ export default function StatsPanel({
             checked={showFPS}
             onChange={e => onChangeShowFPS(e.target.checked)}
             label={
-              <Text size={22}>Show Frames per Second</Text>
+              <Text $size={22}>Show Frames per Second</Text>
             }
             labelPosition="before"
-            checkedIcon={<CheckboxCheckedIcon size={36} />}
-            uncheckedIcon={<CheckboxUncheckedIcon size={36} />}
+            checkedIcon={<CheckboxCheckedIcon $size={36} />}
+            uncheckedIcon={<CheckboxUncheckedIcon $size={36} />}
             containerStyle={checkboxContainerStyle}
             labelStyle={labelStyle}
             color="#ffffff55"
@@ -75,13 +75,13 @@ export default function StatsPanel({
             onChange={e => onChangeShowWasmLogOnNextFrame(e.target.checked)}
             label={
               <TextContainer>
-                <Text size={20}>Show console.log from WASM</Text>
-                <Text size={20}>on clicking Next Frame</Text>
+                <Text $size={20}>Show console.log from WASM</Text>
+                <Text $size={20}>on clicking Next Frame</Text>
               </TextContainer>
             }
             labelPosition="before"
-            checkedIcon={<CheckboxCheckedIcon size={36} />}
-            uncheckedIcon={<CheckboxUncheckedIcon size={36} />}
+            checkedIcon={<CheckboxCheckedIcon $size={36} />}
+            uncheckedIcon={<CheckboxUncheckedIcon $size={36} />}
             containerStyle={checkboxContainerStyle}
             labelStyle={labelStyle}
             color="#ffffff55"

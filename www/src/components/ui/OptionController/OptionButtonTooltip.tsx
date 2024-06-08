@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import IconTooltipBase from './IconTooltipBase';
+import IconTooltipBase from '../../IconTooltipBase';
 
 const OptionButtonTooltip = styled(IconTooltipBase)`
   &:hover {

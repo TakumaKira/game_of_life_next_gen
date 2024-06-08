@@ -1,7 +1,7 @@
 import { RadioCheckedSVG, RadioUncheckedSVG } from '@/components/SVG';
 import React from 'react';
 import styled from 'styled-components';
-import IconBase from '../IconBase';
+import IconBase from '../../../../IconBase';
 
 const DEFAULT_COLOR = '#ffffff66'
 const HOVER_COLOR = '#ffffffaa'
@@ -42,8 +42,8 @@ export default function RadioOption({
   return (
     <Container onClick={onClick}>
       {selected
-        ? <RadioCheckedIcon />
-        : <RadioUncheckedIcon />
+        ? <RadioCheckedIcon $size={24} />
+        : <RadioUncheckedIcon $size={24} />
       }
       <Label>{label}</Label>
     </Container>

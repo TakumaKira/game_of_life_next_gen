@@ -1,7 +1,7 @@
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from "@/components/SVG"
 import React from "react"
 import styled from "styled-components"
-import IconBase from "./IconBase"
+import IconBase from "../../../IconBase"
 import CheckboxBase from "./CheckboxBase"
 
 const labelStyle: React.CSSProperties = {
@@ -26,8 +26,8 @@ export default function ActiveCellBaseCheckbox({ id, label, checked, onChange }:
       onChange={onChange}
       label={<Text>{label}</Text>}
       labelPosition="after"
-      checkedIcon={<CheckboxCheckedIcon />}
-      uncheckedIcon={<CheckboxUncheckedIcon />}
+      checkedIcon={<CheckboxCheckedIcon $size={24} />}
+      uncheckedIcon={<CheckboxUncheckedIcon $size={24} />}
       labelStyle={labelStyle}
       color="#ffffff55"
       hoverColor="#ffffff88"
