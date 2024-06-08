@@ -18,5 +18,8 @@ const Fonts = createGlobalStyle`
   font-display: swap;
   src: url(${PlayBold}) format('truetype');
 }
+* {
+  font-family: 'Play';
+}
 `
 export default Fonts;

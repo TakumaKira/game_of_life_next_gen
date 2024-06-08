@@ -5,7 +5,6 @@ import Slider from './Slider'
 const Container = styled.div`
 `
 const Label = styled.span`
-  font-family: 'Play';
   font-size: 20px;
   color: #ffffff55;
 `

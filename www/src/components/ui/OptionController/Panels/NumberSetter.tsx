@@ -8,7 +8,6 @@ const Container = styled.div`
 `
 const TextContainer = styled.div`
   width: 225px;
-  font-family: 'Play';
   color: #ffffff77;
   font-size: 21px;
   display: flex;

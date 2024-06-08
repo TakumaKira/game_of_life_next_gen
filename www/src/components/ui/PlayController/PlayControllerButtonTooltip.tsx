@@ -13,7 +13,6 @@ const PlayControllerButtonTooltip = styled.div<{ $text: string }>`
       position: absolute;
       bottom: 110%;
       content: ${props => `"${props.$text}"`};
-      font-family: 'Play';
       font-size: 18px;
       text-align: center;
       color: #b7b7b7;

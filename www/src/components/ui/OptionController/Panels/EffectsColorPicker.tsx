@@ -11,7 +11,6 @@ const Container = styled.div`
   margin-bottom: 8px;
 `
 const Label = styled.span`
-  font-family: 'Play';
   font-size: 20px;
   color: #ffffff55;
 `

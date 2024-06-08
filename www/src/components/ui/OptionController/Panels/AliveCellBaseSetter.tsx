@@ -8,7 +8,6 @@ const Container = styled.div`
   gap: 24px;
 `
 const Label = styled.span`
-  font-family: 'Play';
   font-size: 21px;
   color: #ffffff77;
 `

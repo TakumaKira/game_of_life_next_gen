@@ -20,7 +20,6 @@ const Container = styled.div`
   }
 `
 const Label = styled.span`
-  font-family: 'Play';
   font-size: 20px;
   line-height: 20px;
 `

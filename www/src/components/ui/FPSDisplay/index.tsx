@@ -11,11 +11,11 @@ const Container = styled.div`
   flex-direction: column;
   gap: 4px;
   align-items: flex-end;
+  font-size: 18px;
+  color: #b7b7b799;
 `
 const Title = styled.span`
-  font-family: 'Play';
   font-size: 21px;
-  color: #b7b7b799;
 `
 const DataContainer = styled.div`
   display: flex;

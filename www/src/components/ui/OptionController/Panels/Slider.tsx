@@ -8,7 +8,6 @@ const Container = styled.div<{ $value: number, $isDragging: boolean }>`
   cursor: pointer;
   ${props => props.$isDragging ? '& > div' : '&:hover > div'}:after {
     content: "${props => props.$value.toFixed(2)}";
-    font-family: 'Play';
     color: #ffffff66;
     display: flex;
     justify-content: center;

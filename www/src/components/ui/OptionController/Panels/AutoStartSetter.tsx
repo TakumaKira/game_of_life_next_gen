@@ -10,7 +10,6 @@ const TextContainer = styled.div`
   gap: 8px;
 `
 const Text = styled.span`
-  font-family: 'Play';
   font-size: 22px;
 `
 const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)

@@ -53,7 +53,7 @@ export default function Colors({
             <EffectSettingIcon />
           </OptionButtonTooltip>
         </LeftContainer>
-        <FPSDisplay fpsData={{ fps: 60, mean: 60, min: 60, max: 60 }} />
+        <FPSDisplay fpsData={{ fps: 60, mean: 60, min: 1, max: 101 }} />
         <Drawer
           onClose={() => {}}
           title={{

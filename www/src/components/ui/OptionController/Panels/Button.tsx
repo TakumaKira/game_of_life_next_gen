@@ -8,7 +8,6 @@ const Button = styled.button<{ $width?: number, $height?: number }>`
   background: transparent;
   border: 1px solid #ffffff33;
   border-radius: 2px;
-  font-family: 'Play';
   color: #ffffff77;
   font-size: 16px;
   cursor: pointer;

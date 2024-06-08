@@ -13,7 +13,6 @@ const OptionButtonTooltip = styled.div<{ $text: string }>`
       position: absolute;
       right: 120%;
       content: ${props => `"${props.$text}"`};
-      font-family: 'Play';
       font-size: 18px;
       text-align: right;
       white-space: nowrap;
