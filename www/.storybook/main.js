@@ -24,6 +24,7 @@ const config = {
       ...config.resolve.alias,
       '@/assets': path.resolve(__dirname, "../src/assets"),
       '@/components': path.resolve(__dirname, "../src/components"),
+      '@/game-of-life-next-gen': path.resolve(__dirname, "../src/game-of-life-next-gen"), // TODO: Remove this dependency
     };
     return config;
   },

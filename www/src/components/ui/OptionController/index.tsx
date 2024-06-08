@@ -52,7 +52,7 @@ export default function OptionController({
   return (
     <>
       <OptionButtons onSelectOpenedPanel={setOpenedPanel} />
-      {<Drawer
+      <Drawer
         onClose={() => setOpenedPanel(OptionPanels.NONE)}
         title={{
           [OptionPanels.NONE]: '',
@@ -98,7 +98,7 @@ export default function OptionController({
               onChangeShowWasmLogOnNextFrame={onChangeShowWasmLogOnNextFrame}
             />,
         }[openedPanel]}
-      </Drawer>}
+      </Drawer>
     </>
   )
 }
