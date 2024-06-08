@@ -5,8 +5,8 @@ import Drawer from '../components/ui/OptionController/Drawer';
 import PlayControllerButtonTooltip from '@/components/ui/PlayController/PlayControllerButtonTooltip';
 import PlayControllerButtonBase from '@/components/ui/PlayController/PlayControllerButtonBase';
 import { CameraResetSVG, EffectSettingSVG } from '@/components/SVG';
-import OptionButtonTooltip from '@/components/ui/OptionController/OptionButtonTooltip';
-import OptionButtonBase from '@/components/ui/OptionController/OptionButtonBase';
+import OptionButtonTooltip from '@/components/ui/OptionController/OptionButtons/OptionButtonTooltip';
+import OptionButtonBase from '@/components/ui/OptionController/OptionButtons/OptionButtonBase';
 import FPSDisplay from '@/components/ui/FPSDisplay';
 import { OptionPanels } from '@/components/ui/OptionController/types';
 import GameRulesPanel, { TITLE as GAME_RULES_PANEL_TITLE, WIDTH as GAME_RULES_PANEL_WIDTH } from '@/components/ui/OptionController/Panels/GameRulesPanel'
