@@ -6,7 +6,7 @@ const Container = styled.div`
 const Label = styled.span`
   font-family: 'Play';
   font-size: 18px;
-  color: #ffffff33;
+  color: #b7b7b799;
   display: inline-block;
   width: 135px;
   text-align: right;
@@ -15,7 +15,7 @@ const Value = styled.span`
   font-family: 'Play';
   font-size: 18px;
   font-weight: bold;
-  color: #ffffff33;
+  color: #b7b7b799;
   display: inline-block;
   width: 40px;
   text-align: right;

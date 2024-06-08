@@ -15,7 +15,7 @@ const Container = styled.div`
 const Title = styled.span`
   font-family: 'Play';
   font-size: 21px;
-  color: #ffffff33;
+  color: #b7b7b799;
 `
 const DataContainer = styled.div`
   display: flex;
