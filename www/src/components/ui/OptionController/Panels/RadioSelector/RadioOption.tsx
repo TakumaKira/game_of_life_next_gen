@@ -3,25 +3,28 @@ import React from 'react';
 import styled from 'styled-components';
 import IconBase from '../IconBase';
 
+const DEFAULT_COLOR = '#ffffff66'
+const HOVER_COLOR = '#ffffffaa'
 const Container = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
   gap: 6px;
-  color: #ffffff66;
+  color: ${DEFAULT_COLOR};
   svg {
-    fill: #ffffff66;
+    fill: ${DEFAULT_COLOR};
   }
   &:hover {
-    color: #ffffffaa;
+    color: ${HOVER_COLOR};
     svg {
-      fill: #ffffffaa;
+      fill: ${HOVER_COLOR};
     }
   }
 `
+const FONT_SIZE = '20px'
 const Label = styled.span`
-  font-size: 20px;
-  line-height: 20px;
+  font-size: ${FONT_SIZE};
+  line-height: ${FONT_SIZE};
 `
 
 const RadioCheckedIcon = IconBase(RadioCheckedSVG)
