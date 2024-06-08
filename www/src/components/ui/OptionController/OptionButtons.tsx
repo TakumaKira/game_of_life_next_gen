@@ -26,14 +26,14 @@ export default function OptionButtons({
 }) {
   return (
     <Container>
-      <OptionButtonTooltip $text="Game Rules" onClick={() => onSelectOpenedPanel(OptionPanels.GAME_RULES)}>
-        <GameSettingIcon />
+      <OptionButtonTooltip $text="Game Rules" $iconSize={36} onClick={() => onSelectOpenedPanel(OptionPanels.GAME_RULES)}>
+        <GameSettingIcon $size={36} />
       </OptionButtonTooltip>
-      <OptionButtonTooltip $text="Colors and Effects" onClick={() => onSelectOpenedPanel(OptionPanels.EFFECTS)}>
-        <EffectSettingIcon />
+      <OptionButtonTooltip $text="Colors and Effects" $iconSize={36} onClick={() => onSelectOpenedPanel(OptionPanels.EFFECTS)}>
+        <EffectSettingIcon $size={36} />
       </OptionButtonTooltip>
-      <OptionButtonTooltip $text="Stats" onClick={() => onSelectOpenedPanel(OptionPanels.STATS)}>
-        <StatsIcon />
+      <OptionButtonTooltip $text="Stats" $iconSize={36} onClick={() => onSelectOpenedPanel(OptionPanels.STATS)}>
+        <StatsIcon $size={36} />
       </OptionButtonTooltip>
     </Container>
   )

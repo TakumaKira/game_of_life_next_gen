@@ -44,13 +44,13 @@ export default function Colors({
       <Fonts />
       <Container backgroundColor={backgroundColor}>
         <BottomContainer>
-          <PlayControllerButtonTooltip $text="Reset Camera" onClick={() => {}}>
-            <CameraResetIcon size={36} />
+          <PlayControllerButtonTooltip $text="Reset Camera" $iconSize={36} onClick={() => {}}>
+            <CameraResetIcon $size={36} />
           </PlayControllerButtonTooltip>
         </BottomContainer>
         <LeftContainer>
-          <OptionButtonTooltip $text="Colors and Effects" onClick={() => {}}>
-            <EffectSettingIcon />
+          <OptionButtonTooltip $text="Colors and Effects" $iconSize={36} onClick={() => {}}>
+            <EffectSettingIcon $size={36} />
           </OptionButtonTooltip>
         </LeftContainer>
         <FPSDisplay fpsData={{ fps: 60, mean: 60, min: 1, max: 101 }} />

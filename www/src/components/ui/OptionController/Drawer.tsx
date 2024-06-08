@@ -81,8 +81,8 @@ export default function Drawer({
         </ChildrenContainer>
       }
       {delayedChildren &&
-        <CloseButtonTooltip $text="Close" onClick={onClose} style={{...closeButtonPosition}}>
-          <CloseIcon />
+        <CloseButtonTooltip $text="Close" $iconSize={36} onClick={onClose} style={{...closeButtonPosition}}>
+          <CloseIcon $size={30} />
         </CloseButtonTooltip>
       }
     </Container>
