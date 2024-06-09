@@ -7,7 +7,6 @@ import CheckboxBase from "../CheckboxBase"
 const labelStyle: React.CSSProperties = {
   width: '52px',
   justifyContent: 'space-between',
-  fontFamily: 'Play',
   fontSize: '20px',
 }
 const CheckboxCheckedIcon = IconBase(CheckboxCheckedSVG)

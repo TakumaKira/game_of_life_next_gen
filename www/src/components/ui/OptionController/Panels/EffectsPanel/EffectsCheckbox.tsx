@@ -5,7 +5,6 @@ import IconBase from '../../../../IconBase'
 import { CheckboxCheckedSVG, CheckboxUncheckedSVG } from '@/components/SVG'
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: 'Play',
   fontSize: '20px',
   gap: '6px',
 }
