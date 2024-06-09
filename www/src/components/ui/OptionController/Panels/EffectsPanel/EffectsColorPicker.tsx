@@ -31,11 +31,11 @@ export default function EffectsColorPicker({
       <Label>
         {label}
       </Label>
-        <ColorPicker
-          id={id}
-          value={{ color: value }}
-          onChange={value => onChange(value.color)}
-        />
+      <ColorPicker
+        id={id}
+        value={{ color: value }}
+        onChange={value => onChange(value.color)}
+      />
     </Container>
   )
 }
