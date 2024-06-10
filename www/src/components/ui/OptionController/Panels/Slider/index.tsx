@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components"
+import { getUpdatedRate, rateToValue, valueToRate } from './utils';
 
 const Container = styled.div<{ $value: number, $isDragging: boolean }>`
   background-color: #93939366;
@@ -88,22 +89,4 @@ export default function Slider({
       <Knob ref={knobRef} $left={knobLeft} />
     </Container>
   )
-}
-
-function valueToRate(value: number, range: [number, number]): number {
-  return (value - range[0]) / (range[1] - range[0])
-}
-function rateToValue(rate: number, range: [number, number]): number {
-  return rate * (range[1] - range[0]) + range[0]
-}
-
-function getUpdatedRate(mouseX: number, container: DOMRect, knob: DOMRect): number {
-  const availableRange = container.width - knob.width
-  const updatedKnobLeftX = mouseX - knob.width / 2
-  const updatedKnobLeftPos = updatedKnobLeftX - container.left
-  const updatedRate = updatedKnobLeftPos / availableRange
-  return limitRate(updatedRate)
-}
-function limitRate(rate: number): number {
-  return Math.min(Math.max(rate, 0), 1)
 }
