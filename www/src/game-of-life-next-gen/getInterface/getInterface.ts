@@ -19,12 +19,12 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
   const wasmModule = await wasmModulePromise
   bg.__wbg_set_wasm(wasmModule)
   const destroyedState = new DestroyedState();
-  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, updateColors: onuUdateColors, updateEffects: onuUdateEffects, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
+  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, updateColors: onUpdateColors, updateEffects: onUpdateEffects, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
   const play = () => playImpl(onTogglePlayPause, animationState, destroyedState)
   const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedState)
   const nextFrame = (showLog?: boolean) => nextFrameImpl(onNextFrame, animationState, destroyedState, showLog)
-  const updateColors = (value: TextureColorsNullable) => onuUdateColors(value)
-  const updateEffects = (value: Partial<GLValuesConfigurable>) => onuUdateEffects(value)
+  const updateColors = (value: TextureColorsNullable) => onUpdateColors(value)
+  const updateEffects = (value: Partial<GLValuesConfigurable>) => onUpdateEffects(value)
   const destroy = () => destroyImpl(onClickCanvasFnRef, canvas, animationState, destroySetup, destroyedState)
   if (autoStart) {
     play()

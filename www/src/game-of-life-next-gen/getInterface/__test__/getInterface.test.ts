@@ -8,20 +8,22 @@ const mockBg = {
   __wbg_set_wasm: jest.fn()
 }
 jest.mock('wasm-game-of-life/wasm_game_of_life_bg.js', () => mockBg);
-const mockOnTogglePlayPause = jest.fn();
+const mockTogglePlayPause = jest.fn();
 const mockAnimationState = jest.fn();
-const mockOnNextFrame = jest.fn();
+const mockNextFrame = jest.fn();
 const mockOnClickCanvasFnRef = jest.fn();
 const mockResetCamera = jest.fn();
-const mockToggleGUIControlsVisibility = jest.fn();
+const mockUpdateColors = jest.fn();
+const mockUpdateEffects = jest.fn();
 const mockDestroy = jest.fn();
 jest.mock('../../setup', () => jest.fn().mockReturnValue({
-  togglePlayPause: mockOnTogglePlayPause,
+  togglePlayPause: mockTogglePlayPause,
   animationState: mockAnimationState,
-  nextFrame: mockOnNextFrame,
+  nextFrame: mockNextFrame,
   onClickCanvasFnRef: mockOnClickCanvasFnRef,
   resetCamera: mockResetCamera,
-  toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+  updateColors: mockUpdateColors,
+  updateEffects: mockUpdateEffects,
   destroy: mockDestroy
 }));
 const mockPlayImpl = jest.fn();
@@ -71,7 +73,8 @@ describe('getInterface', () => {
       pause: expect.any(Function),
       nextFrame: expect.any(Function),
       resetCamera: expect.any(Function),
-      toggleGUIControlsVisibility: expect.any(Function),
+      updateColors: expect.any(Function),
+      updateEffects: expect.any(Function),
       destroy: expect.any(Function)
     }));
   });
@@ -92,21 +95,21 @@ describe('getInterface', () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, autoStartNeedsToBeFalse, universeConfig);
     expect(mockPlayImpl).not.toHaveBeenCalled();
     gameInterface.play();
-    expect(mockPlayImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, new MockDestroyedState());
+    expect(mockPlayImpl).toHaveBeenCalledWith(mockTogglePlayPause, mockAnimationState, new MockDestroyedState());
   });
 
   test('pause function calls pauseImpl with correct arguments', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, undefined, universeConfig);
     expect(mockPauseImpl).not.toHaveBeenCalled();
     gameInterface.pause();
-    expect(mockPauseImpl).toHaveBeenCalledWith(mockOnTogglePlayPause, mockAnimationState, new MockDestroyedState());
+    expect(mockPauseImpl).toHaveBeenCalledWith(mockTogglePlayPause, mockAnimationState, new MockDestroyedState());
   });
 
   test('nextFrame function calls nextFrameImpl with correct arguments', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, undefined, universeConfig);
     expect(mockNextFrameImpl).not.toHaveBeenCalled();
     gameInterface.nextFrame();
-    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockOnNextFrame, mockAnimationState, new MockDestroyedState(), undefined);
+    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockNextFrame, mockAnimationState, new MockDestroyedState(), undefined);
   });
 
   test('resetCamera function calls nextFrameImpl with correct arguments', async () => {
@@ -116,11 +119,20 @@ describe('getInterface', () => {
     expect(mockResetCamera).toHaveBeenCalled();
   });
 
-  test('toggleGUIControlsVisibility function calls nextFrameImpl with correct arguments', async () => {
+  test('updateColors function calls setup().updateColors with correct arguments', async () => {
     const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, undefined, universeConfig);
-    expect(mockToggleGUIControlsVisibility).not.toHaveBeenCalled();
-    gameInterface.toggleGUIControlsVisibility();
-    expect(mockToggleGUIControlsVisibility).toHaveBeenCalled();
+    expect(mockUpdateColors).not.toHaveBeenCalled();
+    const textureColorsNullable = { gridColor: '#000000ff' }
+    gameInterface.updateColors(textureColorsNullable);
+    expect(mockUpdateColors).toHaveBeenCalledWith(textureColorsNullable);
+  });
+
+  test('updateEffects function calls setup().updateEffects with correct arguments', async () => {
+    const gameInterface = await getInterface(canvas, updatePlayingState, updateFpsData, undefined, universeConfig);
+    expect(mockUpdateEffects).not.toHaveBeenCalled();
+    const glValues = { fxaaEnabled: true }
+    gameInterface.updateEffects(glValues);
+    expect(mockUpdateEffects).toHaveBeenCalledWith(glValues);
   });
 
   test('destroy function calls destroyImpl with correct arguments', async () => {
@@ -137,7 +149,7 @@ describe('getInterface', () => {
 
   test('nextFrameImpl function is called automatically with correnct arguments if autoStart is false', async () => {
     await getInterface(canvas, updatePlayingState, updateFpsData, false, universeConfig);
-    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockOnNextFrame, mockAnimationState, new MockDestroyedState());
+    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockNextFrame, mockAnimationState, new MockDestroyedState());
   });
 
   // Add other tests for play, pause, nextFrame, and destroy functions
