@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig, type GLValuesConfigurable, TextureColors, TextureColorsNullable } from '@/game-of-life-next-gen'
+import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, type UniverseConfig, type GLValuesConfigurable, type TextureColors, type TextureColorsNullable } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED, GL_VALUES_CONFIGURABLE_DEFAULTS, TEXTURE_COLORS_DEFAULT } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
