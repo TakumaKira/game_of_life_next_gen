@@ -259,7 +259,9 @@ describe('App', () => {
 
     it('handles show FPS change correctly', () => {
       const { getByTestId } = render(<App />);
-      mockUpdateFpsData({ fps: 60, mean: 60, min: 60, max: 60 })
+      act(() => {
+        mockUpdateFpsData({ fps: 60, mean: 60, min: 60, max: 60 })
+      })
       const newValue = true;
       act(() => {
         mockOnChangeShowFPS(newValue);
