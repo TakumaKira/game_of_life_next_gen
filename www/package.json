@@ -1,5 +1,5 @@
 {
-  "name": "esbuild-react-template",
+  "name": "game-of-life-next-gen-www",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

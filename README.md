@@ -1,37 +1,39 @@
 <div align="center">
 
-  <h1><code>wasm_game_of_life</code></h1>
+  <h1><code>game_of_life_next_gen</code></h1>
 
-  <strong>Conway's Game of Life in Rust and WebAssembly</strong>
+  <strong>Conway's Game of Life with Cutting-Edge Tech Stacks</strong>
 
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm_game_of_life"><img src="https://img.shields.io/azure-devops/build/rustwasm/gloo/6.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
+  <img src="screen_shot_2024-06-14.png" alt="Screen Shot" width="600" />
 
-  <h3>
-    <a href="https://github.com/rustwasm/book/blob/master/CONTRIBUTING.md">Contributing</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
+  <sub>Originally built by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
 
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
+  <sub>Original repository: <a href="https://github.com/rustwasm/wasm_game_of_life">rustwasm/wasm_game_of_life</a></sub>
+
 </div>
 
 ## About
 
-This repository contains the complete code for the Rust and WebAssembly
-tutorial. The tutorial builds increasingly featureful implementations of
-[Conway's Game of Life][game-of-life].
+This repository is an extended version of [rustwasm/wasm_game_of_life](https://github.com/rustwasm/wasm_game_of_life) repository.
 
-### [Read the tutorial here!][tutorial]
+## Features
 
-[game-of-life]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-[tutorial]: https://rustwasm.github.io/book/game-of-life/introduction.html
+- 🚀 Using WASM with Rust for processing the simulation
+- 🌈 Each cell has the limited “age” and it is visible by colors
+- 💻 Using WebGL for the beautiful animation
+- ⚙️ Fully configurable game settings and visual configurations
 
-### Test coverage
+## What are achieved in this repository?
 
-[Test coverage for www directory](https://github.com/TakumaKira/game_of_life_next_gen/blob/master/www/coverage/coverage-report.txt)
+- Expand `wasm_game_of_life` module to achieve new functionalities
+- Refine UI/UX with many tech stacks (See more in [WWW/README](www/README.md))
 
-### Design
+## How to use
 
-[Design Process](https://www.figma.com/design/kJu2hyu2u9JXVERsx6cGCv/Game-of-Life-Next-Gen?node-id=0%3A1&t=Pd6HUq6KpkIBaw4Q-1)
+### Prerequisites
+
+You need to install [wasm-pack](https://rustwasm.github.io/wasm-pack/) to build this module.
+
+### Build module
+
+- Run `wasm-pack build`
