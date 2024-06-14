@@ -1,5 +1,7 @@
 import { env } from "@dotenv-run/core";
 import wasmPlugin from './wasmPlugin.mjs'
+import svgr from 'esbuild-plugin-svgr'
+import ttfLoaderPlugin from './ttfLoaderPlugin.mjs'
 
 const { full } = env({
   files: [".env"],
@@ -12,6 +14,8 @@ const esbuildSharedOption = {
   tsconfig: './tsconfig.json',
   plugins: [
     wasmPlugin,
+    svgr(),
+    ttfLoaderPlugin,
   ],
   define: full,
 }

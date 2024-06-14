@@ -25,13 +25,13 @@ jest.mock('@/game-of-life-next-gen/user-event-handler', () => ({
 }));
 const mockUpdateTextureContext = jest.fn()
 const mockResetCamera = jest.fn();
-const mockToggleGUIControlsVisibility = jest.fn();
+const mockUpdateEffects = jest.fn();
 const mockDisposeGLRenderer = jest.fn();
 jest.mock('@/game-of-life-next-gen/gl-renderer', () => ({
   setupGLRenderer: jest.fn(() => ({
     updateTextureContext: mockUpdateTextureContext,
     resetCamera: mockResetCamera,
-    toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+    updateEffects: mockUpdateEffects,
     dispose: mockDisposeGLRenderer,
   })),
 }));
@@ -99,7 +99,8 @@ describe('setup function', () => {
     expect(typeof result.nextFrame).toBe('function');
     expect(typeof result.onClickCanvasFnRef).toBe('function');
     expect(typeof result.resetCamera).toBe('function');
-    expect(typeof result.toggleGUIControlsVisibility).toBe('function');
+    expect(typeof result.updateColors).toBe('function');
+    expect(typeof result.updateEffects).toBe('function');
     expect(typeof result.destroy).toBe('function');
 
     expect(togglePlayPauseImpl).not.toHaveBeenCalled()
@@ -144,9 +145,17 @@ describe('setup function', () => {
     result.resetCamera();
     expect(mockResetCamera).toHaveBeenCalled();
 
-    expect(mockToggleGUIControlsVisibility).not.toHaveBeenCalled();
-    result.toggleGUIControlsVisibility();
-    expect(mockToggleGUIControlsVisibility).toHaveBeenCalled();
+    expect(drawGrid).not.toHaveBeenCalled();
+    expect(drawCells).not.toHaveBeenCalled();
+    const newColors = { gridColor: '#000000ff', deadColor: '#111111ff', aliveColors: ['#ff0000ff', '#00ff00ff', '#0000ffff'] as [string, string, string] }
+    result.updateColors(newColors);
+    expect(drawGrid).toHaveBeenCalledWith(expect.anything(), newColors, expect.anything(), expect.anything(), expect.anything());
+    expect(drawCells).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), newColors, expect.anything(), expect.anything(), expect.anything(), expect.anything());
+
+
+    expect(mockUpdateEffects).not.toHaveBeenCalled();
+    result.updateEffects({ fxaaEnabled: true });
+    expect(mockUpdateEffects).toHaveBeenCalledWith({ fxaaEnabled: true });
 
     expect(mockDisposeGLRenderer).not.toHaveBeenCalled();
     result.destroy();
@@ -159,6 +168,7 @@ describe('setup function', () => {
     updateUniverseCalledByTogglePlayPauseImpl()
     expect(drawGrid).toHaveBeenCalledWith(
       mockUpdateTextureContext,
+      newColors,
       mockGetUniverseReturn.width,
       mockGetUniverseReturn.height,
       getCellSize(universeConfig?.fieldSize!),
@@ -167,6 +177,7 @@ describe('setup function', () => {
       mockGetUniverseReturn.universe,
       memory,
       mockUpdateTextureContext,
+      newColors,
       mockGetUniverseReturn.width,
       mockGetUniverseReturn.height,
       universeConfig?.lifespan,

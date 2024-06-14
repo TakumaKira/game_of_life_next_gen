@@ -1,7 +1,17 @@
-import type { Color4 } from "babylonjs";
+export type TextureColors = {
+  /** HEX8String */
+  gridColor: string;
+  /** HEX8String */
+  deadColor: string;
+  /** [HEX8String, HEX8String, HEX8String] */
+  aliveColors: [string, string, string];
+}
 
-export type TextureValues = {
-  gridColor: Color4;
-  deadColor: Color4;
-  aliveColors: [Color4, Color4, Color4];
+export type TextureColorsNullable = {
+  /** HEX8String */
+  gridColor?: string;
+  /** HEX8String */
+  deadColor?: string;
+  /** [HEX8String, HEX8String, HEX8String] */
+  aliveColors?: [string?, string?, string?];
 }

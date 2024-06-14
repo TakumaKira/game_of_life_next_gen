@@ -1,75 +1,69 @@
 import React from 'react';
-import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, UniverseConfig } from '@/game-of-life-next-gen'
+import styled from 'styled-components';
+import { type OnUpdatePlayingStateFn, getInterface, type OnUpdateFpsDataFn, type UniverseConfig, type GLValuesConfigurable, type TextureColors, type TextureColorsNullable } from '@/game-of-life-next-gen'
 import { getController } from '@/hooks';
-import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED } from '@/game-of-life-next-gen/constants';
+import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED, GL_VALUES_CONFIGURABLE_DEFAULTS, TEXTURE_COLORS_DEFAULT } from '@/game-of-life-next-gen/constants';
 import { ALIVE_CELL_BASE_OPTIONS } from '@/const';
-import Checkbox from './ui/Checkbox';
+import PlayController from './ui/PlayController';
+import OptionController from './ui/OptionController';
+import FPSDisplay from './ui/FPSDisplay';
 
-const containerStyles: React.CSSProperties = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#222222',
-};
-const playStopButtonStyles: React.CSSProperties = {
-  width: 33,
-  height: 28,
-}
-const onScreenTypographyStyles: React.CSSProperties = {
-  whiteSpace: 'pre',
-  fontFamily: 'monospace',
-  color: '#cccccc',
-}
-const canvasStyles: React.CSSProperties = {
-  width: '100%',
-  height: 'calc(100% - 400px)',
-  outline: 'none',
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+`
+const Canvas = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+`
+const playControllerPosition: React.CSSProperties = {
+  position: 'relative',
+  bottom: 30,
 }
 
 export default function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [isPlaying, setIsPlaying] = React.useState<boolean>()
+  const [isPlaying, setIsPlaying] = React.useState<boolean>(false)
   const updatePlayingState = React.useCallback<OnUpdatePlayingStateFn>(isPlaying => {
     setIsPlaying(isPlaying)
   }, [setIsPlaying])
+  const [textureColors, setTextureColors] = React.useState<TextureColors>(JSON.parse(JSON.stringify(TEXTURE_COLORS_DEFAULT)))
+  const [glValuesConfigurable, setGlValuesConfigurable] = React.useState<GLValuesConfigurable>(GL_VALUES_CONFIGURABLE_DEFAULTS)
   const [fpsData, setFpsData] = React.useState<Parameters<OnUpdateFpsDataFn>[0]>()
   const updateFpsData = React.useCallback<OnUpdateFpsDataFn>(fpsData => {
     setFpsData(fpsData)
   }, [setFpsData])
   const [autoStart, setAutoStart] = React.useState<boolean>(true)
-  const [showWasmLogOnNextFrame, setShowWasmLogOnNextFrame] = React.useState<boolean>(true)
-  const playStopButtonLabel = isPlaying ? '⏸' : '▶️'
-  const fpsContents = React.useMemo(() => {
-    return fpsData ? `
-Frames per Second:
-          latest = ${Math.round(fpsData.fps)}
-avg of last 100 = ${Math.round(fpsData.mean)}
-min of last 100 = ${Math.round(fpsData.min)}
-max of last 100 = ${Math.round(fpsData.max)}
-`.trim() : ''
-  }, [fpsData])
+  const [showFPS, setShowFPS] = React.useState<boolean>(false)
+  const [showWasmLogOnNextFrame, setShowWasmLogOnNextFrame] = React.useState<boolean>(false)
   const [fieldSize, setFieldSize] = React.useState(DEFAULT_FIELD_SIZE)
   const [lifespan, setLifespan] = React.useState(DEFAULT_LIFESPAN)
   const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
   const aliveCellBaseOptions = [...new Array(ALIVE_CELL_BASE_OPTIONS)].map((_, i) => i + 1)
   const [aliveCellBase, setAliveCellBase] = React.useState<{ [number: number]: boolean }>(Object.fromEntries(aliveCellBaseOptions.map(number => [number, DEFAULT_ALIVE_CELL_BASE.includes(number)])))
+  const [autoStartOnChangeGameRules, setAutoStartOnChangeGameRules] = React.useState<boolean>(true)
   const universeConfig = React.useMemo<UniverseConfig>(() => ({
     fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : [])
   }), [fieldSize, lifespan, speed, aliveCellBase])
-  const { play, pause, nextFrame, resetCamera, toggleGUIControlsVisibility, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
+  const { play, pause, nextFrame, resetCamera, updateColors, updateEffects, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
   // Change universe config
   React.useEffect(() => {
     if (destroy === null) {
       return
     }
     destroy?.()
-    restart(universeConfig, autoStart)
+    restart(universeConfig, autoStartOnChangeGameRules)
   }, [universeConfig])
   const onClickPlayPauseButton = () => {
     if (isPlaying) {
@@ -81,127 +75,64 @@ max of last 100 = ${Math.round(fpsData.max)}
   const onClickNextFrameButton = () => {
     nextFrame?.(showWasmLogOnNextFrame)
   }
-  const onToggleShowWasmLogOnNextFrame: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setShowWasmLogOnNextFrame(e.target.checked)
-  }
-  const onClickResetCamera = () => {
-    resetCamera?.()
-  }
-  const onToggleGUIControlsVisibility = () => {
-    toggleGUIControlsVisibility?.()
-  }
   const onClickRestartButton = () => {
     destroy?.()
     restart(universeConfig, autoStart)
   }
-  const onClickChangeFieldSizeAndRestartButton = () => {
-    const fieldSizeInput = prompt('Enter new field size', fieldSize.toString())
-    if (fieldSizeInput === null) {
-      return
-    }
-    const newFieldSize = parseInt(fieldSizeInput)
-    if (isNaN(newFieldSize)) {
-      return
-    }
-    setFieldSize(newFieldSize)
+  const onChangeAutoStart = (autoStart: boolean) => {
+    setAutoStart(autoStart)
   }
-  const onClickChangeLifespanAndRestartButton = () => {
-    const lifespanInput = prompt('Enter new lifespan', lifespan.toString())
-    if (lifespanInput === null) {
-      return
-    }
-    const newLifespan = parseInt(lifespanInput)
-    if (isNaN(newLifespan)) {
-      return
-    }
-    setLifespan(newLifespan)
+  const onClickResetCamera = () => {
+    resetCamera?.()
   }
-  const onClickChangeSpeedAndRestartButton = () => {
-    const speedInput = prompt('Enter new speed', speed.toString())
-    if (speedInput === null) {
-      return
-    }
-    const newSpeed = parseInt(speedInput)
-    if (isNaN(newSpeed)) {
-      return
-    }
-    setSpeed(newSpeed)
-  }
-  const onChangeAutoPlay: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setAutoStart(e.target.checked)
-  }
-  const onChangeAliveCellBase = (index: number): React.ChangeEventHandler<HTMLInputElement> => e => {
-    setAliveCellBase(aliveCellBase => {
-      aliveCellBase[index] = e.target.checked
-      return ({...aliveCellBase})
+  const onChangeTextureColors = (value: TextureColorsNullable) => {
+    updateColors?.(value)
+    setTextureColors(current => {
+      const { aliveColors, ...rest } = value || {}
+      return { ...current, ...rest, aliveColors: current.aliveColors.map((v, i) => value.aliveColors?.[i] !== undefined ? value.aliveColors?.[i] : v) as [string, string, string] }
     })
   }
+  const onChangeGlValuesConfigurable = (value: Partial<GLValuesConfigurable>) => {
+    updateEffects?.(value)
+    setGlValuesConfigurable(current => ({ ...current, ...value }))
+  }
   return (
-    <div style={containerStyles}>
-      <button style={playStopButtonStyles} onClick={onClickPlayPauseButton} disabled={play === null || pause === null}>
-        {playStopButtonLabel}
-      </button>
-      <button onClick={onClickNextFrameButton} disabled={nextFrame === null}>
-        Next Frame
-      </button>
-      <Checkbox
-        id="show-wasm-log"
-        label="Show log from WASM on clicking next frame button"
-        checked={showWasmLogOnNextFrame}
-        onChange={onToggleShowWasmLogOnNextFrame}
-        labelStyles={onScreenTypographyStyles}
+    <Container>
+      <Canvas ref={canvasRef}></Canvas>
+      {showFPS && fpsData &&
+        <FPSDisplay fpsData={fpsData} />
+      }
+      <PlayController
+        style={{...playControllerPosition}}
+        isPlaying={isPlaying}
+        onClickPlayPauseButton={onClickPlayPauseButton}
+        onClickNextFrameButton={onClickNextFrameButton}
+        onClickRestartButton={onClickRestartButton}
+        autoStart={autoStart}
+        onChangeAutoStart={onChangeAutoStart}
+        onClickCameraResetButton={onClickResetCamera}
       />
-      <div style={onScreenTypographyStyles}>
-        {fpsContents}
-      </div>
-      <canvas ref={canvasRef} style={canvasStyles}></canvas>
-      <button onClick={onClickResetCamera}>
-        Reset Camera
-      </button>
-      <button onClick={onToggleGUIControlsVisibility}>
-        Toggle GUI Controls
-      </button>
-      <button onClick={onClickRestartButton} disabled={destroy === null}>
-        Restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Field Size: {fieldSize}
-      </span>
-      <button onClick={onClickChangeFieldSizeAndRestartButton} disabled={destroy === null}>
-        Change field size and restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Lifespan: {lifespan}
-      </span>
-      <button onClick={onClickChangeLifespanAndRestartButton} disabled={destroy === null}>
-        Change lifespan and restart
-      </button>
-      <span style={onScreenTypographyStyles}>
-        Current Speed: {speed}
-      </span>
-      <button onClick={onClickChangeSpeedAndRestartButton} disabled={destroy === null}>
-        Change speed and restart
-      </button>
-      <Checkbox
-        id="auto-play"
-        label="Autoplay on restart"
-        checked={autoStart}
-        onChange={onChangeAutoPlay}
-        labelStyles={onScreenTypographyStyles}
+      <OptionController
+        fieldSize={fieldSize}
+        onChangeFieldSize={setFieldSize}
+        lifespan={lifespan}
+        onChangeLifespan={setLifespan}
+        speed={speed}
+        onChangeSpeed={setSpeed}
+        aliveCellBaseOptions={aliveCellBaseOptions}
+        aliveCellBase={aliveCellBase}
+        onChangeAliveCellBase={setAliveCellBase}
+        autoStartOnChangeGameRules={autoStartOnChangeGameRules}
+        onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
+        textureColors={textureColors}
+        onChangeTextureColors={onChangeTextureColors}
+        glValuesConfigurable={glValuesConfigurable}
+        onChangeGlValuesConfigurable={onChangeGlValuesConfigurable}
+        showFPS={showFPS}
+        onChangeShowFPS={setShowFPS}
+        showWasmLogOnNextFrame={showWasmLogOnNextFrame}
+        onChangeShowWasmLogOnNextFrame={setShowWasmLogOnNextFrame}
       />
-      <div>
-        <span style={onScreenTypographyStyles}>Alive cell base</span>
-        {aliveCellBaseOptions.map(number => 
-          <Checkbox
-            key={number.toString()}
-            id={number.toString()}
-            label={number.toString()}
-            checked={aliveCellBase[number]}
-            onChange={onChangeAliveCellBase(number)}
-            labelStyles={onScreenTypographyStyles}
-          />
-        )}
-      </div>
-    </div>
+    </Container>
   );
 }

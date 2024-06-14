@@ -19,14 +19,16 @@ describe('getController', () => {
     const mockPause = jest.fn();
     const mockNextFrame = jest.fn();
     const mockResetCamera = jest.fn();
-    const mockToggleGUIControlsVisibility = jest.fn();
+    const mockUpdateColors = jest.fn();
+    const mockUpdateEffects = jest.fn();
     const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
       play: mockPlay,
       pause: mockPause,
       nextFrame: mockNextFrame,
       resetCamera: mockResetCamera,
-      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+      updateColors: mockUpdateColors,
+      updateEffects: mockUpdateEffects,
       destroy: mockDestroy,
     });
     const initialUniverseConfig = {}
@@ -38,7 +40,8 @@ describe('getController', () => {
     expect(result.result.current.pause).toEqual(mockPause);
     expect(result.result.current.nextFrame).toEqual(mockNextFrame);
     expect(result.result.current.resetCamera).toEqual(mockResetCamera);
-    expect(result.result.current.toggleGUIControlsVisibility).toEqual(mockToggleGUIControlsVisibility);
+    expect(result.result.current.updateColors).toEqual(mockUpdateColors);
+    expect(result.result.current.updateEffects).toEqual(mockUpdateEffects);
     expect(result.result.current.destroy).toEqual(mockDestroy);
   });
 
@@ -47,14 +50,16 @@ describe('getController', () => {
     const mockPause = jest.fn();
     const mockNextFrame = jest.fn();
     const mockResetCamera = jest.fn();
-    const mockToggleGUIControlsVisibility = jest.fn();
+    const mockUpdateColors = jest.fn();
+    const mockUpdateEffects = jest.fn();
     const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
       play: mockPlay,
       pause: mockPause,
       nextFrame: mockNextFrame,
       resetCamera: mockResetCamera,
-      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+      updateColors: mockUpdateColors,
+      updateEffects: mockUpdateEffects,
       destroy: mockDestroy,
     });
     const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));
@@ -74,14 +79,16 @@ describe('getController', () => {
     const mockPause = jest.fn();
     const mockNextFrame = jest.fn();
     const mockResetCamera = jest.fn();
-    const mockToggleGUIControlsVisibility = jest.fn();
+    const mockUpdateColors = jest.fn();
+    const mockUpdateEffects = jest.fn();
     const mockDestroy = jest.fn();
     const mockGetInterface = jest.fn().mockResolvedValue({
       play: mockPlay,
       pause: mockPause,
       nextFrame: mockNextFrame,
       resetCamera: mockResetCamera,
-      toggleGUIControlsVisibility: mockToggleGUIControlsVisibility,
+      updateColors: mockUpdateColors,
+      updateEffects: mockUpdateEffects,
       destroy: mockDestroy,
     });
     const result = renderHook(() => getController(mockGetInterface, mockCanvasRef, mockUpdatePlayingStateFn, mockUpdateFpsDataFn));

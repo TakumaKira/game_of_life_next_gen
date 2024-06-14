@@ -1,5 +1,5 @@
 {
-  "name": "esbuild-react-template",
+  "name": "game-of-life-next-gen-www",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -7,29 +7,50 @@
     "dev": "./dev.mjs",
     "build": "./build.mjs",
     "test": "jest",
-    "test:generate-coverage-report": "rm -rf coverage && mkdir coverage && jest > coverage/coverage-report.txt"
+    "test:generate-coverage-report": "rm -rf coverage && mkdir coverage && jest > coverage/coverage-report.txt",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "author": "Takuma Kira",
   "license": "ISC",
   "devDependencies": {
     "@dotenv-run/core": "^1.3.5",
+    "@storybook/addon-essentials": "7.6.19",
+    "@storybook/addon-interactions": "7.6.19",
+    "@storybook/addon-links": "7.6.19",
+    "@storybook/addon-onboarding": "^1.0.11",
+    "@storybook/blocks": "7.6.19",
+    "@storybook/react": "7.6.19",
+    "@storybook/react-vite": "7.6.19",
+    "@storybook/test": "7.6.19",
+    "@svgr/plugin-jsx": "^8.1.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^29.5.12",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "esbuild": "0.20.2",
+    "@types/styled-components": "^5.1.34",
+    "esbuild": "^0.19.1",
+    "esbuild-plugin-svgr": "^2.1.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "prop-types": "^15.8.1",
+    "storybook": "7.6.19",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "vite": "^5.2.12",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "dependencies": {
+    "@jaames/iro": "^5.5.2",
     "babylonjs": "7.4.0",
-    "babylonjs-gui": "7.4.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
+    "styled-components": "^6.1.11",
     "wasm-game-of-life": "file:../pkg"
+  },
+  "resolutions": {
+    "styled-components": "^5"
   }
 }
