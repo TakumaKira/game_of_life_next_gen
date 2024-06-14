@@ -1,27 +1,29 @@
-import { Color4, Vector3 } from "babylonjs";
-import type { TextureValues } from "./drawer";
+import { Vector3 } from "babylonjs";
+import type { Color } from "./types";
+import type { TextureColors } from "./drawer";
+import type { GLValuesConfigurable } from "./gl-renderer";
 
 const TEXTURE_SIZE = 20;
 /** In `px` */
 const TEXTURE_RESOLUTION = 512;
+const TEXTURE_SPECULAR_COLOR_DEFAULT: Color = { r: 15, g: 15, b: 15, a: 1 };
 const DEFAULT_FIELD_SIZE = 128;
 const DEFAULT_ALIVE_CELL_BASE = [2, 7];
 const getCellSize = (fieldSize: number) => TEXTURE_RESOLUTION / fieldSize - 1;
 const DEFAULT_SPEED = 3;
-const GRID_COLOR = new Color4(0.05, 0.05, 0.05, 1);
-const DEAD_COLOR = new Color4(0.1, 0.1, 0.1, 1);
-const ALIVE_COLOR_BASE_1 = new Color4(1, 0, 0, 1);
-const ALIVE_COLOR_BASE_2 = new Color4(1, 1, 0, 1);
-const ALIVE_COLOR_BASE_3 = new Color4(0, 0, 1, 1);
-const ALIVE_COLORS: TextureValues['aliveColors'] = [ALIVE_COLOR_BASE_1, ALIVE_COLOR_BASE_2, ALIVE_COLOR_BASE_3];
-const TEXTURE_DEFAULTS: TextureValues = {
+const GRID_COLOR = '#111111ff';
+const DEAD_COLOR = '#222222ff';
+const ALIVE_COLOR_YOUNG = '#ff0000ff';
+const ALIVE_COLOR_MIDDLE = '#ffff00ff';
+const ALIVE_COLOR_ELDER = '#0000ffff';
+const TEXTURE_COLORS_DEFAULT: TextureColors = {
   gridColor: GRID_COLOR,
   deadColor: DEAD_COLOR,
-  aliveColors: ALIVE_COLORS,
+  aliveColors: [ALIVE_COLOR_YOUNG, ALIVE_COLOR_MIDDLE, ALIVE_COLOR_ELDER],
 }
 const DEFAULT_LIFESPAN = 200;
 
-const SCENE_BACKGROUND_COLOR_DEFAULT = new Color4(0, 0, 0.1, 0);
+const SCENE_BACKGROUND_COLOR_DEFAULT: Color = { r: 1, g: 1, b: 1, a: 1 };
 const CAMERA_ALPHA_DEFAULT = -Math.PI/2
 const CAMERA_BETA_DEFAULT = Math.PI / 3
 const CAMERA_RADIUS_DEFAULT = 25
@@ -32,34 +34,65 @@ const CAMERA_DEFAULTS = {
   radius: CAMERA_RADIUS_DEFAULT,
   target: CAMERA_TARGET_DEFAULT
 }
-const EFFCT_DEFAULTS = {
-  BLOOM_ENABLED: true,
-  BLOOM_WEIGHT: 2,
-  FXAA_ENABLED: false,
-  IMAGE_PROCESSING: {
-    ENABLED: true,
-    TONE_MAPPING_ENABLED: false,
-    VIGNETTE_ENABLED: false,
-    VIGNETTE_COLOR: new Color4(0, 0, 1, 0),
-    VIGNETTE_WEIGHT: 10,
-    COLOR_CURVES_ENABLED: false,
-    CONTRAST: 1.2,
-    EXPOSURE: 4,
-  },
+const FXAA_ENABLED_DEFAULT = false
+const BLOOM_ENABLED_DEFAULT = true
+const BLOOM_WEIGHT_MIN = 0
+const BLOOM_WEIGHT_MAX = 2
+const BLOOM_WEIGHT_DEFAULT = 2
+const IMAGE_PROCESSING_ENABLED_DEFAULT = true
+const VIGNETTE_MULTIPLY_DEFAULT = true
+const TONE_MAPPING_ENABLED_DEFAULT = false
+const VIGNETTE_ENABLED_DEFAULT = false
+const VIGNETTE_COLOR_DEFAULT: Color = { r: 0, g: 0, b: 255, a: 1 }
+const VIGNETTE_WEIGHT_MIN = 0
+const VIGNETTE_WEIGHT_MAX = 20
+const VIGNETTE_WEIGHT_DEFAULT = 10
+const COLOR_CURVES_ENABLED_DEFAULT = false
+const CAMERA_CONTRAST_MIN = 0
+const CAMERA_CONTRAST_MAX = 4
+const CAMERA_CONTRAST_DEFAULT = 1.2
+const CAMERA_EXPOSURE_MIN = 0
+const CAMERA_EXPOSURE_MAX = 4
+const CAMERA_EXPOSURE_DEFAULT = 4
+const GL_VALUES_CONFIGURABLE_DEFAULTS: GLValuesConfigurable = {
+  backgroundColor: SCENE_BACKGROUND_COLOR_DEFAULT,
+  specularColor: TEXTURE_SPECULAR_COLOR_DEFAULT,
+  fxaaEnabled: FXAA_ENABLED_DEFAULT,
+  bloomEnabled: BLOOM_ENABLED_DEFAULT,
+  bloomWeight: BLOOM_WEIGHT_DEFAULT,
+  // imageProcessing
+  imageProcessingEnabled: IMAGE_PROCESSING_ENABLED_DEFAULT,
+  toneMappingEnabled: TONE_MAPPING_ENABLED_DEFAULT,
+  vignetteEnabled: VIGNETTE_ENABLED_DEFAULT,
+  vignetteMultiply: VIGNETTE_MULTIPLY_DEFAULT,
+  vignetteColor: VIGNETTE_COLOR_DEFAULT,
+  vignetteWeight: VIGNETTE_WEIGHT_DEFAULT,
+  colorCurvesEnabled: COLOR_CURVES_ENABLED_DEFAULT,
+  contrast: CAMERA_CONTRAST_DEFAULT,
+  exposure: CAMERA_EXPOSURE_DEFAULT,
 }
 
 export {
   TEXTURE_SIZE,
   TEXTURE_RESOLUTION,
+  TEXTURE_SPECULAR_COLOR_DEFAULT,
   DEFAULT_FIELD_SIZE,
   DEFAULT_ALIVE_CELL_BASE,
   getCellSize,
   DEFAULT_SPEED,
-  TEXTURE_DEFAULTS,
+  TEXTURE_COLORS_DEFAULT,
   DEFAULT_LIFESPAN,
 
   SCENE_BACKGROUND_COLOR_DEFAULT,
 
   CAMERA_DEFAULTS,
-  EFFCT_DEFAULTS,
+  BLOOM_WEIGHT_MIN,
+  BLOOM_WEIGHT_MAX,
+  VIGNETTE_WEIGHT_MIN,
+  VIGNETTE_WEIGHT_MAX,
+  CAMERA_CONTRAST_MIN,
+  CAMERA_CONTRAST_MAX,
+  CAMERA_EXPOSURE_MIN,
+  CAMERA_EXPOSURE_MAX,
+  GL_VALUES_CONFIGURABLE_DEFAULTS,
 }

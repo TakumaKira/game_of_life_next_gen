@@ -1,7 +1,7 @@
 [package]
 name = "wasm-game-of-life"
-version = "0.1.0"
-authors = ["Nick Fitzgerald <fitzgen@gmail.com>"]
+version = "1.0.0"
+authors = ["Nick Fitzgerald <fitzgen@gmail.com>", "Takuma Kira <takuma@kirakiraworx.com>"]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
