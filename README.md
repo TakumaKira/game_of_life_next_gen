@@ -41,4 +41,6 @@ You need to install [wasm-pack](https://rustwasm.github.io/wasm-pack/) to build 
 
 ## Lesson learned
 
-"Using WASM with Rust" sounds really fancy, but we need to really be careful what it really means, especially when it comes to selecting tech stacks to real-world products. If we added WASM with Rust without any serious consideration, it only results in adding extra complexity without benefits. In this project, at least in current setting, using WASM with Rust seems to make no user-noticable difference. But this project is still meaningful to me because at least it told me the reality and I may somehow find something interesting in the future as this provide easy A/B tests in some sort.
+"Using WASM with Rust" sounds really fancy, but we need to really be careful what it really means, especially when it comes to selecting tech stacks to real-world products. If we added WASM with Rust without any serious consideration, it only results in adding extra complexity without benefits. In this project, at least in current setting, using WASM with Rust seems to make no big user-noticable difference. But this project is still meaningful to me because at least it told me the reality and I may somehow find something interesting in the future as this provide easy A/B tests in some sort.
+
+At least, I noticed that WASM is faster than JavaScript version at speed is 100 or 1,000.
