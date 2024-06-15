@@ -19,6 +19,8 @@ export default function OptionController({
   onChangeAliveCellBase,
   autoStartOnChangeGameRules,
   onChangeAutoStartOnChangeGameRules,
+  useJSVersion,
+  onChangeUseJSVersion,
   textureColors,
   onChangeTextureColors,
   glValuesConfigurable,
@@ -39,6 +41,8 @@ export default function OptionController({
   onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
   autoStartOnChangeGameRules: boolean
   onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
+  useJSVersion: boolean
+  onChangeUseJSVersion: (useJSVersion: boolean) => void
   textureColors: TextureColors
   onChangeTextureColors: (value: TextureColorsNullable) => void
   glValuesConfigurable: GLValuesConfigurable
@@ -80,6 +84,8 @@ export default function OptionController({
               aliveCellBaseOptions={aliveCellBaseOptions}
               aliveCellBase={aliveCellBase}
               onChangeAliveCellBase={onChangeAliveCellBase}
+              useJSVersion={useJSVersion}
+              onChangeUseJSVersion={onChangeUseJSVersion}
               autoStartOnChangeGameRules={autoStartOnChangeGameRules}
               onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
             />,

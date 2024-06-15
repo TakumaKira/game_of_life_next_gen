@@ -22,6 +22,7 @@ This repository is an extended version of [rustwasm/wasm_game_of_life](https://g
 - 🌈 Each cell has the limited “age” and it is visible by colors
 - 💻 Using WebGL for the beautiful animation
 - ⚙️ Fully configurable game settings and visual configurations
+- 🧪 Enable performance comparison with JavaScript based computation
 
 ## What are achieved in this repository?
 
@@ -37,3 +38,7 @@ You need to install [wasm-pack](https://rustwasm.github.io/wasm-pack/) to build 
 ### Build module
 
 - Run `wasm-pack build`
+
+## Lesson learned
+
+"Using WASM with Rust" sounds really fancy, but we need to really be careful what it really means, especially when it comes to selecting tech stacks to real-world products. If we added WASM with Rust without any serious consideration, it only results in adding extra complexity without benefits. In this project, at least in current setting, using WASM with Rust seems to make no user-noticable difference. But this project is still meaningful to me because at least it told me the reality and I may somehow find something interesting in the future as this provide easy A/B tests in some sort.

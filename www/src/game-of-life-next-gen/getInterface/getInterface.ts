@@ -19,7 +19,7 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
   const wasmModule = await wasmModulePromise
   bg.__wbg_set_wasm(wasmModule)
   const destroyedState = new DestroyedState();
-  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, updateColors: onUpdateColors, updateEffects: onUpdateEffects, destroy: destroySetup } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
+  const { togglePlayPause: onTogglePlayPause, animationState, nextFrame: onNextFrame, onClickCanvasFnRef, resetCamera, updateColors: onUpdateColors, updateEffects: onUpdateEffects, destroy: destroySetup, draw } = setup(canvas, updatePlayingState, updateFpsData, wasmModule.memory, universeConfig)
   const play = () => playImpl(onTogglePlayPause, animationState, destroyedState)
   const pause = () => pauseImpl(onTogglePlayPause, animationState, destroyedState)
   const nextFrame = (showLog?: boolean) => nextFrameImpl(onNextFrame, animationState, destroyedState, showLog)
@@ -29,7 +29,7 @@ export default async function getInterface(canvas: HTMLCanvasElement, updatePlay
   if (autoStart) {
     play()
   } else {
-    nextFrameImpl(onNextFrame, animationState, destroyedState)
+    draw()
   }
   return { play, pause, nextFrame, resetCamera, updateColors, updateEffects, destroy }
 }

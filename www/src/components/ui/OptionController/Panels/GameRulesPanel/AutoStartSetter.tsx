@@ -28,8 +28,8 @@ export default function AutoStartSetter({
   return (
     <CheckboxBase
       id="auto-start-on-change-game-rules"
-      checked={autoStartOnChangeGameRules}
-      onChange={e => onChangeAutoStartOnChangeGameRules(e.target.checked)}
+      checked={!autoStartOnChangeGameRules}
+      onChange={e => onChangeAutoStartOnChangeGameRules(!e.target.checked)}
       label={
         <TextContainer>
           <Text>Changing game rules restarts the game.</Text>
