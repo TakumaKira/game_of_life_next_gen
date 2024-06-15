@@ -106,18 +106,18 @@ export class UniverseJS {
 
         const next_cell = ((state, x) => {
           if (state === CellState.Alive && x < 2) {
-            cell.kill()
-            return cell
+            next[idx].kill()
+            return next[idx]
           } else if (state === CellState.Alive && (x === 2 || x === 3)) {
-            cell.increment_age(this.lifespan)
-            return cell
+            next[idx].increment_age(this.lifespan)
+            return next[idx]
           } else if (state === CellState.Alive && x > 3) {
-            cell.kill()
-            return cell
+            next[idx].kill()
+            return next[idx]
           } else if (state === CellState.Dead && x === 3) {
             return Cell.new()
           } else {
-            return cell
+            return next[idx]
           }
         })(cell.get_state(this.lifespan), live_neighbors)
 

@@ -9,7 +9,7 @@ import { type TextureColors, type TextureColorsNullable, drawCells, drawGrid } f
 import { DEFAULT_ALIVE_CELL_BASE, DEFAULT_FIELD_SIZE, DEFAULT_LIFESPAN, DEFAULT_SPEED, TEXTURE_COLORS_DEFAULT, getCellSize } from "./constants";
 import type { GLValuesConfigurable } from "./gl-renderer/setupGLRenderer";
 
-export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory, universeConfig?: UniverseConfig): { togglePlayPause: () => void, animationState: AnimationState, nextFrame: (showLog?: boolean) => void, onClickCanvasFnRef: () => void, resetCamera: () => void, updateColors: (value: TextureColorsNullable) => void, updateEffects: (value: Partial<GLValuesConfigurable>) => void, destroy: () => void } {
+export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnUpdatePlayingStateFn, updateFpsData: OnUpdateFpsDataFn, memory: WebAssembly.Memory, universeConfig?: UniverseConfig): { togglePlayPause: () => void, animationState: AnimationState, nextFrame: (showLog?: boolean) => void, onClickCanvasFnRef: () => void, resetCamera: () => void, updateColors: (value: TextureColorsNullable) => void, updateEffects: (value: Partial<GLValuesConfigurable>) => void, destroy: () => void, draw: () => void } {
   const fieldSize = universeConfig?.fieldSize || DEFAULT_FIELD_SIZE;
   const lifespan = universeConfig?.lifespan || DEFAULT_LIFESPAN;
   const speed = universeConfig?.speed || DEFAULT_SPEED;
@@ -75,5 +75,5 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
     animationState.clear()
   }
 
-  return { togglePlayPause, animationState, nextFrame, onClickCanvasFnRef, resetCamera, updateColors, updateEffects, destroy }
+  return { togglePlayPause, animationState, nextFrame, onClickCanvasFnRef, resetCamera, updateColors, updateEffects, destroy, draw: updateUniverse }
 }
