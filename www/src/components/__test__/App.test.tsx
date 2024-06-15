@@ -56,6 +56,7 @@ describe('App', () => {
   let mockOnChangeSpeed: (value: number) => void;
   let mockOnChangeAliveCellBase: (value: { [number: number]: boolean }) => void;
   let mockOnChangeAutoStartOnChangeGameRules: (value: boolean) => void;
+  let mockOnChangeUseJSVersion: (value: boolean) => void;
   let mockOnChangeTextureColors: (value: TextureColorsNullable) => void;
   let mockOnChangeGlValuesConfigurable: (value: Partial<GLValuesConfigurable>) => void;
   let mockOnChangeShowFPS: (value: boolean) => void;
@@ -67,6 +68,7 @@ describe('App', () => {
     aliveCellBaseOptions: number[],
     aliveCellBase: { [number: number]: boolean },
     autoStartOnChangeGameRules: boolean,
+    useJSVersion: boolean,
     textureColors: TextureColors,
     glValuesConfigurable: GLValuesConfigurable,
     showFPS: boolean,
@@ -100,6 +102,8 @@ describe('App', () => {
       onChangeAliveCellBase,
       autoStartOnChangeGameRules,
       onChangeAutoStartOnChangeGameRules,
+      useJSVersion,
+      onChangeUseJSVersion,
       textureColors,
       onChangeTextureColors,
       glValuesConfigurable,
@@ -114,6 +118,7 @@ describe('App', () => {
       mockOnChangeSpeed = value => onChangeSpeed(value)
       mockOnChangeAliveCellBase = value => onChangeAliveCellBase(value)
       mockOnChangeAutoStartOnChangeGameRules = value => onChangeAutoStartOnChangeGameRules(value)
+      mockOnChangeUseJSVersion = value => onChangeUseJSVersion(value)
       mockOnChangeTextureColors = value => onChangeTextureColors(value)
       mockOnChangeGlValuesConfigurable = value => onChangeGlValuesConfigurable(value)
       mockOnChangeShowFPS = value => onChangeShowFPS(value)
@@ -125,6 +130,7 @@ describe('App', () => {
         aliveCellBaseOptions,
         aliveCellBase,
         autoStartOnChangeGameRules,
+        useJSVersion,
         textureColors,
         glValuesConfigurable,
         showFPS,
@@ -235,6 +241,16 @@ describe('App', () => {
       })
       expect(mockRestart).toHaveBeenCalledWith(expect.anything(), newValue);
       expect(getOptionControllerValues().autoStartOnChangeGameRules).toEqual(newValue)
+    })
+
+    it('handles use JS version change correctly', () => {
+      render(<App />);
+      const newValue = false;
+      act(() => {
+        mockOnChangeUseJSVersion(newValue);
+      })
+      expect(mockRestart).toHaveBeenCalledWith(expect.objectContaining({ useJSVersion: newValue }), expect.anything());
+      expect(getOptionControllerValues().useJSVersion).toEqual(newValue)
     })
 
     it('calls updateColors when texture colors change', () => {

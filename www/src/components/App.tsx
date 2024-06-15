@@ -52,11 +52,11 @@ export default function App() {
   const [speed, setSpeed] = React.useState(DEFAULT_SPEED)
   const aliveCellBaseOptions = [...new Array(ALIVE_CELL_BASE_OPTIONS)].map((_, i) => i + 1)
   const [aliveCellBase, setAliveCellBase] = React.useState<{ [number: number]: boolean }>(Object.fromEntries(aliveCellBaseOptions.map(number => [number, DEFAULT_ALIVE_CELL_BASE.includes(number)])))
-  const [useJSversion, setUseJSversion] = React.useState<boolean>(false)
+  const [useJSVersion, setUseJSVersion] = React.useState<boolean>(false)
   const [autoStartOnChangeGameRules, setAutoStartOnChangeGameRules] = React.useState<boolean>(true)
   const universeConfig = React.useMemo<UniverseConfig>(() => ({
-    fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : []), useJSversion
-  }), [fieldSize, lifespan, speed, aliveCellBase, useJSversion])
+    fieldSize, lifespan, speed, aliveCellBase: Object.entries(aliveCellBase).flatMap(([number, isChecked]) => isChecked ? [parseInt(number)] : []), useJSVersion
+  }), [fieldSize, lifespan, speed, aliveCellBase, useJSVersion])
   const { play, pause, nextFrame, resetCamera, updateColors, updateEffects, destroy, restart } = getController(getInterface, canvasRef, updatePlayingState, updateFpsData, universeConfig, autoStart)
   // Change universe config
   React.useEffect(() => {
@@ -123,10 +123,10 @@ export default function App() {
         aliveCellBaseOptions={aliveCellBaseOptions}
         aliveCellBase={aliveCellBase}
         onChangeAliveCellBase={setAliveCellBase}
-        useJSversion={useJSversion}
-        onChangeUseJSversion={setUseJSversion}
         autoStartOnChangeGameRules={autoStartOnChangeGameRules}
         onChangeAutoStartOnChangeGameRules={setAutoStartOnChangeGameRules}
+        useJSVersion={useJSVersion}
+        onChangeUseJSVersion={setUseJSVersion}
         textureColors={textureColors}
         onChangeTextureColors={onChangeTextureColors}
         glValuesConfigurable={glValuesConfigurable}

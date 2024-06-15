@@ -14,17 +14,17 @@ const labelStyle: React.CSSProperties = {
 }
 
 export default function UseJSVersionSetter({
-  useJSversion,
-  onChangeUseJSversion
+  useJSVersion,
+  onChangeUseJSVersion
 }: {
-  useJSversion: boolean
-  onChangeUseJSversion: (useJSversion: boolean) => void
+  useJSVersion: boolean
+  onChangeUseJSVersion: (useJSVersion: boolean) => void
 }) {
   return (
     <CheckboxBase
       id="show-fps"
-      checked={useJSversion}
-      onChange={e => onChangeUseJSversion(e.target.checked)}
+      checked={useJSVersion}
+      onChange={e => onChangeUseJSVersion(e.target.checked)}
       label={
         <Text $size={22}>Use JavaScript version</Text>
       }

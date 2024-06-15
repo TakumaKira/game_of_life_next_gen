@@ -78,10 +78,10 @@ pub fn test_tick() {
     
     //// Call `tick` and then see if the cells in the `Universe`s are the same.
     input_universe.tick(false);
-    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_life_span())).collect::<Vec<CellState>>(), &expected_universe_after_first_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_first_tick.get_life_span())).collect::<Vec<CellState>>());
+    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_lifespan())).collect::<Vec<CellState>>(), &expected_universe_after_first_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_first_tick.get_lifespan())).collect::<Vec<CellState>>());
 
     let expected_universe_after_second_tick = expected_spaceship_after_second_tick();
 
     input_universe.tick(false);
-    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_life_span())).collect::<Vec<CellState>>(), &expected_universe_after_second_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_second_tick.get_life_span())).collect::<Vec<CellState>>());
+    assert_eq!(&input_universe.get_cells().iter().map(|cell| cell.get_state(input_universe.get_lifespan())).collect::<Vec<CellState>>(), &expected_universe_after_second_tick.get_cells().iter().map(|cell| cell.get_state(expected_universe_after_second_tick.get_lifespan())).collect::<Vec<CellState>>());
 }

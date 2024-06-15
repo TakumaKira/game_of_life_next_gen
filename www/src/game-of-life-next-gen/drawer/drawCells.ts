@@ -4,7 +4,7 @@ import { getIndex } from "@/game-of-life-next-gen/game-of-life";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 import getIsAgeInRange from "./getIsAgeInRange";
 import type { TextureColors } from "./types";
-import { UniverseJS } from "../game-of-life/UniverseJS";
+import type { UniverseJS } from "../game-of-life/UniverseJS";
 
 export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, textureColors: TextureColors, width: number, height: number, lifespan: number, cellSize: number) {
   const cellsStatePtr = universe.cells_state();

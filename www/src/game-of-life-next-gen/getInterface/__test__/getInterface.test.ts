@@ -16,6 +16,7 @@ const mockResetCamera = jest.fn();
 const mockUpdateColors = jest.fn();
 const mockUpdateEffects = jest.fn();
 const mockDestroy = jest.fn();
+const mockDraw = jest.fn();
 jest.mock('../../setup', () => jest.fn().mockReturnValue({
   togglePlayPause: mockTogglePlayPause,
   animationState: mockAnimationState,
@@ -24,7 +25,8 @@ jest.mock('../../setup', () => jest.fn().mockReturnValue({
   resetCamera: mockResetCamera,
   updateColors: mockUpdateColors,
   updateEffects: mockUpdateEffects,
-  destroy: mockDestroy
+  destroy: mockDestroy,
+  draw: mockDraw,
 }));
 const mockPlayImpl = jest.fn();
 jest.mock('../playImpl', () => mockPlayImpl)
@@ -75,7 +77,7 @@ describe('getInterface', () => {
       resetCamera: expect.any(Function),
       updateColors: expect.any(Function),
       updateEffects: expect.any(Function),
-      destroy: expect.any(Function)
+      destroy: expect.any(Function),
     }));
   });
 
@@ -147,9 +149,9 @@ describe('getInterface', () => {
     expect(mockPlayImpl).toHaveBeenCalled();
   });
 
-  test('nextFrameImpl function is called automatically with correnct arguments if autoStart is false', async () => {
+  test('draw function is called automatically with correnct arguments if autoStart is false', async () => {
     await getInterface(canvas, updatePlayingState, updateFpsData, false, universeConfig);
-    expect(mockNextFrameImpl).toHaveBeenCalledWith(mockNextFrame, mockAnimationState, new MockDestroyedState());
+    expect(mockDraw).toHaveBeenCalled();
   });
 
   // Add other tests for play, pause, nextFrame, and destroy functions

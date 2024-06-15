@@ -158,7 +158,7 @@ export class UniverseJS {
 
   set_width(width: number): void {
     this._width = width
-    this.cells = new Array(width * this._height).map(_ => {
+    this.cells = [...new Array(width * this._height)].map(_ => {
       const cell = Cell.new()
       cell.kill()
       return cell
@@ -171,7 +171,7 @@ export class UniverseJS {
 
   set_height(height: number): void {
     this._height = height
-    this.cells = new Array(this._width * height).map(_ => {
+    this.cells = [...new Array(this._width * height)].map(_ => {
       const cell = Cell.new()
       cell.kill()
       return cell

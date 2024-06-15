@@ -34,10 +34,10 @@ export default function GameRulesPanel({
   aliveCellBaseOptions,
   aliveCellBase,
   onChangeAliveCellBase,
-  useJSversion,
-  onChangeUseJSversion,
   autoStartOnChangeGameRules,
   onChangeAutoStartOnChangeGameRules,
+  useJSVersion,
+  onChangeUseJSVersion,
 }: {
   fieldSize: number
   onChangeFieldSize: (fieldSize: number) => void
@@ -48,10 +48,10 @@ export default function GameRulesPanel({
   aliveCellBaseOptions: number[]
   aliveCellBase: { [number: number]: boolean }
   onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
-  useJSversion: boolean
-  onChangeUseJSversion: (useJSversion: boolean) => void
   autoStartOnChangeGameRules: boolean
   onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
+  useJSVersion: boolean
+  onChangeUseJSVersion: (useJSVersion: boolean) => void
 }) {
   return (
     <Container>
@@ -75,8 +75,8 @@ export default function GameRulesPanel({
             onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
           />
           <UseJSVersionSetter
-            useJSversion={useJSversion}
-            onChangeUseJSversion={onChangeUseJSversion}
+            useJSVersion={useJSVersion}
+            onChangeUseJSVersion={onChangeUseJSVersion}
           />
         </ScrollableContents>
       </Scrollable>

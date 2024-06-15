@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AutoStartSetter from '../AutoStartSetter'; // Adjust the import path as necessary
+import UseJSVersionSetter from '../UseJSVersionSetter'; // Adjust the import path as necessary
 
 // Mocking necessary imports
 jest.mock('../../CheckboxBase', () => (props: any) => (
@@ -27,32 +27,31 @@ jest.mock('../../../../../SVG', () => {
   }
 });
 
-describe('AutoStartSetter', () => {
-  test('renders AutoStartSetter component with initial props', () => {
+describe('UseJSVersionSetter', () => {
+  test('renders UseJSVersionSetter component with initial props', () => {
     const mockChangeHandler = jest.fn();
-    render(<AutoStartSetter autoStartOnChangeGameRules={true} onChangeAutoStartOnChangeGameRules={mockChangeHandler} />);
+    render(<UseJSVersionSetter useJSVersion={false} onChangeUseJSVersion={mockChangeHandler} />);
     
     expect(screen.getByTestId('checkbox-base')).toBeInTheDocument();
-    expect(screen.getByText(/Changing game rules restarts the game./)).toBeInTheDocument();
-    expect(screen.getByText(/Do you want to prevent autoplay?/)).toBeInTheDocument();
+    expect(screen.getByText(/Use JavaScript version/)).toBeInTheDocument();
     expect(screen.getByTestId('unchecked-icon')).toBeInTheDocument();
   });
 
   test('calls onChange handler when checkbox is clicked', () => {
     const mockChangeHandler = jest.fn();
-    render(<AutoStartSetter autoStartOnChangeGameRules={true} onChangeAutoStartOnChangeGameRules={mockChangeHandler} />);
+    render(<UseJSVersionSetter useJSVersion={false} onChangeUseJSVersion={mockChangeHandler} />);
     
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
 
-    expect(mockChangeHandler).toHaveBeenCalledWith(false);
+    expect(mockChangeHandler).toHaveBeenCalledWith(true);
   });
 
-  test('displays correct icons based on autoStartOnChangeGameRules prop', () => {
-    const { rerender } = render(<AutoStartSetter autoStartOnChangeGameRules={true} onChangeAutoStartOnChangeGameRules={() => {}} />);
+  test('displays correct icons based on useJSVersion prop', () => {
+    const { rerender } = render(<UseJSVersionSetter useJSVersion={false} onChangeUseJSVersion={() => {}} />);
     expect(screen.getByTestId('unchecked-icon')).toBeInTheDocument();
 
-    rerender(<AutoStartSetter autoStartOnChangeGameRules={false} onChangeAutoStartOnChangeGameRules={() => {}} />);
+    rerender(<UseJSVersionSetter useJSVersion={true} onChangeUseJSVersion={() => {}} />);
     expect(screen.getByTestId('checked-icon')).toBeInTheDocument();
   });
 });

@@ -3,7 +3,7 @@ export type UniverseConfig = {
   lifespan?: number;
   speed?: number;
   aliveCellBase?: number[];
-  useJSversion?: boolean;
+  useJSVersion?: boolean;
 }
 
 export type Color = {
