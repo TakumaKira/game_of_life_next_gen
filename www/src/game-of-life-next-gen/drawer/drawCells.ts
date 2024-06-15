@@ -4,13 +4,14 @@ import { getIndex } from "@/game-of-life-next-gen/game-of-life";
 import type { TextContextUpdateFn } from "@/game-of-life-next-gen/gl-renderer";
 import getIsAgeInRange from "./getIsAgeInRange";
 import type { TextureColors } from "./types";
+import { UniverseJS } from "../game-of-life/UniverseJS";
 
 export default function drawCells(universe: Universe, memory: WebAssembly.Memory, updateTextureContext: (textContextUpdateFn: TextContextUpdateFn) => void, textureColors: TextureColors, width: number, height: number, lifespan: number, cellSize: number) {
   const cellsStatePtr = universe.cells_state();
-  const cellsState = new Uint8Array(memory.buffer, cellsStatePtr, width * height);
+  const cellsState = cellsStatePtr === -1 ? (universe as UniverseJS).cellsState() : new Uint8Array(memory.buffer, cellsStatePtr, width * height);
 
   const cellsAgePtr = universe.cells_age();
-  const cellsAge = new Uint8Array(memory.buffer, cellsAgePtr, width * height);
+  const cellsAge = cellsStatePtr === -1 ? (universe as UniverseJS).cellsAge() : new Uint8Array(memory.buffer, cellsAgePtr, width * height);
 
   updateTextureContext(context => {
     context.beginPath();

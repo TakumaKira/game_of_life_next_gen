@@ -14,9 +14,10 @@ export default function setup(canvas: HTMLCanvasElement, updatePlayingState: OnU
   const lifespan = universeConfig?.lifespan || DEFAULT_LIFESPAN;
   const speed = universeConfig?.speed || DEFAULT_SPEED;
   const aliveCellBase = universeConfig?.aliveCellBase || DEFAULT_ALIVE_CELL_BASE;
+  const useJSversion = universeConfig?.useJSversion || false;
   const cellSize = getCellSize(fieldSize);
 
-  const { universe, width, height, lifespan: _ } = getUniverse(fieldSize, lifespan, aliveCellBase);
+  const { universe, width, height, lifespan: _ } = getUniverse(fieldSize, lifespan, aliveCellBase, useJSversion);
 
   let onTextureHoverPosition: OnTextureHoverPosition = null
   const onHoverTextureContext: OnHoverTextureContextFn = hoverPos => {

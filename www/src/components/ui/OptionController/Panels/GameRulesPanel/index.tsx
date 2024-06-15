@@ -4,6 +4,7 @@ import NumberSetters from './NumberSetters';
 import AliveCellBaseSetter from './AliveCellBaseSetter';
 import AutoStartSetter from './AutoStartSetter';
 import Scrollable from '../Scrollable';
+import UseJSVersionSetter from './UseJSVersionSetter';
 
 export const TITLE = 'Game Rules';
 
@@ -33,6 +34,8 @@ export default function GameRulesPanel({
   aliveCellBaseOptions,
   aliveCellBase,
   onChangeAliveCellBase,
+  useJSversion,
+  onChangeUseJSversion,
   autoStartOnChangeGameRules,
   onChangeAutoStartOnChangeGameRules,
 }: {
@@ -45,6 +48,8 @@ export default function GameRulesPanel({
   aliveCellBaseOptions: number[]
   aliveCellBase: { [number: number]: boolean }
   onChangeAliveCellBase: (aliveCellBase: { [number: number]: boolean }) => void
+  useJSversion: boolean
+  onChangeUseJSversion: (useJSversion: boolean) => void
   autoStartOnChangeGameRules: boolean
   onChangeAutoStartOnChangeGameRules: (autoStartOnChangeGameRules: boolean) => void
 }) {
@@ -68,6 +73,10 @@ export default function GameRulesPanel({
           <AutoStartSetter
             autoStartOnChangeGameRules={autoStartOnChangeGameRules}
             onChangeAutoStartOnChangeGameRules={onChangeAutoStartOnChangeGameRules}
+          />
+          <UseJSVersionSetter
+            useJSversion={useJSversion}
+            onChangeUseJSversion={onChangeUseJSversion}
           />
         </ScrollableContents>
       </Scrollable>
