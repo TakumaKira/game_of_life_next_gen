@@ -26,6 +26,11 @@ jest.mock('../AutoStartSetter', () => ({
   default: jest.fn(({ autoStartOnChangeGameRules, onChangeAutoStartOnChangeGameRules }) => <div data-testid="auto-start-setter-mock" data-1={autoStartOnChangeGameRules.toString()} onClick={onChangeAutoStartOnChangeGameRules}></div>),
 }));
 
+jest.mock('../UseJSVersionSetter', () => ({
+  __esModule: true,
+  default: jest.fn(({ useJSVersion, onChangeUseJSVersion }) => <div data-testid="use-js-version-setter-mock" data-1={useJSVersion.toString()} onClick={onChangeUseJSVersion}></div>),
+}));
+
 jest.mock('../../Scrollable', () => ({
   __esModule: true,
   default: jest.fn(({ children }) => <div data-testid="scrollable-mock">{children}</div>),
@@ -44,6 +49,8 @@ describe('GameRulesPanel', () => {
     onChangeAliveCellBase: jest.fn(),
     autoStartOnChangeGameRules: true,
     onChangeAutoStartOnChangeGameRules: jest.fn(),
+    useJSVersion: false,
+    onChangeUseJSVersion: jest.fn(),
   };
 
   it('should render without crashing', () => {
@@ -51,6 +58,7 @@ describe('GameRulesPanel', () => {
     expect(getByTestId('number-setters-mock')).toBeInTheDocument();
     expect(getByTestId('alive-cell-base-setter-mock')).toBeInTheDocument();
     expect(getByTestId('auto-start-setter-mock')).toBeInTheDocument();
+    expect(getByTestId('use-js-version-setter-mock')).toBeInTheDocument();
     expect(getByTestId('scrollable-mock')).toBeInTheDocument();
   });
 
@@ -83,5 +91,11 @@ describe('GameRulesPanel', () => {
     const { getByTestId } = render(<GameRulesPanel {...mockProps} />);
     fireEvent.click(getByTestId('auto-start-setter-mock'));
     expect(mockProps.onChangeAutoStartOnChangeGameRules).toHaveBeenCalled();
+  });
+
+  it('should handle use JS version changes via UseJSVersionSetter', () => {
+    const { getByTestId } = render(<GameRulesPanel {...mockProps} />);
+    fireEvent.click(getByTestId('use-js-version-setter-mock'));
+    expect(mockProps.onChangeUseJSVersion).toHaveBeenCalled();
   });
 });

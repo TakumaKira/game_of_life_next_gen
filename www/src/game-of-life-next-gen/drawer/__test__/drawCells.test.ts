@@ -13,9 +13,13 @@ jest.mock("wasm-game-of-life/wasm_game_of_life_bg.js", () => {
   }
 });
 
+const mockCellsState = jest.fn();
+const mockCellsAge = jest.fn();
 class MockUniverse {
   cells_state = jest.fn()
   cells_age = jest.fn()
+  cellsState = mockCellsState
+  cellsAge = mockCellsAge
 }
 
 // Mock the WebAssembly.Memory object
@@ -54,6 +58,9 @@ describe('drawCells function', () => {
     expect(mockUniverseInstance.cells_state).toHaveBeenCalled();
     expect(mockUniverseInstance.cells_age).toHaveBeenCalled();
 
+    expect(mockCellsState).not.toHaveBeenCalled()
+    expect(mockCellsAge).not.toHaveBeenCalled()
+
     // Assert that updateTextureContext was called
     expect(mockUpdateTextureContext).toHaveBeenCalledTimes(1);
 
@@ -76,4 +83,25 @@ describe('drawCells function', () => {
     expect(mockContext.fillStyle).toBe(textureColors.deadColor);
     expect(mockContext.stroke).toHaveBeenCalled();
   });
+
+  test('use cellsState and cellsAge values instead of cells_state and cells_age when cells_state returns -1 as universe is UniverseJS', () => {
+    const textureColors: TextureColors = {
+      gridColor: '#000000ff',
+      deadColor: '#111111ff',
+      aliveColors: ['#ff0000ff', '#ffff00ff', '#0000ffff']
+    }
+    const width = 10;
+    const height = 10;
+    const lifespan = 100;
+    const cellSize = 1;
+
+    const mockUniverseInstance = new MockUniverse();
+    mockUniverseInstance.cells_state.mockReturnValue(-1);
+    mockUniverseInstance.cells_age.mockReturnValue(-1);
+
+    drawCells(mockUniverseInstance as unknown as Universe, memory, mockUpdateTextureContext, textureColors, width, height, lifespan, cellSize);
+
+    expect(mockCellsState).toHaveBeenCalled()
+    expect(mockCellsAge).toHaveBeenCalled()
+  })
 });

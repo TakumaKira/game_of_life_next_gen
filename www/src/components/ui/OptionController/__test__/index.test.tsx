@@ -1,6 +1,6 @@
 // OptionController.test.js
 import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import OptionController from '../index';
 import OptionButtons from '../OptionButtons';
@@ -46,6 +46,8 @@ describe('OptionController', () => {
     onChangeAliveCellBase: jest.fn() as Parameters<typeof OptionController>[0]['onChangeAliveCellBase'],
     autoStartOnChangeGameRules: true,
     onChangeAutoStartOnChangeGameRules: jest.fn() as Parameters<typeof OptionController>[0]['onChangeAutoStartOnChangeGameRules'],
+    useJSVersion: false,
+    onChangeUseJSVersion: jest.fn() as Parameters<typeof OptionController>[0]['onChangeUseJSVersion'],
     textureColors: {} as TextureColors,
     onChangeTextureColors: jest.fn() as Parameters<typeof OptionController>[0]['onChangeTextureColors'],
     glValuesConfigurable: {} as GLValuesConfigurable,
@@ -78,7 +80,9 @@ describe('OptionController', () => {
       aliveCellBaseOptions: mockProps.aliveCellBaseOptions,
       aliveCellBase: mockProps.aliveCellBase,
       onChangeAliveCellBase: mockProps.onChangeAliveCellBase,
-      autoStartOnChangeGameRules: mockProps.autoStartOnChangeGameRules
+      autoStartOnChangeGameRules: mockProps.autoStartOnChangeGameRules,
+      useJSVersion: mockProps.useJSVersion,
+      onChangeUseJSVersion: mockProps.onChangeUseJSVersion,
     }), {});
   });
 

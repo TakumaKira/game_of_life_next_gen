@@ -49,7 +49,7 @@ jest.mock('../anim-controller', () => ({
   }
 }))
 
-const mockUniverseConfig = { fieldSize: 10, lifespan: 100, speed: 1, aliveCellBase: [1, 2] };
+const mockUniverseConfig = { fieldSize: 10, lifespan: 100, speed: 1, aliveCellBase: [1, 2], useJSVersion: true };
 const mockGetUniverseReturn = { universe: {}, width: mockUniverseConfig.fieldSize, height: mockUniverseConfig.fieldSize, lifespan: mockUniverseConfig.lifespan };
 
 describe('setup function', () => {
@@ -86,7 +86,7 @@ describe('setup function', () => {
   test('returns correct functions and state', () => {
     const result = setup(canvas!, updatePlayingState!, updateFpsData!, memory!, universeConfig!);
 
-    expect(getUniverse).toHaveBeenCalledWith(universeConfig?.fieldSize, universeConfig?.lifespan, universeConfig?.aliveCellBase);
+    expect(getUniverse).toHaveBeenCalledWith(universeConfig?.fieldSize, universeConfig?.lifespan, universeConfig?.aliveCellBase, universeConfig?.useJSVersion);
     expect(setupGLRenderer).toHaveBeenCalledWith(canvas, expect.any(Function));
     expect(mockAnimationStateConstructor).toHaveBeenCalled();
     expect(mockRegisterOnUpdatePlayingState).toHaveBeenCalledWith(updatePlayingState);
@@ -102,6 +102,7 @@ describe('setup function', () => {
     expect(typeof result.updateColors).toBe('function');
     expect(typeof result.updateEffects).toBe('function');
     expect(typeof result.destroy).toBe('function');
+    expect(typeof result.draw).toBe('function');
 
     expect(togglePlayPauseImpl).not.toHaveBeenCalled()
     // Simulate calling the toggle function
@@ -183,6 +184,12 @@ describe('setup function', () => {
       universeConfig?.lifespan,
       getCellSize(universeConfig?.fieldSize!),
     )
+
+    expect(drawGrid).toHaveBeenCalledTimes(2)
+    expect(drawCells).toHaveBeenCalledTimes(2)
+    result.draw()
+    expect(drawGrid).toHaveBeenCalledTimes(3)
+    expect(drawCells).toHaveBeenCalledTimes(3)
 
     // You can add more assertions here if necessary
   });

@@ -51,8 +51,8 @@ impl Cell {
         Cell { age: 0, is_dead: false }
     }
 
-    pub fn increment_age(&mut self, life_span: u8) {
-        if self.get_state(life_span) == CellState::Alive {
+    pub fn increment_age(&mut self, lifespan: u8) {
+        if self.get_state(lifespan) == CellState::Alive {
             self.age += 1;
         }
     }
@@ -61,8 +61,8 @@ impl Cell {
         self.is_dead = true
     }
 
-    pub fn get_state(&self, life_span: u8) -> CellState {
-        if self.age < life_span && self.is_dead == false {
+    pub fn get_state(&self, lifespan: u8) -> CellState {
+        if self.age < lifespan && self.is_dead == false {
             CellState::Alive
         } else {
             CellState::Dead
@@ -75,12 +75,12 @@ pub struct Universe {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
-    life_span: u8,
+    lifespan: u8,
 }
 
 impl Universe {
-    fn get_index(&self, row: u32, column: u32) -> usize {
-        (row * self.width + column) as usize
+    fn get_index(&self, row: u32, col: u32) -> usize {
+        (row * self.width + col) as usize
     }
 
     /// Get the dead and alive values of the entire universe.
@@ -97,7 +97,7 @@ impl Universe {
         }
     }
 
-    fn live_neighbor_count(&self, row: u32, column: u32) -> u8 {
+    fn live_neighbor_count(&self, row: u32, col: u32) -> u8 {
         let mut count = 0;
 
         let north = if row == 0 {
@@ -112,41 +112,41 @@ impl Universe {
             row + 1
         };
 
-        let west = if column == 0 {
+        let west = if col == 0 {
             self.width - 1
         } else {
-            column - 1
+            col - 1
         };
 
-        let east = if column == self.width - 1 {
+        let east = if col == self.width - 1 {
             0
         } else {
-            column + 1
+            col + 1
         };
 
         let nw = self.get_index(north, west);
-        count += self.cells[nw].get_state(self.life_span) as u8;
+        count += self.cells[nw].get_state(self.lifespan) as u8;
 
-        let n = self.get_index(north, column);
-        count += self.cells[n].get_state(self.life_span) as u8;
+        let n = self.get_index(north, col);
+        count += self.cells[n].get_state(self.lifespan) as u8;
 
         let ne = self.get_index(north, east);
-        count += self.cells[ne].get_state(self.life_span) as u8;
+        count += self.cells[ne].get_state(self.lifespan) as u8;
 
         let w = self.get_index(row, west);
-        count += self.cells[w].get_state(self.life_span) as u8;
+        count += self.cells[w].get_state(self.lifespan) as u8;
 
         let e = self.get_index(row, east);
-        count += self.cells[e].get_state(self.life_span) as u8;
+        count += self.cells[e].get_state(self.lifespan) as u8;
 
         let sw = self.get_index(south, west);
-        count += self.cells[sw].get_state(self.life_span) as u8;
+        count += self.cells[sw].get_state(self.lifespan) as u8;
 
-        let s = self.get_index(south, column);
-        count += self.cells[s].get_state(self.life_span) as u8;
+        let s = self.get_index(south, col);
+        count += self.cells[s].get_state(self.lifespan) as u8;
 
         let se = self.get_index(south, east);
-        count += self.cells[se].get_state(self.life_span) as u8;
+        count += self.cells[se].get_state(self.lifespan) as u8;
 
         count
     }
@@ -176,7 +176,7 @@ impl Universe {
                     );
                 }
 
-                let next_cell = match (cell.get_state(self.life_span), live_neighbors) {
+                let next_cell = match (cell.get_state(self.lifespan), live_neighbors) {
                     // Rule 1: Any live cell with fewer than two live neighbours
                     // dies, as if caused by underpopulation.
                     (CellState::Alive, x) if x < 2 => {
@@ -186,7 +186,7 @@ impl Universe {
                     // Rule 2: Any live cell with two or three live neighbours
                     // lives on to the next generation.
                     (CellState::Alive, 2) | (CellState::Alive, 3) => {
-                        cell.increment_age(self.life_span);
+                        cell.increment_age(self.lifespan);
                         cell
                     },
                     // Rule 3: Any live cell with more than three live
@@ -213,11 +213,11 @@ impl Universe {
         self.cells = next;
     }
 
-    pub fn new(size: u32, life_span: u8, alive_cell_base: Vec<u32>) -> Universe {
+    pub fn new(size: u32, lifespan: u8, alive_cell_base: Vec<u32>) -> Universe {
         utils::set_panic_hook();
 
         let size = if size == 0 { 128 } else { size };
-        let life_span = if life_span == 0 { 100 } else { life_span };
+        let lifespan = if lifespan == 0 { 100 } else { lifespan };
         let width = size;
         let height = size;
 
@@ -238,7 +238,7 @@ impl Universe {
             width,
             height,
             cells,
-            life_span,
+            lifespan,
         }
     }
 
@@ -274,12 +274,12 @@ impl Universe {
         }).collect();
     }
 
-    pub fn get_life_span(&self) -> u8 {
-        self.life_span
+    pub fn get_lifespan(&self) -> u8 {
+        self.lifespan
     }
 
     pub fn cells_state(&self) -> *const CellState {
-        let states = self.cells.iter().map(|cell| cell.get_state(self.life_span)).collect::<Vec<CellState>>();
+        let states = self.cells.iter().map(|cell| cell.get_state(self.lifespan)).collect::<Vec<CellState>>();
         // Convert the vector into a boxed slice, allocating memory on the heap, making the pointer distinct from what cells_age returns
         let boxed_states = states.into_boxed_slice();
         // Convert the boxed slice into a raw pointer
@@ -298,8 +298,8 @@ impl Universe {
 
     pub fn toggle_cell(&mut self, row: u32, column: u32) {
         let idx = self.get_index(row, column);
-        if self.cells[idx].get_state(self.life_span) == CellState::Alive {
-            self.cells[idx].increment_age(self.life_span)
+        if self.cells[idx].get_state(self.lifespan) == CellState::Alive {
+            self.cells[idx].increment_age(self.lifespan)
         } else {
             self.cells[idx] = Cell::new();
         }
@@ -310,7 +310,7 @@ impl fmt::Display for Universe {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for line in self.cells.as_slice().chunks(self.width as usize) {
             for &cell in line {
-                let symbol = if cell.get_state(self.life_span) == CellState::Dead { '◻' } else { '◼' };
+                let symbol = if cell.get_state(self.lifespan) == CellState::Dead { '◻' } else { '◼' };
                 write!(f, "{}", symbol)?;
             }
             write!(f, "\n")?;
